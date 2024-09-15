@@ -40,6 +40,24 @@ t
 t.column_names
 
 # %% [markdown]
+# Let's downcast the "price" column in the original dataset. We will want to ensure
+# that the values are within the range of an int16. I happen to know in this case, we
+# can safely downcast the values, but we will explore a method to determine this
+# programatically soon.
+
+# There is also a "safe" argument we can use, which is True by default. This will
+# check for overflows or other unsafe conversions.
+
+# %%
+t = t.set_column(
+    t.schema.get_field_index("price"),
+    "price",
+    pc.cast(t["price"], pa.int16()),
+)
+
+t
+
+# %% [markdown]
 # With `select`, we can return a Table with the specified columns.
 #
 # Here, we're just returning the first four columns as well as the price column.
@@ -118,7 +136,7 @@ t_agg = t.group_by("cut").aggregate([("price", "mean"), ("cut", "count")])
 t_agg
 
 # %% [markdown]
-# For the final exercise, let's take the previous result and round the
+# Now let's take the previous result and round the
 # price_mean value to two decimal places.
 
 # %%
