@@ -1,2 +1,2 @@
 # pyarrow-exercises
- Fiddling around with PyArrow. 
+ Fiddling around with PyArrow.
