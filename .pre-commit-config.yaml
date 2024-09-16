@@ -11,10 +11,12 @@ repos:
     rev: v2.3.0
     hooks:
     -   id: codespell
--   repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 24.8.0
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.5
     hooks:
-    -   id: black
+      - id: ruff
+        args: ["check", "--select", "I", "--fix"]
+      - id: ruff-format
 -   repo: https://github.com/pycqa/isort
     rev: 5.13.2
     hooks:
