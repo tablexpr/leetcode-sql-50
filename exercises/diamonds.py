@@ -75,6 +75,42 @@ t = csv.read_csv(
     data, convert_options=csv.ConvertOptions(column_types={"price": pa.int16()})
 )
 
+# %% [markdown]
+# If we inspect the schema this time, we'll see that the "price" column is now an
+# int16.
+
+# %%
+t.schema
+
+# %% [markdown]
+# I mentioned earlier that we could programmatically determine if we can downcast
+# the values in the "price" column. We can use the `compute` module to do this.
+
+# %%
+pc.min_max(t["price"])
+
+# %% [markdown]
+# We also have quite a few columns that are of type float64 (double). We can downcast
+# these to float32 (float). We could use the same method as before, but let's explore
+# another way to do this.
+
+# %%
+schema = pa.schema(
+    [
+        pa.field("carat", pa.float32()),
+        pa.field("cut", pa.string()),
+        pa.field("color", pa.string()),
+        pa.field("clarity", pa.string()),
+        pa.field("depth", pa.float32()),
+        pa.field("table", pa.float32()),
+        pa.field("price", pa.int16()),
+        pa.field("x", pa.float32()),
+        pa.field("y", pa.float32()),
+        pa.field("z", pa.float32()),
+    ]
+)
+
+t = t.cast(schema)
 
 # %% [markdown]
 # With `select`, we can return a Table with the specified columns.
