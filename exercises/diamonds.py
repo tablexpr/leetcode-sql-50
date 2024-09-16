@@ -40,10 +40,16 @@ t
 t.column_names
 
 # %% [markdown]
+# How about the schema of the table?
+
+# %%
+t.schema
+
+# %% [markdown]
 # Let's downcast the "price" column in the original dataset. We will want to ensure
 # that the values are within the range of an int16. I happen to know in this case, we
 # can safely downcast the values, but we will explore a method to determine this
-# programatically soon.
+# programmatically soon.
 
 # There is also a "safe" argument we can use, which is True by default. This will
 # check for overflows or other unsafe conversions.
@@ -56,6 +62,19 @@ t = t.set_column(
 )
 
 t
+
+# %% [markdown]
+# If we know the schema ahead of time, we can specify the column types.
+# This disables type inference on the defined columns.
+# Since we have already consumed the BytesIO object, we will need to seek back to the
+# beginning to reset the pointer.
+
+# %%
+data.seek(0)
+t = csv.read_csv(
+    data, convert_options=csv.ConvertOptions(column_types={"price": pa.int16()})
+)
+
 
 # %% [markdown]
 # With `select`, we can return a Table with the specified columns.
