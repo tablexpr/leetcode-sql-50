@@ -54,7 +54,13 @@ t.schema
 # There is also a "safe" argument we can use, which is True by default. This will
 # check for overflows or other unsafe conversions.
 
+# We will capture the size of the original table (in KB) before we downcast the column
+# so that we can compare the sizes afterward.
+
 # %%
+
+original_size = t.get_total_buffer_size() >> 10
+
 t = t.set_column(
     t.schema.get_field_index("price"),
     "price",
@@ -111,6 +117,14 @@ schema = pa.schema(
 )
 
 t = t.cast(schema)
+
+# %% [markdown]
+# Now we can can compare the sizes of the original table and the new table.
+
+# %%
+new_size = t.get_total_buffer_size() >> 10
+
+original_size, new_size
 
 # %% [markdown]
 # With `select`, we can return a Table with the specified columns.
