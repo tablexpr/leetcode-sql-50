@@ -11,6 +11,7 @@ import urllib
 import pyarrow as pa
 import pyarrow.compute as pc
 import pyarrow.csv as csv
+import pyarrow.parquet as pq
 
 # %% [markdown]
 # Download the CSV.
@@ -226,3 +227,37 @@ t_agg
 # FROM diamonds
 # GROUP BY cut;
 # ```
+
+# %% [markdown]
+# Let's close out by writing the initial dataset to a Parquet buffer to demonstrate how
+# easy it is to write and read Parquet files.
+
+# %%
+parquet_data = io.BytesIO()
+pq.write_table(t, parquet_data)
+
+# %% [markdown]
+# When working with Parquet files, we have the luxury to only read specific columns.
+# Before, we needed to read all of the columns from the CSV, but now we can read only
+# the columns we need.
+
+# %%
+pq.read_table(parquet_data, columns=["carat", "cut", "color", "clarity", "price"])
+
+# %% [markdown]
+# We have a few more ways to read Parquet files. We won't cover them all here, but
+# we will take a look at using ParquetFile.
+
+# %%
+pf = pq.ParquetFile(parquet_data)
+
+# %% [markdown]
+# We can use several of the class attributes to the metadata of the file, the Arrow
+# schema, count the row groups, and use the `read` method to read the file into a
+# PyArrow Table.
+
+# %%
+print(pf.metadata)
+print(pf.schema_arrow)
+print(pf.num_row_groups)
+pf.read()
