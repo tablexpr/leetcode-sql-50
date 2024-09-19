@@ -261,3 +261,19 @@ print(pf.metadata)
 print(pf.schema_arrow)
 print(pf.num_row_groups)
 pf.read()
+
+# %% [markdown]
+# In addition to writing to Parquet, we can also write to IPC.
+
+# %%
+sink = pa.BufferOutputStream()
+
+with pa.ipc.new_stream(sink, t.schema) as writer:
+    writer.write_table(t)
+
+# %% [markdown]
+# We can read the IPC data back into a PyArrow Table.
+
+# %%
+with pa.ipc.open_stream(sink.getvalue()) as reader:
+    t = reader.read_all()
