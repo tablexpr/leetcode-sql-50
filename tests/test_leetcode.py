@@ -161,54 +161,62 @@ def test_problem_595(input_data, expected_output):
     "input_data, expected_data",
     [
         pytest.param(
-            [
+            pa.table(
                 {
-                    "article_id": 1,
-                    "author_id": 3,
-                    "viewer_id": 3,
-                    "view_date": "2019-08-01",
+                    "article_id": [1, 2, 3],
+                    "author_id": [3, 7, 4],
+                    "viewer_id": [3, 7, 4],
+                    "view_date": [
+                        datetime(2019, 8, 1),
+                        datetime(2019, 8, 1),
+                        datetime(2019, 7, 21),
+                    ],
                 },
+                schema=pa.schema(
+                    [
+                        pa.field("article_id", pa.int64()),
+                        pa.field("author_id", pa.int64()),
+                        pa.field("viewer_id", pa.int64()),
+                        pa.field("view_date", pa.timestamp("ns")),
+                    ]
+                ),
+            ),
+            pa.table(
                 {
-                    "article_id": 2,
-                    "author_id": 7,
-                    "viewer_id": 7,
-                    "view_date": "2019-08-01",
-                },
-                {
-                    "article_id": 3,
-                    "author_id": 4,
-                    "viewer_id": 4,
-                    "view_date": "2019-07-21",
-                },
-            ],
-            [{"id": 3}, {"id": 4}, {"id": 7}],
+                    "id": [3, 4, 7],
+                }
+            ),
             id="happy_path",
         ),
         pytest.param(
-            [
+            pa.table(
                 {
-                    "article_id": 1,
-                    "author_id": 3,
-                    "viewer_id": 3,
-                    "view_date": "2019-08-01",
+                    "article_id": [1, 2],
+                    "author_id": [3, 7],
+                    "viewer_id": [3, 7],
+                    "view_date": [datetime(2019, 8, 1), datetime(2019, 8, 1)],
                 },
+                schema=pa.schema(
+                    [
+                        pa.field("article_id", pa.int64()),
+                        pa.field("author_id", pa.int64()),
+                        pa.field("viewer_id", pa.int64()),
+                        pa.field("view_date", pa.timestamp("ns")),
+                    ]
+                ),
+            ),
+            pa.table(
                 {
-                    "article_id": 2,
-                    "author_id": 7,
-                    "viewer_id": 7,
-                    "view_date": "2019-08-01",
-                },
-            ],
-            [{"id": 3}, {"id": 7}],
+                    "id": [3, 7],
+                }
+            ),
             id="all_match",
         ),
     ],
 )
 def test_problem_1148(input_data, expected_data):
-    input_table = pa.Table.from_pylist(input_data)
-    result = problem_1148(input_table)
-    expected_table = pa.Table.from_pylist(expected_data)
-    assert result.equals(expected_table)
+    result = problem_1148(input_data)
+    assert result.equals(expected_data)
 
 
 @pytest.mark.parametrize(
