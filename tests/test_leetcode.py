@@ -118,27 +118,27 @@ def test_problem_584(input_data, expected_names):
     [
         pytest.param(
             [
-                ["Afghanistan", "Asia", 652230, 25500100, 20343000000],
-                ["Albania", "Europe", 28748, 2831741, 12960000000],
-                ["Algeria", "Africa", 2381741, 37100000, 188681000000],
-                ["Andorra", "Europe", 468, 78115, 3712000000],
-                ["Angola", "Africa", 1246700, 20609294, 100990000000],
+                ["Afghanistan", "Asia", 652_230, 25_500_100, 20343000000],
+                ["Albania", "Europe", 28_748, 2_831_741, 12_960_000_000],
+                ["Algeria", "Africa", 2_381_741, 37_100_000, 188_681_000_000],
+                ["Andorra", "Europe", 468, 78_115, 3_712_000_000],
+                ["Angola", "Africa", 1_246_700, 20_609_294, 100_990_000_000],
             ],
             [
-                ["Afghanistan", 25500100, 652230],
-                ["Algeria", 37100000, 2381741],
+                ["Afghanistan", 25_500_100, 652_230],
+                ["Algeria", 37_100_000, 2_381_741],
             ],
             id="happy_path_various_countries",
         ),
         pytest.param([], [], id="edge_case_empty_table"),
         pytest.param(
             [
-                ["CountryA", "ContinentA", 3000000, 30000000, 1000000000],
-                ["CountryB", "ContinentB", 4000000, 40000000, 2000000000],
+                ["CountryA", "ContinentA", 3_000_000, 30_000_000, 1_000_000_000],
+                ["CountryB", "ContinentB", 4_000_000, 40_000_000, 2_000_000_000],
             ],
             [
-                ["CountryA", 30000000, 3000000],
-                ["CountryB", 40000000, 4000000],
+                ["CountryA", 30_000_000, 3000_000],
+                ["CountryB", 40_000_000, 4000_000],
             ],
             id="edge_case_all_countries_meeting_criteria",
         ),
