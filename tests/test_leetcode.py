@@ -117,106 +117,124 @@ def test_problem_584(input_data, expected_names):
     "input_data, expected_output",
     [
         pytest.param(
-            [
-                ["Afghanistan", "Asia", 652_230, 25_500_100, 20343000000],
-                ["Albania", "Europe", 28_748, 2_831_741, 12_960_000_000],
-                ["Algeria", "Africa", 2_381_741, 37_100_000, 188_681_000_000],
-                ["Andorra", "Europe", 468, 78_115, 3_712_000_000],
-                ["Angola", "Africa", 1_246_700, 20_609_294, 100_990_000_000],
-            ],
-            [
-                ["Afghanistan", 25_500_100, 652_230],
-                ["Algeria", 37_100_000, 2_381_741],
-            ],
+            {
+                "name": ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola"],
+                "continent": ["Asia", "Europe", "Africa", "Europe", "Africa"],
+                "area": [652_230, 28_748, 2_381_741, 468, 1_246_700],
+                "population": [25_500_100, 2_831_741, 37_100_000, 78_115, 20_609_294],
+                "gdp": [
+                    20_343_000_000,
+                    12_960_000_000,
+                    188_681_000_000,
+                    3_712_000_000,
+                    100_990_000_000,
+                ],
+            },
+            {
+                "name": ["Afghanistan", "Algeria"],
+                "population": [25_500_100, 37_100_000],
+                "area": [652_230, 2_381_741],
+            },
             id="happy_path_various_countries",
         ),
-        pytest.param([], [], id="edge_case_empty_table"),
         pytest.param(
-            [
-                ["CountryA", "ContinentA", 3_000_000, 30_000_000, 1_000_000_000],
-                ["CountryB", "ContinentB", 4_000_000, 40_000_000, 2_000_000_000],
-            ],
-            [
-                ["CountryA", 30_000_000, 3000_000],
-                ["CountryB", 40_000_000, 4000_000],
-            ],
+            {
+                "name": [],
+                "continent": [],
+                "area": [],
+                "population": [],
+                "gdp": [],
+            },
+            {"name": [], "population": [], "area": []},
+            id="edge_case_empty_table",
+        ),
+        pytest.param(
+            {
+                "name": ["CountryA", "CountryB"],
+                "continent": ["ContinentA", "ContinentB"],
+                "area": [3_000_000, 4_000_000],
+                "population": [30_000_000, 40_000_000],
+                "gdp": [1_000_000_000, 2_000_000_000],
+            },
+            {
+                "name": ["CountryA", "CountryB"],
+                "population": [30_000_000, 40_000_000],
+                "area": [3_000_000, 4_000_000],
+            },
             id="edge_case_all_countries_meeting_criteria",
         ),
     ],
 )
 def test_problem_595(input_data, expected_output):
-    input_table = pa.Table.from_pandas(
-        pd.DataFrame(
-            input_data, columns=["name", "continent", "area", "population", "gdp"]
-        )
+    input_schema = pa.schema(
+        [
+            pa.field("name", pa.string()),
+            pa.field("continent", pa.string()),
+            pa.field("area", pa.int64()),
+            pa.field("population", pa.int64()),
+            pa.field("gdp", pa.int64()),
+        ]
     )
+    input_table = pa.table(input_data, schema=input_schema)
+    output_schema = pa.schema(
+        [
+            pa.field("name", pa.string()),
+            pa.field("population", pa.int64()),
+            pa.field("area", pa.int64()),
+        ]
+    )
+    output_table = pa.table(expected_output, schema=output_schema)
     result = problem_595(input_table)
-    expected_table = pa.Table.from_pandas(
-        pd.DataFrame(expected_output, columns=["name", "population", "area"])
-    )
-    assert result.equals(expected_table)
+    assert result.equals(output_table)
 
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
     [
         pytest.param(
-            pa.table(
-                {
-                    "article_id": [1, 2, 3],
-                    "author_id": [3, 7, 4],
-                    "viewer_id": [3, 7, 4],
-                    "view_date": [
-                        datetime(2019, 8, 1),
-                        datetime(2019, 8, 1),
-                        datetime(2019, 7, 21),
-                    ],
-                },
-                schema=pa.schema(
-                    [
-                        pa.field("article_id", pa.int64()),
-                        pa.field("author_id", pa.int64()),
-                        pa.field("viewer_id", pa.int64()),
-                        pa.field("view_date", pa.timestamp("ns")),
-                    ]
-                ),
-            ),
-            pa.table(
-                {
-                    "id": [3, 4, 7],
-                }
-            ),
+            {
+                "article_id": [1, 2, 3],
+                "author_id": [3, 7, 4],
+                "viewer_id": [3, 7, 4],
+                "view_date": [
+                    datetime(2019, 8, 1),
+                    datetime(2019, 8, 1),
+                    datetime(2019, 7, 21),
+                ],
+            },
+            {
+                "id": [3, 4, 7],
+            },
             id="happy_path",
         ),
         pytest.param(
-            pa.table(
-                {
-                    "article_id": [1, 2],
-                    "author_id": [3, 7],
-                    "viewer_id": [3, 7],
-                    "view_date": [datetime(2019, 8, 1), datetime(2019, 8, 1)],
-                },
-                schema=pa.schema(
-                    [
-                        pa.field("article_id", pa.int64()),
-                        pa.field("author_id", pa.int64()),
-                        pa.field("viewer_id", pa.int64()),
-                        pa.field("view_date", pa.timestamp("ns")),
-                    ]
-                ),
-            ),
-            pa.table(
-                {
-                    "id": [3, 7],
-                }
-            ),
+            {
+                "article_id": [1, 2],
+                "author_id": [3, 7],
+                "viewer_id": [3, 7],
+                "view_date": [datetime(2019, 8, 1), datetime(2019, 8, 1)],
+            },
+            {
+                "id": [3, 7],
+            },
             id="all_match",
         ),
     ],
 )
 def test_problem_1148(input_data, expected_data):
-    result = problem_1148(input_data)
-    assert result.equals(expected_data)
+    input_schema = pa.schema(
+        [
+            pa.field("article_id", pa.int64()),
+            pa.field("author_id", pa.int64()),
+            pa.field("viewer_id", pa.int64()),
+            pa.field("view_date", pa.timestamp("ns")),
+        ]
+    )
+    input_table = pa.table(input_data, schema=input_schema)
+    expected_schema = pa.schema([pa.field("id", pa.int64())])
+    expected_table = pa.table(expected_data, schema=expected_schema)
+    result = problem_1148(input_table)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
