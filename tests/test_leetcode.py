@@ -74,40 +74,45 @@ def test_problem_197(input_data, expected_output):
     "input_data, expected_names",
     [
         pytest.param(
-            [
-                [1, "Will", None],
-                [2, "Jane", None],
-                [4, "Bill", None],
-                [5, "Zack", 1],
-            ],
+            {
+                "id": [1, 2, 4, 5],
+                "name": ["Will", "Jane", "Bill", "Zack"],
+                "referee_id": [None, None, None, 1],
+            },
             ["Will", "Jane", "Bill", "Zack"],
             id="happy_path_all_valid",
         ),
-        pytest.param([], [], id="edge_case_empty_table"),
         pytest.param(
-            [
-                [3, "Alex", 2],
-                [6, "Mark", 2],
-            ],
+            {
+                "id": [],
+                "name": [],
+                "referee_id": [],
+            },
+            [],
+            id="edge_case_empty_table",
+        ),
+        pytest.param(
+            {
+                "id": [3, 6],
+                "name": ["Alex", "Mark"],
+                "referee_id": [2, 2],
+            },
             [],
             id="edge_case_all_referee_id_2",
         ),
         pytest.param(
-            [
-                [1, "Will", None],
-                [3, "Alex", 2],
-                [5, "Zack", 1],
-                [6, "Mark", 2],
-            ],
+            {
+                "id": [1, 3, 5, 6],
+                "name": ["Will", "Alex", "Zack", "Mark"],
+                "referee_id": [None, 2, 1, 2],
+            },
             ["Will", "Zack"],
             id="mixed_case_some_valid",
         ),
     ],
 )
 def test_problem_584(input_data, expected_names):
-    input_table = pa.Table.from_pandas(
-        pd.DataFrame(input_data, columns=["id", "name", "referee_id"])
-    )
+    input_table = pa.table(input_data)
     result_table = problem_584(input_table)
     result_names = result_table.column("name").to_pylist()
     assert result_names == expected_names
