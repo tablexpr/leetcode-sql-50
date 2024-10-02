@@ -8,6 +8,7 @@ from problems.leetcode import (
     problem_197,
     problem_584,
     problem_595,
+    problem_620,
     problem_1148,
     problem_1683,
     problem_1757,
@@ -191,6 +192,58 @@ def test_problem_595(input_data, expected_output):
     output_table = pa.table(expected_output, schema=output_schema)
     result = problem_595(input_table)
     assert result.equals(output_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_ids",
+    [
+        pytest.param(
+            [
+                {"id": 1, "description": "interesting"},
+                {"id": 2, "description": "boring"},
+                {"id": 3, "description": "exciting"},
+                {"id": 4, "description": "boring"},
+            ],
+            [3, 1],
+            id="happy_path_mixed_ids_and_descriptions",
+        ),
+        pytest.param(
+            [
+                {"id": 1, "description": "boring"},
+                {"id": 3, "description": "boring"},
+            ],
+            [],
+            id="edge_case_all_boring",
+        ),
+        pytest.param(
+            [
+                {"id": 2, "description": "interesting"},
+                {"id": 4, "description": "exciting"},
+            ],
+            [],
+            id="edge_case_no_odd_ids",
+        ),
+        pytest.param(
+            [
+                {"id": 1, "description": "interesting"},
+            ],
+            [1],
+            id="edge_case_single_row_matching",
+        ),
+        pytest.param(
+            [
+                {"id": 2, "description": "boring"},
+            ],
+            [],
+            id="edge_case_single_row_not_matching",
+        ),
+    ],
+)
+def test_problem_620(input_data, expected_ids):
+    table = pa.Table.from_pylist(input_data)
+    result = problem_620(table)
+    result_ids = result.column("id").to_pylist()
+    assert result_ids == expected_ids
 
 
 @pytest.mark.parametrize(

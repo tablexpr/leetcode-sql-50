@@ -1,6 +1,5 @@
 from datetime import timedelta
 
-import pandas as pd
 import pyarrow as pa
 import pyarrow.compute as pc
 
@@ -42,6 +41,15 @@ def problem_595(table: pa.Table) -> pa.Table:
             pc.greater_equal(table["population"], pa.scalar(25_000_000)),
         )
     ).select(["name", "population", "area"])
+
+
+def problem_620(table: pa.Table) -> pa.Table:
+    return table.filter(
+        pc.and_(
+            pc.equal(pc.bit_wise_and(table["id"], pa.scalar(1)), pa.scalar(1)),
+            pc.not_equal(table["description"], pa.scalar("boring")),
+        )
+    ).sort_by([("id", "descending")])
 
 
 def problem_1148(table: pa.Table) -> pa.Table:
