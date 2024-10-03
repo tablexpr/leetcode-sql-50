@@ -10,6 +10,7 @@ from problems.leetcode import (
     problem_595,
     problem_620,
     problem_1148,
+    problem_1378,
     problem_1683,
     problem_1757,
 )
@@ -293,6 +294,31 @@ def test_problem_1148(input_data, expected_data):
     expected_table = pa.table(expected_data, schema=expected_schema)
     result = problem_1148(input_table)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "table_data, table_2_data, expected_data",
+    [
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [1, 2], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_matching_ids",
+        ),
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [3, 4], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_non_matching_ids",
+        ),
+    ],
+)
+def test_problem_1378(table_data, table_2_data, expected_data):
+    table = pa.Table.from_pydict(table_data)
+    table_2 = pa.Table.from_pydict(table_2_data)
+    expected = pa.Table.from_pydict(expected_data)
+    result = problem_1378(table, table_2)
+    assert result.equals(expected)
 
 
 @pytest.mark.parametrize(

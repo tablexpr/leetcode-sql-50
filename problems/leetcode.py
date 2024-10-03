@@ -63,6 +63,12 @@ def problem_1148(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
+    return table.join(table_2, keys="id", join_type="left outer").select(
+        ["unique_id", "name"]
+    )
+
+
 def problem_1683(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.greater(pc.utf8_length(table["content"]), pa.scalar(15))
