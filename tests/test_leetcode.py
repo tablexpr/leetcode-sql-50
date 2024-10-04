@@ -13,6 +13,7 @@ from problems.leetcode import (
     problem_1378,
     problem_1683,
     problem_1757,
+    problem_1978,
 )
 
 
@@ -376,3 +377,68 @@ def test_problem_1757(data, expected_ids):
     )
     result = problem_1757(table)
     assert result.column("product_id").to_pylist() == expected_ids
+
+
+@pytest.mark.parametrize(
+    "data, expected_ids",
+    [
+        pytest.param(
+            [
+                [3, "Mila", 9, 60301],
+                [12, "Antonella", None, 31000],
+                [13, "Emery", None, 67084],
+                [1, "Kalel", 11, 21241],
+                [9, "Mikaela", None, 50937],
+                [11, "Joziah", 6, 28485],
+                [14, "Hayden", None, 4123],
+            ],
+            [11],
+            id="basic_filtering",
+        ),
+        pytest.param(
+            [
+                [3, "Mila", 9, 60301],
+                [12, "Antonella", None, 31000],
+                [13, "Emery", None, 67084],
+                [1, "Kalel", 11, 31241],
+                [9, "Mikaela", None, 50937],
+                [11, "Joziah", 6, 38485],
+                [14, "Hayden", None, 41230],
+            ],
+            [],
+            id="no_low_salary",
+        ),
+        pytest.param(
+            [
+                [3, "Mila", 3, 60301],
+                [12, "Antonella", 12, 31000],
+                [13, "Emery", 13, 67084],
+                [1, "Kalel", 1, 21241],
+                [9, "Mikaela", 9, 50937],
+                [11, "Joziah", 11, 28485],
+                [14, "Hayden", 14, 4123],
+            ],
+            [],
+            id="all_managers_are_employees",
+        ),
+        pytest.param(
+            [
+                [3, "Mila", None, 60301],
+                [12, "Antonella", None, 31000],
+                [13, "Emery", None, 67084],
+                [1, "Kalel", None, 21241],
+                [9, "Mikaela", None, 50937],
+                [11, "Joziah", None, 28485],
+                [14, "Hayden", None, 4123],
+            ],
+            [],
+            id="all_manager_ids_null",
+        ),
+    ],
+)
+def test_problem_1978(data, expected_ids):
+    table = pa.Table.from_pandas(
+        pd.DataFrame(data, columns=["employee_id", "name", "manager_id", "salary"])
+    )
+    result = problem_1978(table)
+    assert result.column("employee_id").to_pylist() == expected_ids

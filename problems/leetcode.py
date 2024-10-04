@@ -82,3 +82,19 @@ def problem_1757(table: pa.Table) -> pa.Table:
             pc.equal(table["recyclable"], pa.scalar("Y")),
         )
     ).select(["product_id"])
+
+
+def problem_1978(table: pa.Table) -> pa.Table:
+    return (
+        table.filter(
+            pc.and_(
+                pc.less(table["salary"], pa.scalar(30_000)),
+                pc.and_(
+                    pc.invert(pc.is_in(table["manager_id"], table["employee_id"])),
+                    pc.invert(pc.is_null(table["manager_id"])),
+                ),
+            )
+        )
+        .select(["employee_id"])
+        .sort_by("employee_id")
+    )
