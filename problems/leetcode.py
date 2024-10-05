@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pyarrow as pa
 import pyarrow.compute as pc
@@ -50,6 +50,25 @@ def problem_620(table: pa.Table) -> pa.Table:
             pc.not_equal(table["description"], pa.scalar("boring")),
         )
     ).sort_by([("id", "descending")])
+
+
+def problem_1141(table: pa.Table) -> pa.Table:
+    return (
+        table.filter(
+            pc.and_(
+                pc.greater(
+                    table["activity_date"],
+                    pc.subtract(table["activity_date"], pa.scalar(timedelta(days=30))),
+                ),
+                pc.less_equal(table["activity_date"], pa.scalar(datetime(2019, 7, 27))),
+            )
+        )
+        .group_by("activity_date")
+        .aggregate([("user_id", "count_distinct")])
+        .rename_columns(
+            {"activity_date": "day", "user_id_count_distinct": "active_users"}
+        )
+    )
 
 
 def problem_1148(table: pa.Table) -> pa.Table:

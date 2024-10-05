@@ -9,6 +9,7 @@ from problems.leetcode import (
     problem_584,
     problem_595,
     problem_620,
+    problem_1141,
     problem_1148,
     problem_1378,
     problem_1683,
@@ -246,6 +247,63 @@ def test_problem_620(input_data, expected_ids):
     result = problem_620(table)
     result_ids = result.column("id").to_pylist()
     assert result_ids == expected_ids
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            [
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "open_session",
+                },
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "scroll_down",
+                },
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "end_session",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "open_session",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "send_message",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "end_session",
+                },
+            ],
+            [
+                {"day": datetime(2019, 7, 20), "active_users": 1},
+                {"day": datetime(2019, 7, 21), "active_users": 1},
+            ],
+            id="happy_path_1",
+        )
+    ],
+)
+def test_problem_1141(input_data, expected_data):
+    input_table = pa.Table.from_pylist(input_data)
+    expected_table = pa.Table.from_pylist(expected_data)
+    result_table = problem_1141(input_table)
+    assert result_table.equals(expected_table)
 
 
 @pytest.mark.parametrize(
