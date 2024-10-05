@@ -52,6 +52,12 @@ def problem_620(table: pa.Table) -> pa.Table:
     ).sort_by([("id", "descending")])
 
 
+def problem_1068(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    return table_1.join(table_2, keys="product_id").select(
+        ["product_name", "year", "price"]
+    )
+
+
 def problem_1141(table: pa.Table) -> pa.Table:
     return (
         table.filter(

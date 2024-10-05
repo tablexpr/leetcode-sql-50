@@ -250,6 +250,92 @@ def test_problem_620(input_data, expected_ids):
 
 
 @pytest.mark.parametrize(
+    "table_1, table_2, expected",
+    [
+        pytest.param(
+            pa.table(
+                {
+                    "product_id": [1, 2, 3],
+                    "product_name": ["Nokia", "Nokia", "Apple"],
+                    "year": [2008, 2009, 2011],
+                    "price": [5000, 5000, 9000],
+                }
+            ),
+            pa.table({"product_id": [1, 2, 3]}),
+            pa.table(
+                {
+                    "product_name": ["Nokia", "Nokia", "Apple"],
+                    "year": [2008, 2009, 2011],
+                    "price": [5000, 5000, 9000],
+                }
+            ),
+            id="happy_path",
+        )
+    ],
+)
+def test_problem_1068(table_1, table_2, expected):
+    result = problem_1068(table_1, table_2)
+    assert result.equals(expected)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            [
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "open_session",
+                },
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "scroll_down",
+                },
+                {
+                    "user_id": 1,
+                    "session_id": 1,
+                    "activity_date": datetime(2019, 7, 20),
+                    "activity_type": "end_session",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "open_session",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "send_message",
+                },
+                {
+                    "user_id": 2,
+                    "session_id": 4,
+                    "activity_date": datetime(2019, 7, 21),
+                    "activity_type": "end_session",
+                },
+            ],
+            [
+                {"day": datetime(2019, 7, 20), "active_users": 1},
+                {"day": datetime(2019, 7, 21), "active_users": 1},
+            ],
+            id="happy_path_1",
+        )
+    ],
+)
+def test_problem_1141(input_data, expected_data):
+    input_table = pa.Table.from_pylist(input_data)
+    expected_table = pa.Table.from_pylist(expected_data)
+    result_table = problem_1141(input_table)
+    assert result_table.equals(expected_table)
+
+
+@pytest.mark.parametrize(
     "input_data, expected_data",
     [
         pytest.param(
