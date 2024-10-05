@@ -19,7 +19,7 @@ Fiddling around with PyArrow.
 - [X] 1581. [Customer Who Visited but Did Not Make Any Transactions](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions) - Easy
 - [X] 197. [Rising Temperature](https://leetcode.com/problems/rising-temperature) - Easy
 - [X] 1661. [Average Time of Process per Machine](https://leetcode.com/problems/average-time-of-process-per-machine) - Easy
-- [ ] 577. [Employee Bonus](https://leetcode.com/problems/employee-bonus) - Easy
+- [X] 577. [Employee Bonus](https://leetcode.com/problems/employee-bonus) - Easy
 - [ ] 1280. [Students and Examinations](https://leetcode.com/problems/students-and-examinations) - Easy
 - [ ] 570. [Managers with at Least 5 Direct Reports](https://leetcode.com/problems/managers-with-at-least-5-direct-reports) - Medium
 - [ ] 1934. [Confirmation Rate](https://leetcode.com/problems/confirmation-rate) - Medium

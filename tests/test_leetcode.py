@@ -6,6 +6,7 @@ import pytest
 
 from problems.leetcode import (
     problem_197,
+    problem_577,
     problem_584,
     problem_595,
     problem_620,
@@ -75,6 +76,25 @@ def test_problem_197(input_data, expected_output):
     table = pa.table(input_data)
     result = problem_197(table)
     assert result["id"].to_pylist() == expected_output
+
+
+@pytest.mark.parametrize(
+    "table_1_data, table_2_data, expected_data",
+    [
+        pytest.param(
+            {"empId": [1, 2], "name": ["Alice", "Bob"]},
+            {"empId": [1, 2], "bonus": [1000, 1500]},
+            {"name": ["Alice", "Bob"], "bonus": [1000, 1500]},
+            id="happy_path_basic",
+        )
+    ],
+)
+def test_problem_577(table_1_data, table_2_data, expected_data):
+    table_1 = pa.Table.from_pydict(table_1_data)
+    table_2 = pa.Table.from_pydict(table_2_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_577(table_1, table_2)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(

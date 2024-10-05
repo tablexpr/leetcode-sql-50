@@ -25,6 +25,10 @@ def problem_197(table: pa.Table) -> pa.Table:
     return joined
 
 
+def problem_577(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    return table_1.join(table_2, keys="empId").select(["name", "bonus"])
+
+
 def problem_584(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.or_kleene(
