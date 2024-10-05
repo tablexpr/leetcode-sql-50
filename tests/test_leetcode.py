@@ -12,6 +12,7 @@ from problems.leetcode import (
     problem_1068,
     problem_1141,
     problem_1148,
+    problem_1161,
     problem_1378,
     problem_1581,
     problem_1683,
@@ -383,6 +384,50 @@ def test_problem_1148(input_data, expected_data):
     expected_schema = pa.schema([pa.field("id", pa.int64())])
     expected_table = pa.table(expected_data, schema=expected_schema)
     result = problem_1148(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            [
+                {
+                    "machine_id": 0,
+                    "process_id": 0,
+                    "activity_type": "start",
+                    "timestamp": 0.712,
+                },
+                {
+                    "machine_id": 0,
+                    "process_id": 0,
+                    "activity_type": "end",
+                    "timestamp": 1.52,
+                },
+                {
+                    "machine_id": 0,
+                    "process_id": 1,
+                    "activity_type": "start",
+                    "timestamp": 3.14,
+                },
+                {
+                    "machine_id": 0,
+                    "process_id": 1,
+                    "activity_type": "end",
+                    "timestamp": 4.12,
+                },
+            ],
+            [
+                {"machine_id": 0, "processing_time": 0.894},
+            ],
+            id="happy_path_single_machine",
+        ),
+    ],
+)
+def test_problem_1161(input_data, expected_data):
+    input_table = pa.Table.from_pylist(input_data)
+    expected_table = pa.Table.from_pylist(expected_data)
+    result = problem_1161(input_table)
     assert result.equals(expected_table)
 
 

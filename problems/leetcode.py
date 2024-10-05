@@ -88,6 +88,32 @@ def problem_1148(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1161(table: pa.Table) -> pa.Table:
+    table_starts = table.filter(
+        pc.equal(table["activity_type"], pa.scalar("start"))
+    ).drop("activity_type")
+    table_ends = table.filter(pc.equal(table["activity_type"], pa.scalar("end"))).drop(
+        "activity_type"
+    )
+    joined = table_starts.join(
+        table_ends,
+        keys=["machine_id", "process_id"],
+        left_suffix="_start",
+        right_suffix="_end",
+    )
+    joined_agg = (
+        joined.append_column(
+            "processing_time",
+            pc.subtract(joined["timestamp_end"], joined["timestamp_start"]),
+        )
+        .group_by("machine_id")
+        .aggregate([("processing_time", "mean")])
+    )
+    return joined_agg.set_column(
+        1, "processing_time", pc.round(joined_agg["processing_time_mean"], 3)
+    )
+
+
 def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
     return table.join(table_2, keys="id", join_type="left outer").select(
         ["unique_id", "name"]
