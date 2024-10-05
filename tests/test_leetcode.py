@@ -9,9 +9,11 @@ from problems.leetcode import (
     problem_584,
     problem_595,
     problem_620,
+    problem_1068,
     problem_1141,
     problem_1148,
     problem_1378,
+    problem_1581,
     problem_1683,
     problem_1757,
     problem_1978,
@@ -463,6 +465,41 @@ def test_problem_1378(table_data, table_2_data, expected_data):
     table_2 = pa.Table.from_pydict(table_2_data)
     expected = pa.Table.from_pydict(expected_data)
     result = problem_1378(table, table_2)
+    assert result.equals(expected)
+
+
+@pytest.mark.parametrize(
+    "table_1, table_2, expected",
+    [
+        pytest.param(
+            pa.table(
+                {
+                    "visit_id": [1, 2, 5, 5, 5, 4, 6, 7, 8],
+                    "customer_id": [23, 9, 54, 54, 54, 30, 96, 54, 54],
+                }
+            ),
+            pa.table(
+                {
+                    "visit_id": [1, 2, 5],
+                    "transaction_id": [12, 13, 9],
+                    "amount": [910, 970, 200],
+                }
+            ),
+            pa.table({"customer_id": [30, 96, 54], "count_no_trans": [1, 1, 2]}),
+            id="happy_path",
+        ),
+        pytest.param(
+            pa.table({"visit_id": [10, 11], "customer_id": [100, 101]}),
+            pa.table(
+                {"visit_id": [1, 2], "transaction_id": [12, 13], "amount": [910, 970]}
+            ),
+            pa.table({"customer_id": [100, 101], "count_no_trans": [1, 1]}),
+            id="no_matching_visit_id",
+        ),
+    ],
+)
+def test_problem_1581(table_1, table_2, expected):
+    result = problem_1581(table_1, table_2)
     assert result.equals(expected)
 
 

@@ -94,6 +94,16 @@ def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
+def problem_1581(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    joined = table_1.join(table_2, keys="visit_id", join_type="left outer")
+    return (
+        joined.filter(pc.is_null(joined["transaction_id"]))
+        .group_by("customer_id")
+        .aggregate([("visit_id", "count")])
+        .rename_columns({"visit_id_count": "count_no_trans"})
+    )
+
+
 def problem_1683(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.greater(pc.utf8_length(table["content"]), pa.scalar(15))
