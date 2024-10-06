@@ -118,6 +118,29 @@ def problem_1161(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1280(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
+    table_1 = table_1.append_column("key", pa.array([1] * len(table_1)))
+    table_2 = table_2.append_column("key", pa.array([1] * len(table_2)))
+    examinations_agg = (
+        table_3.group_by(["student_id", "subject_name"])
+        .aggregate([("student_id", "count")])
+        .rename_columns({"student_id_count": "attended_exams"})
+    )
+    joined = (
+        table_1.join(table_2, keys="key")
+        .drop("key")
+        .join(
+            examinations_agg,
+            keys=["student_id", "subject_name"],
+            join_type="left outer",
+        )
+        .sort_by([("student_id", "ascending"), ("student_name", "ascending")])
+    )
+    return joined.set_column(
+        3, "attended_exams", pc.coalesce(joined["attended_exams"], pa.scalar(0))
+    )
+
+
 def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
     return table.join(table_2, keys="id", join_type="left outer").select(
         ["unique_id", "name"]

@@ -14,6 +14,7 @@ from problems.leetcode import (
     problem_1141,
     problem_1148,
     problem_1161,
+    problem_1280,
     problem_1378,
     problem_1581,
     problem_1683,
@@ -449,6 +450,140 @@ def test_problem_1161(input_data, expected_data):
     expected_table = pa.Table.from_pylist(expected_data)
     result = problem_1161(input_table)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "table_1, table_2, table_3, expected",
+    [
+        pytest.param(
+            pa.table(
+                {
+                    "student_id": [1, 2, 13, 6],
+                    "student_name": ["Alice", "Bob", "John", "Alex"],
+                }
+            ),
+            pa.table({"subject_name": ["Math", "Physics", "Programming"]}),
+            pa.table(
+                {
+                    "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                    "subject_name": [
+                        "Math",
+                        "Physics",
+                        "Programming",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Math",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Math",
+                    ],
+                }
+            ),
+            pa.table(
+                {
+                    "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                    "student_name": [
+                        "Alice",
+                        "Alice",
+                        "Alice",
+                        "Bob",
+                        "Bob",
+                        "Bob",
+                        "Alex",
+                        "Alex",
+                        "Alex",
+                        "John",
+                        "John",
+                        "John",
+                    ],
+                    "subject_name": [
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Programming",
+                        "Math",
+                        "Physics",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                    ],
+                    "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                }
+            ),
+            id="happy_path",
+        ),
+        pytest.param(
+            pa.table(
+                {
+                    "student_id": [1, 2, 13, 6],
+                    "student_name": ["Alice", "Bob", "John", None],
+                }
+            ),
+            pa.table({"subject_name": ["Math", "Physics", "Programming"]}),
+            pa.table(
+                {
+                    "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                    "subject_name": [
+                        "Math",
+                        "Physics",
+                        "Programming",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Math",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Math",
+                    ],
+                }
+            ),
+            pa.table(
+                {
+                    "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                    "student_name": [
+                        "Alice",
+                        "Alice",
+                        "Alice",
+                        "Bob",
+                        "Bob",
+                        "Bob",
+                        None,
+                        None,
+                        None,
+                        "John",
+                        "John",
+                        "John",
+                    ],
+                    "subject_name": [
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Programming",
+                        "Math",
+                        "Physics",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                        "Programming",
+                        "Physics",
+                        "Math",
+                    ],
+                    "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+                }
+            ),
+            id="happy_path_null_name",
+        ),
+    ],
+)
+def test_problem_1280(table_1, table_2, table_3, expected):
+    result = problem_1280(table_1, table_2, table_3)
+    assert result.equals(expected)
 
 
 @pytest.mark.parametrize(
