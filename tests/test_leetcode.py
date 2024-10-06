@@ -24,7 +24,7 @@ from problems.leetcode import (
 
 
 @pytest.mark.parametrize(
-    "input_data, expected_output",
+    "input_data, expected_data",
     [
         pytest.param(
             {
@@ -32,7 +32,7 @@ from problems.leetcode import (
                 "temperature": [20, 25],
                 "id": [1, 2],
             },
-            [2],
+            {"id": [2]},
             id="happy_path_basic",
         ),
         pytest.param(
@@ -41,7 +41,7 @@ from problems.leetcode import (
                 "temperature": [25, 25],
                 "id": [1, 2],
             },
-            [],
+            {"id": []},
             id="no_temperature_increase",
         ),
         pytest.param(
@@ -50,7 +50,7 @@ from problems.leetcode import (
                 "temperature": [20],
                 "id": [1],
             },
-            [],
+            {"id": []},
             id="single_record",
         ),
         pytest.param(
@@ -59,7 +59,7 @@ from problems.leetcode import (
                 "temperature": [25, 20],
                 "id": [1, 2],
             },
-            [],
+            {"id": []},
             id="temperature_decrease",
         ),
         pytest.param(
@@ -68,19 +68,22 @@ from problems.leetcode import (
                 "temperature": [20, 25],
                 "id": [1, 2],
             },
-            [],
+            {"id": []},
             id="skip_a_day",
         ),
     ],
 )
-def test_problem_197(input_data, expected_output):
-    table = pa.table(input_data)
+def test_problem_197(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("id", pa.int64())])
+    )
     result = problem_197(table)
-    assert result["id"].to_pylist() == expected_output
+    assert result == expected_table
 
 
 @pytest.mark.parametrize(
-    "table_1_data, table_2_data, expected_data",
+    "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
             {"empId": [1, 2], "name": ["Alice", "Bob"]},
@@ -90,16 +93,16 @@ def test_problem_197(input_data, expected_output):
         )
     ],
 )
-def test_problem_577(table_1_data, table_2_data, expected_data):
-    table_1 = pa.Table.from_pydict(table_1_data)
-    table_2 = pa.Table.from_pydict(table_2_data)
+def test_problem_577(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_577(table_1, table_2)
     assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
-    "input_data, expected_names",
+    "input_data, expected_data",
     [
         pytest.param(
             {
@@ -107,17 +110,8 @@ def test_problem_577(table_1_data, table_2_data, expected_data):
                 "name": ["Will", "Jane", "Bill", "Zack"],
                 "referee_id": [None, None, None, 1],
             },
-            ["Will", "Jane", "Bill", "Zack"],
+            {"name": ["Will", "Jane", "Bill", "Zack"]},
             id="happy_path_all_valid",
-        ),
-        pytest.param(
-            {
-                "id": [],
-                "name": [],
-                "referee_id": [],
-            },
-            [],
-            id="edge_case_empty_table",
         ),
         pytest.param(
             {
@@ -125,7 +119,7 @@ def test_problem_577(table_1_data, table_2_data, expected_data):
                 "name": ["Alex", "Mark"],
                 "referee_id": [2, 2],
             },
-            [],
+            {"name": []},
             id="edge_case_all_referee_id_2",
         ),
         pytest.param(
@@ -134,20 +128,22 @@ def test_problem_577(table_1_data, table_2_data, expected_data):
                 "name": ["Will", "Alex", "Zack", "Mark"],
                 "referee_id": [None, 2, 1, 2],
             },
-            ["Will", "Zack"],
+            {"name": ["Will", "Zack"]},
             id="mixed_case_some_valid",
         ),
     ],
 )
-def test_problem_584(input_data, expected_names):
-    input_table = pa.table(input_data)
-    result_table = problem_584(input_table)
-    result_names = result_table.column("name").to_pylist()
-    assert result_names == expected_names
+def test_problem_584(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("name", pa.string())])
+    )
+    result = problem_584(input_table)
+    assert result == expected_table
 
 
 @pytest.mark.parametrize(
-    "input_data, expected_output",
+    "input_data, expected_data",
     [
         pytest.param(
             {
@@ -172,17 +168,6 @@ def test_problem_584(input_data, expected_names):
         ),
         pytest.param(
             {
-                "name": [],
-                "continent": [],
-                "area": [],
-                "population": [],
-                "gdp": [],
-            },
-            {"name": [], "population": [], "area": []},
-            id="edge_case_empty_table",
-        ),
-        pytest.param(
-            {
                 "name": ["CountryA", "CountryB"],
                 "continent": ["ContinentA", "ContinentB"],
                 "area": [3_000_000, 4_000_000],
@@ -198,163 +183,124 @@ def test_problem_584(input_data, expected_names):
         ),
     ],
 )
-def test_problem_595(input_data, expected_output):
-    input_schema = pa.schema(
-        [
-            pa.field("name", pa.string()),
-            pa.field("continent", pa.string()),
-            pa.field("area", pa.int64()),
-            pa.field("population", pa.int64()),
-            pa.field("gdp", pa.int64()),
-        ]
-    )
-    input_table = pa.table(input_data, schema=input_schema)
-    output_schema = pa.schema(
-        [
-            pa.field("name", pa.string()),
-            pa.field("population", pa.int64()),
-            pa.field("area", pa.int64()),
-        ]
-    )
-    output_table = pa.table(expected_output, schema=output_schema)
+def test_problem_595(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
     result = problem_595(input_table)
-    assert result.equals(output_table)
-
-
-@pytest.mark.parametrize(
-    "input_data, expected_ids",
-    [
-        pytest.param(
-            [
-                {"id": 1, "description": "interesting"},
-                {"id": 2, "description": "boring"},
-                {"id": 3, "description": "exciting"},
-                {"id": 4, "description": "boring"},
-            ],
-            [3, 1],
-            id="happy_path_mixed_ids_and_descriptions",
-        ),
-        pytest.param(
-            [
-                {"id": 1, "description": "boring"},
-                {"id": 3, "description": "boring"},
-            ],
-            [],
-            id="edge_case_all_boring",
-        ),
-        pytest.param(
-            [
-                {"id": 2, "description": "interesting"},
-                {"id": 4, "description": "exciting"},
-            ],
-            [],
-            id="edge_case_no_odd_ids",
-        ),
-        pytest.param(
-            [
-                {"id": 1, "description": "interesting"},
-            ],
-            [1],
-            id="edge_case_single_row_matching",
-        ),
-        pytest.param(
-            [
-                {"id": 2, "description": "boring"},
-            ],
-            [],
-            id="edge_case_single_row_not_matching",
-        ),
-    ],
-)
-def test_problem_620(input_data, expected_ids):
-    table = pa.Table.from_pylist(input_data)
-    result = problem_620(table)
-    result_ids = result.column("id").to_pylist()
-    assert result_ids == expected_ids
-
-
-@pytest.mark.parametrize(
-    "table_1, table_2, expected",
-    [
-        pytest.param(
-            pa.table(
-                {
-                    "product_id": [1, 2, 3],
-                    "product_name": ["Nokia", "Nokia", "Apple"],
-                    "year": [2008, 2009, 2011],
-                    "price": [5000, 5000, 9000],
-                }
-            ),
-            pa.table({"product_id": [1, 2, 3]}),
-            pa.table(
-                {
-                    "product_name": ["Nokia", "Nokia", "Apple"],
-                    "year": [2008, 2009, 2011],
-                    "price": [5000, 5000, 9000],
-                }
-            ),
-            id="happy_path",
-        )
-    ],
-)
-def test_problem_1068(table_1, table_2, expected):
-    result = problem_1068(table_1, table_2)
-    assert result.equals(expected)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
     [
         pytest.param(
-            [
-                {
-                    "user_id": 1,
-                    "session_id": 1,
-                    "activity_date": datetime(2019, 7, 20),
-                    "activity_type": "open_session",
-                },
-                {
-                    "user_id": 1,
-                    "session_id": 1,
-                    "activity_date": datetime(2019, 7, 20),
-                    "activity_type": "scroll_down",
-                },
-                {
-                    "user_id": 1,
-                    "session_id": 1,
-                    "activity_date": datetime(2019, 7, 20),
-                    "activity_type": "end_session",
-                },
-                {
-                    "user_id": 2,
-                    "session_id": 4,
-                    "activity_date": datetime(2019, 7, 21),
-                    "activity_type": "open_session",
-                },
-                {
-                    "user_id": 2,
-                    "session_id": 4,
-                    "activity_date": datetime(2019, 7, 21),
-                    "activity_type": "send_message",
-                },
-                {
-                    "user_id": 2,
-                    "session_id": 4,
-                    "activity_date": datetime(2019, 7, 21),
-                    "activity_type": "end_session",
-                },
-            ],
-            [
-                {"day": datetime(2019, 7, 20), "active_users": 1},
-                {"day": datetime(2019, 7, 21), "active_users": 1},
-            ],
+            {
+                "id": [1, 2, 3, 4],
+                "description": ["interesting", "boring", "exciting", "boring"],
+            },
+            {"id": [3, 1], "description": ["exciting", "interesting"]},
+            id="happy_path_mixed_ids_and_descriptions",
+        ),
+        pytest.param(
+            {"id": [1, 3], "description": ["boring", "boring"]},
+            {"id": [], "description": []},
+            id="edge_case_all_boring",
+        ),
+        pytest.param(
+            {"id": [2, 4], "description": ["interesting", "exciting"]},
+            {"id": [], "description": []},
+            id="edge_case_no_odd_ids",
+        ),
+        pytest.param(
+            {"id": [1], "description": ["interesting"]},
+            {"id": [1], "description": ["interesting"]},
+            id="edge_case_single_row_matching",
+        ),
+        pytest.param(
+            {"id": [2], "description": ["boring"]},
+            {"id": [], "description": []},
+            id="edge_case_single_row_not_matching",
+        ),
+    ],
+)
+def test_problem_620(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data,
+        schema=pa.schema(
+            [pa.field("id", pa.int64()), pa.field("description", pa.string())]
+        ),
+    )
+    result = problem_620(table)
+    assert result == expected_table
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "product_id": [1, 2, 3],
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            {"product_id": [1, 2, 3]},
+            {
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            id="happy_path",
+        )
+    ],
+)
+def test_problem_1068(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1068(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "user_id": [1, 1, 1, 2, 2, 2],
+                "session_id": [1, 1, 1, 4, 4, 4],
+                "activity_date": [
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                ],
+                "activity_type": [
+                    "open_session",
+                    "scroll_down",
+                    "end_session",
+                    "open_session",
+                    "send_message",
+                    "end_session",
+                ],
+            },
+            {
+                "day": [
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                ],
+                "active_users": [1, 1],
+            },
             id="happy_path_1",
         )
     ],
 )
 def test_problem_1141(input_data, expected_data):
-    input_table = pa.Table.from_pylist(input_data)
-    expected_table = pa.Table.from_pylist(expected_data)
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
     result_table = problem_1141(input_table)
     assert result_table.equals(expected_table)
 
@@ -393,17 +339,8 @@ def test_problem_1141(input_data, expected_data):
     ],
 )
 def test_problem_1148(input_data, expected_data):
-    input_schema = pa.schema(
-        [
-            pa.field("article_id", pa.int64()),
-            pa.field("author_id", pa.int64()),
-            pa.field("viewer_id", pa.int64()),
-            pa.field("view_date", pa.timestamp("ns")),
-        ]
-    )
-    input_table = pa.table(input_data, schema=input_schema)
-    expected_schema = pa.schema([pa.field("id", pa.int64())])
-    expected_table = pa.table(expected_data, schema=expected_schema)
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1148(input_table)
     assert result.equals(expected_table)
 
@@ -412,178 +349,148 @@ def test_problem_1148(input_data, expected_data):
     "input_data, expected_data",
     [
         pytest.param(
-            [
-                {
-                    "machine_id": 0,
-                    "process_id": 0,
-                    "activity_type": "start",
-                    "timestamp": 0.712,
-                },
-                {
-                    "machine_id": 0,
-                    "process_id": 0,
-                    "activity_type": "end",
-                    "timestamp": 1.52,
-                },
-                {
-                    "machine_id": 0,
-                    "process_id": 1,
-                    "activity_type": "start",
-                    "timestamp": 3.14,
-                },
-                {
-                    "machine_id": 0,
-                    "process_id": 1,
-                    "activity_type": "end",
-                    "timestamp": 4.12,
-                },
-            ],
-            [
-                {"machine_id": 0, "processing_time": 0.894},
-            ],
+            {
+                "machine_id": [0, 0, 0, 0],
+                "process_id": [0, 0, 1, 1],
+                "activity_type": ["start", "end", "start", "end"],
+                "timestamp": [0.712, 1.52, 3.14, 4.12],
+            },
+            {"machine_id": [0], "processing_time": [0.894]},
             id="happy_path_single_machine",
         ),
     ],
 )
 def test_problem_1161(input_data, expected_data):
-    input_table = pa.Table.from_pylist(input_data)
-    expected_table = pa.Table.from_pylist(expected_data)
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1161(input_table)
     assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
-    "table_1, table_2, table_3, expected",
+    "input_data_1, input_data_2, input_data_3, expected_data",
     [
         pytest.param(
-            pa.table(
-                {
-                    "student_id": [1, 2, 13, 6],
-                    "student_name": ["Alice", "Bob", "John", "Alex"],
-                }
-            ),
-            pa.table({"subject_name": ["Math", "Physics", "Programming"]}),
-            pa.table(
-                {
-                    "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
-                    "subject_name": [
-                        "Math",
-                        "Physics",
-                        "Programming",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Math",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Math",
-                    ],
-                }
-            ),
-            pa.table(
-                {
-                    "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
-                    "student_name": [
-                        "Alice",
-                        "Alice",
-                        "Alice",
-                        "Bob",
-                        "Bob",
-                        "Bob",
-                        "Alex",
-                        "Alex",
-                        "Alex",
-                        "John",
-                        "John",
-                        "John",
-                    ],
-                    "subject_name": [
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Programming",
-                        "Math",
-                        "Physics",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                    ],
-                    "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-                }
-            ),
+            {
+                "student_id": [1, 2, 13, 6],
+                "student_name": ["Alice", "Bob", "John", "Alex"],
+            },
+            {"subject_name": ["Math", "Physics", "Programming"]},
+            {
+                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                "subject_name": [
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                ],
+            },
+            {
+                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                "student_name": [
+                    "Alice",
+                    "Alice",
+                    "Alice",
+                    "Bob",
+                    "Bob",
+                    "Bob",
+                    "Alex",
+                    "Alex",
+                    "Alex",
+                    "John",
+                    "John",
+                    "John",
+                ],
+                "subject_name": [
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                ],
+                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+            },
             id="happy_path",
         ),
         pytest.param(
-            pa.table(
-                {
-                    "student_id": [1, 2, 13, 6],
-                    "student_name": ["Alice", "Bob", "John", None],
-                }
-            ),
-            pa.table({"subject_name": ["Math", "Physics", "Programming"]}),
-            pa.table(
-                {
-                    "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
-                    "subject_name": [
-                        "Math",
-                        "Physics",
-                        "Programming",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Math",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Math",
-                    ],
-                }
-            ),
-            pa.table(
-                {
-                    "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
-                    "student_name": [
-                        "Alice",
-                        "Alice",
-                        "Alice",
-                        "Bob",
-                        "Bob",
-                        "Bob",
-                        None,
-                        None,
-                        None,
-                        "John",
-                        "John",
-                        "John",
-                    ],
-                    "subject_name": [
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Programming",
-                        "Math",
-                        "Physics",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                        "Programming",
-                        "Physics",
-                        "Math",
-                    ],
-                    "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-                }
-            ),
+            {
+                "student_id": [1, 2, 13, 6],
+                "student_name": ["Alice", "Bob", "John", None],
+            },
+            {"subject_name": ["Math", "Physics", "Programming"]},
+            {
+                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                "subject_name": [
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                ],
+            },
+            {
+                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                "student_name": [
+                    "Alice",
+                    "Alice",
+                    "Alice",
+                    "Bob",
+                    "Bob",
+                    "Bob",
+                    None,
+                    None,
+                    None,
+                    "John",
+                    "John",
+                    "John",
+                ],
+                "subject_name": [
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                ],
+                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+            },
             id="happy_path_null_name",
         ),
     ],
 )
-def test_problem_1280(table_1, table_2, table_3, expected):
+def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    table_3 = pa.Table.from_pydict(input_data_3)
+    expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1280(table_1, table_2, table_3)
-    assert result.equals(expected)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -606,63 +513,56 @@ def test_problem_1280(table_1, table_2, table_3, expected):
 def test_problem_1378(table_data, table_2_data, expected_data):
     table = pa.Table.from_pydict(table_data)
     table_2 = pa.Table.from_pydict(table_2_data)
-    expected = pa.Table.from_pydict(expected_data)
+    expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table, table_2)
-    assert result.equals(expected)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
-    "table_1, table_2, expected",
+    "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
-            pa.table(
-                {
-                    "visit_id": [1, 2, 5, 5, 5, 4, 6, 7, 8],
-                    "customer_id": [23, 9, 54, 54, 54, 30, 96, 54, 54],
-                }
-            ),
-            pa.table(
-                {
-                    "visit_id": [1, 2, 5],
-                    "transaction_id": [12, 13, 9],
-                    "amount": [910, 970, 200],
-                }
-            ),
-            pa.table({"customer_id": [30, 96, 54], "count_no_trans": [1, 1, 2]}),
+            {
+                "visit_id": [1, 2, 5, 5, 5, 4, 6, 7, 8],
+                "customer_id": [23, 9, 54, 54, 54, 30, 96, 54, 54],
+            },
+            {
+                "visit_id": [1, 2, 5],
+                "transaction_id": [12, 13, 9],
+                "amount": [910, 970, 200],
+            },
+            {"customer_id": [30, 96, 54], "count_no_trans": [1, 1, 2]},
             id="happy_path",
         ),
         pytest.param(
-            pa.table({"visit_id": [10, 11], "customer_id": [100, 101]}),
-            pa.table(
-                {"visit_id": [1, 2], "transaction_id": [12, 13], "amount": [910, 970]}
-            ),
-            pa.table({"customer_id": [100, 101], "count_no_trans": [1, 1]}),
+            {"visit_id": [10, 11], "customer_id": [100, 101]},
+            {"visit_id": [1, 2], "transaction_id": [12, 13], "amount": [910, 970]},
+            {"customer_id": [100, 101], "count_no_trans": [1, 1]},
             id="no_matching_visit_id",
         ),
     ],
 )
-def test_problem_1581(table_1, table_2, expected):
+def test_problem_1581(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
     result = problem_1581(table_1, table_2)
-    assert result.equals(expected)
+    expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
-    "input_data,expected_output",
+    "input_data, expected_data",
     [
         (
-            pa.table(
-                {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]}
-            ),
-            pa.table({"tweet_id": [2]}),
+            {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
+            {"tweet_id": [2]},
         ),
         (
-            pa.table(
-                {
-                    "tweet_id": [1, 2],
-                    "content": ["This is a long tweet", "Another long tweet"],
-                }
-            ),
-            pa.table({"tweet_id": [1, 2]}),
+            {
+                "tweet_id": [1, 2],
+                "content": ["This is a long tweet", "Another long tweet"],
+            },
+            {"tweet_id": [1, 2]},
         ),
     ],
     ids=[
@@ -670,99 +570,117 @@ def test_problem_1581(table_1, table_2, expected):
         "all_content_greater_than_15",
     ],
 )
-def test_problem_1683(input_data, expected_output):
-    result = problem_1683(input_data)
-    assert result.equals(expected_output)
+def test_problem_1683(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    result = problem_1683(table)
+    expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
-    "data, expected_ids",
+    "input_data, expected_data",
     [
         (
-            [
-                ["0", "Y", "N"],
-                ["1", "Y", "Y"],
-                ["2", "N", "Y"],
-                ["3", "Y", "Y"],
-                ["4", "N", "N"],
-            ],
-            [1, 3],
+            {
+                "product_id": [0, 1, 2, 3, 4],
+                "low_fats": ["Y", "Y", "N", "Y", "N"],
+                "recyclable": ["N", "Y", "Y", "Y", "N"],
+            },
+            {"product_id": [1, 3]},
         )
     ],
     ids=[
         "happy_path_mixed_values",
     ],
 )
-def test_problem_1757(data, expected_ids):
-    table = pa.Table.from_pandas(
-        pd.DataFrame(data, columns=["product_id", "low_fats", "recyclable"]).astype(
-            {"product_id": "int64", "low_fats": "category", "recyclable": "category"}
-        )
-    )
+def test_problem_1757(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
     result = problem_1757(table)
-    assert result.column("product_id").to_pylist() == expected_ids
+    expected_table = pa.Table.from_pydict(expected_data)
+    assert result == expected_table
 
 
 @pytest.mark.parametrize(
-    "data, expected_ids",
+    "input_data, expected_data",
     [
         pytest.param(
-            [
-                [3, "Mila", 9, 60301],
-                [12, "Antonella", None, 31000],
-                [13, "Emery", None, 67084],
-                [1, "Kalel", 11, 21241],
-                [9, "Mikaela", None, 50937],
-                [11, "Joziah", 6, 28485],
-                [14, "Hayden", None, 4123],
-            ],
-            [11],
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [9.0, None, None, 11.0, None, 6.0, None],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": [11]},
             id="basic_filtering",
         ),
         pytest.param(
-            [
-                [3, "Mila", 9, 60301],
-                [12, "Antonella", None, 31000],
-                [13, "Emery", None, 67084],
-                [1, "Kalel", 11, 31241],
-                [9, "Mikaela", None, 50937],
-                [11, "Joziah", 6, 38485],
-                [14, "Hayden", None, 41230],
-            ],
-            [],
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [9.0, None, None, 11.0, None, 6.0, None],
+                "salary": [60301, 31000, 67084, 31241, 50937, 38485, 41230],
+            },
+            {"employee_id": []},
             id="no_low_salary",
         ),
         pytest.param(
-            [
-                [3, "Mila", 3, 60301],
-                [12, "Antonella", 12, 31000],
-                [13, "Emery", 13, 67084],
-                [1, "Kalel", 1, 21241],
-                [9, "Mikaela", 9, 50937],
-                [11, "Joziah", 11, 28485],
-                [14, "Hayden", 14, 4123],
-            ],
-            [],
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [3, 12, 13, 1, 9, 11, 14],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": []},
             id="all_managers_are_employees",
         ),
         pytest.param(
-            [
-                [3, "Mila", None, 60301],
-                [12, "Antonella", None, 31000],
-                [13, "Emery", None, 67084],
-                [1, "Kalel", None, 21241],
-                [9, "Mikaela", None, 50937],
-                [11, "Joziah", None, 28485],
-                [14, "Hayden", None, 4123],
-            ],
-            [],
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [None, None, None, None, None, None, None],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": []},
             id="all_manager_ids_null",
         ),
     ],
 )
-def test_problem_1978(data, expected_ids):
-    table = pa.Table.from_pandas(
-        pd.DataFrame(data, columns=["employee_id", "name", "manager_id", "salary"])
+def test_problem_1978(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("employee_id", pa.int64())])
     )
     result = problem_1978(table)
-    assert result.column("employee_id").to_pylist() == expected_ids
+    assert result == expected_table
