@@ -9,6 +9,7 @@ from problems.leetcode import (
     problem_577,
     problem_584,
     problem_595,
+    problem_610,
     problem_620,
     problem_1068,
     problem_1075,
@@ -189,6 +190,48 @@ def test_problem_595(input_data, expected_data):
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_595(input_table)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"x": [3], "y": [4], "z": [5]},
+            {"x": [3], "y": [4], "z": [5], "triangle": ["Yes"]},
+            id="valid_triangle",
+        ),
+        pytest.param(
+            {"x": [5], "y": [5], "z": [5]},
+            {"x": [5], "y": [5], "z": [5], "triangle": ["Yes"]},
+            id="equilateral_triangle",
+        ),
+        pytest.param(
+            {"x": [2], "y": [2], "z": [3]},
+            {"x": [2], "y": [2], "z": [3], "triangle": ["Yes"]},
+            id="isosceles_triangle",
+        ),
+        pytest.param(
+            {"x": [1], "y": [1], "z": [2]},
+            {"x": [1], "y": [1], "z": [2], "triangle": ["No"]},
+            id="degenerate_triangle",
+        ),
+        pytest.param(
+            {"x": [0], "y": [0], "z": [0]},
+            {"x": [0], "y": [0], "z": [0], "triangle": ["No"]},
+            id="zero_length_sides",
+        ),
+        pytest.param(
+            {"x": [1], "y": [2], "z": [3]},
+            {"x": [1], "y": [2], "z": [3], "triangle": ["No"]},
+            id="non_triangle",
+        ),
+    ],
+)
+def test_problem_610(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_610(input_table)
+    assert result == expected_table
 
 
 @pytest.mark.parametrize(

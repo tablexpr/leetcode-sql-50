@@ -47,6 +47,23 @@ def problem_595(table: pa.Table) -> pa.Table:
     ).select(["name", "population", "area"])
 
 
+def problem_610(table: pa.Table) -> pa.Table:
+    return table.append_column(
+        "triangle",
+        pc.if_else(
+            pc.and_(
+                pc.and_(
+                    pc.greater(pc.add(table["x"], table["y"]), table["z"]),
+                    pc.greater(pc.add(table["x"], table["z"]), table["y"]),
+                ),
+                pc.greater(pc.add(table["y"], table["z"]), table["x"]),
+            ),
+            "Yes",
+            "No",
+        ),
+    )
+
+
 def problem_620(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.and_(
