@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import pandas as pd
 import pyarrow as pa
 import pytest
 
