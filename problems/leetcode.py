@@ -62,6 +62,17 @@ def problem_1068(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
+def problem_1075(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    joined = (
+        table_1.join(table_2, keys="employee_id", join_type="inner")
+        .group_by("project_id")
+        .aggregate([("experience_years", "mean")])
+    )
+    return joined.set_column(
+        1, "experience_years", pc.round(joined["experience_years_mean"], 2)
+    )
+
+
 def problem_1141(table: pa.Table) -> pa.Table:
     return (
         table.filter(

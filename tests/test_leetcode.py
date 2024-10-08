@@ -11,6 +11,7 @@ from problems.leetcode import (
     problem_595,
     problem_620,
     problem_1068,
+    problem_1075,
     problem_1141,
     problem_1148,
     problem_1161,
@@ -260,6 +261,39 @@ def test_problem_1068(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1068(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "employee_id": [1, 2, 3],
+                "project_id": [101, 102, 103],
+                "experience_years": [5, 10, 15],
+            },
+            {"employee_id": [1, 2, 3], "department": ["HR", "IT", "Finance"]},
+            {"project_id": [101, 102, 103], "experience_years": [5.0, 10.0, 15.0]},
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "employee_id": [1, 2, 3],
+                "project_id": [101, 101, 101],
+                "experience_years": [33, 34, 34],
+            },
+            {"employee_id": [1, 2, 3], "department": ["HR", "IT", "IT"]},
+            {"project_id": [101], "experience_years": [33.67]},
+            id="happy_path_rounding_2",
+        ),
+    ],
+)
+def test_problem_1075(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1075(table_1, table_2)
     assert result.equals(expected_table)
 
 
