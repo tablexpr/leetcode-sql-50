@@ -81,7 +81,7 @@ def test_problem_197(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("id", pa.int64())])
     )
     result = problem_197(table)
-    assert result == expected_table
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -141,7 +141,7 @@ def test_problem_584(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("name", pa.string())])
     )
     result = problem_584(input_table)
-    assert result == expected_table
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -231,7 +231,7 @@ def test_problem_610(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_610(input_table)
-    assert result == expected_table
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -276,7 +276,7 @@ def test_problem_620(input_data, expected_data):
         ),
     )
     result = problem_620(table)
-    assert result == expected_table
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -732,7 +732,7 @@ def test_problem_1757(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     result = problem_1757(table)
     expected_table = pa.Table.from_pydict(expected_data)
-    assert result == expected_table
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -818,4 +818,4 @@ def test_problem_1978(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("employee_id", pa.int64())])
     )
     result = problem_1978(table)
-    assert result == expected_table
+    assert result.equals(expected_table)
