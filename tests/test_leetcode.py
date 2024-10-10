@@ -15,6 +15,7 @@ from problems.leetcode import (
     problem_1141,
     problem_1148,
     problem_1161,
+    problem_1211,
     problem_1280,
     problem_1378,
     problem_1581,
@@ -460,6 +461,44 @@ def test_problem_1161(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1161(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "query_name": ["query1", "query1", "query2"],
+                "rating": [4, 5, 2],
+                "position": [2, 1, 1],
+            },
+            {
+                "query_name": ["query1", "query2"],
+                "quality": [3.5, 2.0],
+                "poor_query_percentage": [0.0, 100.0],
+            },
+            id="happy_path_1",
+        ),
+        pytest.param(
+            {
+                "query_name": ["query1", "query2", "query2"],
+                "rating": [3, 1, 5],
+                "position": [1, 1, 1],
+            },
+            {
+                "query_name": ["query1", "query2"],
+                "quality": [3.0, 3.0],
+                "poor_query_percentage": [0.0, 50.0],
+            },
+            id="happy_path_2",
+        ),
+    ],
+)
+def test_problem_1211(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1211(table)
     assert result.equals(expected_table)
 
 

@@ -146,6 +146,25 @@ def problem_1161(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1211(table: pa.Table) -> pa.Table:
+    table = table.append_column(
+        "quality", pc.divide(table["rating"], table["position"])
+    ).append_column(
+        "poor_query_percentage",
+        pc.if_else(pc.less(table["rating"], pa.scalar(3)), 100, 0),
+    )
+
+    table_agg = table.group_by("query_name").aggregate(
+        [("quality", "mean"), ("poor_query_percentage", "mean")]
+    )
+
+    return table_agg.set_column(
+        1, "quality", pc.round(table_agg["quality_mean"], 2)
+    ).set_column(
+        2, "poor_query_percentage", pc.round(table_agg["poor_query_percentage_mean"], 2)
+    )
+
+
 def problem_1280(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
     table_1 = table_1.append_column("key", pa.array([1] * len(table_1)))
     table_2 = table_2.append_column("key", pa.array([1] * len(table_2)))
