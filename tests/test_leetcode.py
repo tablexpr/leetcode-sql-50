@@ -19,6 +19,7 @@ from problems.leetcode import (
     problem_1280,
     problem_1378,
     problem_1581,
+    problem_1633,
     problem_1683,
     problem_1757,
     problem_1978,
@@ -682,6 +683,43 @@ def test_problem_1581(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     result = problem_1581(table_1, table_2)
     expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"contest_id": [1, 2], "user_id": [1, 2]},
+            {"contest_id": [1, 1, 2], "user_id": [1, 2, 3]},
+            {
+                "contest_id": [1, 2],
+                "percentage": [1.0, 0.5],
+            },
+            id="happy-path-1",
+        ),
+        pytest.param(
+            {"contest_id": [1, 2, 3], "user_id": [1, 2, 3]},
+            {"contest_id": [1, 2, 2, 3, 3, 3], "user_id": [1, 2, 3, 4, 5, 6]},
+            {
+                "contest_id": [3, 2, 1],
+                "percentage": [1.0, 0.67, 0.33],
+            },
+            id="happy-path-2",
+        ),
+        pytest.param(
+            {"contest_id": [1], "user_id": [1]},
+            {"contest_id": [1], "user_id": [1]},
+            {"contest_id": [1], "percentage": [1.0]},
+            id="edge-single-row-table-2",
+        ),
+    ],
+)
+def test_problem_1633(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1633(table_1, table_2)
     assert result.equals(expected_table)
 
 

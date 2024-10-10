@@ -29,7 +29,7 @@ Fiddling around with PyArrow.
 - [X] 620. [Not Boring Movies](https://leetcode.com/problems/not-boring-movies) - Easy
 - [ ] 1251. [Average Selling Price](https://leetcode.com/problems/average-selling-price) - Easy
 - [X] 1075. [Project Employees I](https://leetcode.com/problems/project-employees-i) - Easy
-- [ ] 1633. [Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest) - Easy
+- [X] 1633. [Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest) - Easy
 - [X] 1211. [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage) - Easy
 - [ ] 1193. [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i) - Medium
 - [ ] 1174. [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii) - Medium
