@@ -204,6 +204,19 @@ def problem_1581(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
+def problem_1633(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    table_2_agg = table_2.group_by("contest_id").aggregate([("user_id", "count")])
+    total_users = pa.scalar(float(table_1.num_rows))
+    return table_2_agg.set_column(
+        1,
+        "percentage",
+        pc.round(
+            pc.divide(table_2_agg["user_id_count"], total_users),
+            2,
+        ),
+    ).sort_by([("percentage", "descending")])
+
+
 def problem_1683(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.greater(pc.utf8_length(table["content"]), pa.scalar(15))
