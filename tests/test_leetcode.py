@@ -21,6 +21,7 @@ from problems.leetcode import (
     problem_1581,
     problem_1633,
     problem_1683,
+    problem_1729,
     problem_1757,
     problem_1978,
 )
@@ -746,6 +747,33 @@ def test_problem_1633(input_data_1, input_data_2, expected_data):
 def test_problem_1683(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     result = problem_1683(table)
+    expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"user_id": [1, 1, 2, 2, 3], "follower_id": [10, 11, 12, 13, 14]},
+            {"user_id": [1, 2, 3], "followers_count": [2, 2, 1]},
+            id="multiple_users",
+        ),
+        pytest.param(
+            {"user_id": [1], "follower_id": [10]},
+            {"user_id": [1], "followers_count": [1]},
+            id="single_user",
+        ),
+        pytest.param(
+            {"user_id": [1, 1, 1], "follower_id": [10, 11, 12]},
+            {"user_id": [1], "followers_count": [3]},
+            id="single_user_multiple_followers",
+        ),
+    ],
+)
+def test_problem_1729(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    result = problem_1729(table)
     expected_table = pa.Table.from_pydict(expected_data)
     assert result.equals(expected_table)
 

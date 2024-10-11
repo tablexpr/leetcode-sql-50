@@ -223,6 +223,15 @@ def problem_1683(table: pa.Table) -> pa.Table:
     ).select(["tweet_id"])
 
 
+def problem_1729(table: pa.Table) -> pa.Table:
+    return (
+        table.group_by("user_id")
+        .aggregate([("follower_id", "count")])
+        .rename_columns({"follower_id_count": "followers_count"})
+        .sort_by("user_id")
+    )
+
+
 def problem_1757(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.and_(
