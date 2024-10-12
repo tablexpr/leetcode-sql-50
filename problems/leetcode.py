@@ -255,3 +255,11 @@ def problem_1978(table: pa.Table) -> pa.Table:
         .select(["employee_id"])
         .sort_by("employee_id")
     )
+
+
+def problem_2356(table: pa.Table) -> pa.Table:
+    return (
+        table.group_by("teacher_id")
+        .aggregate([("subject_id", "count_distinct")])
+        .rename_columns({"subject_id_count_distinct": "cnt"})
+    )

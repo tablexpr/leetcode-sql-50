@@ -24,6 +24,7 @@ from problems.leetcode import (
     problem_1729,
     problem_1757,
     problem_1978,
+    problem_2356,
 )
 
 
@@ -884,4 +885,31 @@ def test_problem_1978(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("employee_id", pa.int64())])
     )
     result = problem_1978(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"teacher_id": [1, 1, 2, 2], "subject_id": [101, 102, 101, 103]},
+            {"teacher_id": [1, 2], "cnt": [2, 2]},
+            id="multiple_teachers_distinct_subjects",
+        ),
+        pytest.param(
+            {"teacher_id": [1], "subject_id": [101]},
+            {"teacher_id": [1], "cnt": [1]},
+            id="single_teacher_single_subject",
+        ),
+        pytest.param(
+            {"teacher_id": [1], "subject_id": [101]},
+            {"teacher_id": [1], "cnt": [1]},
+            id="single_teacher_repeated_subjects",
+        ),
+    ],
+)
+def test_problem_2356(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_2356(table)
     assert result.equals(expected_table)
