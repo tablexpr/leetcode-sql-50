@@ -146,6 +146,39 @@ def problem_1161(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1193(table: pa.Table) -> pa.Table:
+    table = table.append_column("month", pc.strftime(table["trans_date"], "%Y-%m"))
+    table = table.append_column(
+        "is_approved",
+        pc.if_else(pc.equal(table["state"], "approved"), pa.scalar(1), pa.scalar(0)),
+    )
+    table = table.append_column(
+        "approved_amount",
+        pc.if_else(
+            pc.equal(table["is_approved"], pa.scalar(1)), table["amount"], pa.scalar(0)
+        ),
+    )
+    return (
+        table.group_by(["month", "country"])
+        .aggregate(
+            [
+                ("id", "count"),
+                ("is_approved", "sum"),
+                ("amount", "sum"),
+                ("approved_amount", "sum"),
+            ]
+        )
+        .rename_columns(
+            {
+                "id_count": "trans_count",
+                "is_approved_sum": "approved_count",
+                "amount_sum": "trans_total_amount",
+                "approved_amount_sum": "approved_total_amount",
+            }
+        )
+    )
+
+
 def problem_1211(table: pa.Table) -> pa.Table:
     table = table.append_column(
         "quality", pc.divide(table["rating"], table["position"])
