@@ -4,6 +4,7 @@ import pyarrow as pa
 import pytest
 
 from problems.leetcode import (
+    problem_196,
     problem_197,
     problem_577,
     problem_584,
@@ -27,6 +28,47 @@ from problems.leetcode import (
     problem_1978,
     problem_2356,
 )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3],
+                "email": ["a@example.com", "b@example.com", "c@example.com"],
+            },
+            {
+                "id": [1, 2, 3],
+                "email": ["a@example.com", "b@example.com", "c@example.com"],
+            },
+            id="unique_emails",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4],
+                "email": [
+                    "a@example.com",
+                    "b@example.com",
+                    "a@example.com",
+                    "b@example.com",
+                ],
+            },
+            {"id": [1, 2], "email": ["a@example.com", "b@example.com"]},
+            id="duplicate_emails",
+        ),
+        pytest.param(
+            {"id": [1], "email": ["a@example.com"]},
+            {"id": [1], "email": ["a@example.com"]},
+            id="single_row",
+        ),
+    ],
+)
+def test_problem_196(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_196(table)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(

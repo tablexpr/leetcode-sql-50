@@ -4,6 +4,17 @@ import pyarrow as pa
 import pyarrow.compute as pc
 
 
+def problem_196(table: pa.Table) -> pa.Table:
+    # There isn't really a way to modify a PyArrow table in place, so we have
+    # to create a new table to return the desired results.
+    return (
+        table.group_by(["email"])
+        .aggregate([("id", "min")])
+        .rename_columns({"id_min": "id"})
+        .select(["id", "email"])
+    )
+
+
 def problem_197(table: pa.Table) -> pa.Table:
     lag_table = pa.table(
         {
