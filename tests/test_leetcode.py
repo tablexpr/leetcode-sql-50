@@ -10,6 +10,7 @@ from problems.leetcode import (
     problem_584,
     problem_595,
     problem_610,
+    problem_619,
     problem_620,
     problem_1068,
     problem_1075,
@@ -277,6 +278,43 @@ def test_problem_610(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_610(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "num": [1, 2, 3, 4],
+            },
+            {"num": [4]},
+            id="all_single_numbers",
+        ),
+        pytest.param(
+            {
+                "num": [1, 2, 2, 3, 3, 4],
+            },
+            {
+                "num": [4],
+            },
+            id="mixed_single_and_duplicate_numbers",
+        ),
+        pytest.param(
+            {
+                "num": [2, 2, 3, 3],
+            },
+            {
+                "num": [None],
+            },
+            id="all_duplicates",
+        ),
+    ],
+)
+def test_problem_619(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_619(table)
     assert result.equals(expected_table)
 
 

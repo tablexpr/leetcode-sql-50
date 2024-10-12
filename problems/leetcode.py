@@ -75,6 +75,19 @@ def problem_610(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_619(table: pa.Table) -> pa.Table:
+    grouped = table.group_by("num").aggregate([("num", "count")])
+    grouped = grouped.filter(pc.equal(grouped["num_count"], pa.scalar(1)))
+    if grouped.num_rows == 0:
+        return pa.Table.from_pydict({"num": [None]})
+    else:
+        return (
+            grouped.group_by([])
+            .aggregate([("num", "max")])
+            .rename_columns({"num_max": "num"})
+        )
+
+
 def problem_620(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.and_(
