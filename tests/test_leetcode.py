@@ -17,6 +17,7 @@ from problems.leetcode import (
     problem_1141,
     problem_1148,
     problem_1161,
+    problem_1164,
     problem_1193,
     problem_1211,
     problem_1280,
@@ -545,6 +546,44 @@ def test_problem_1161(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1161(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "product_id": [1, 1, 2],
+                "change_date": [
+                    datetime(2019, 8, 15),
+                    datetime(2019, 8, 16),
+                    datetime(2019, 8, 17),
+                ],
+                "new_price": [100, 110, 120],
+            },
+            {"product_id": [1, 2], "price": [110, 10]},
+            id="happy-path",
+        ),
+        pytest.param(
+            {
+                "product_id": [1, 2],
+                "change_date": [
+                    datetime(2019, 8, 17),
+                    datetime(2019, 8, 18),
+                ],
+                "new_price": [100, 110],
+            },
+            {"product_id": [1, 2], "price": [10, 10]},
+            id="no-products-before-cutoff",
+        ),
+    ],
+)
+def test_problem_1164(input_data, expected_data):
+    # TODO: Add test for all products before cutoff date.
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1164(input_table)
     assert result.equals(expected_table)
 
 

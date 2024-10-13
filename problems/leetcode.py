@@ -170,6 +170,31 @@ def problem_1161(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1164(table: pa.Table) -> pa.Table:
+    table_lte = table.filter(pc.less_equal(table["change_date"], datetime(2019, 8, 16)))
+    products_max_dates = table_lte.group_by("product_id").aggregate(
+        [("change_date", "max")]
+    )
+    joined = (
+        table_lte.join(
+            products_max_dates,
+            keys=["product_id", "change_date"],
+            right_keys=["product_id", "change_date_max"],
+            join_type="inner",
+        )
+        .drop("change_date")
+        .rename_columns({"new_price": "price"})
+    )
+    table_gt = table.filter(pc.greater(table["change_date"], datetime(2019, 8, 16)))
+    missing_products = table_gt.filter(
+        pc.invert(pc.is_in(table_gt["product_id"], joined["product_id"]))
+    )
+    missing_products = missing_products.drop_columns(
+        ["new_price", "change_date"]
+    ).append_column("price", pa.array([10] * missing_products.num_rows))
+    return pa.concat_tables([joined, missing_products])
+
+
 def problem_1193(table: pa.Table) -> pa.Table:
     table = table.append_column("month", pc.strftime(table["trans_date"], "%Y-%m"))
     table = table.append_column(
