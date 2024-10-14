@@ -299,6 +299,12 @@ def problem_1633(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     ).sort_by([("percentage", "descending")])
 
 
+def problem_1667(table: pa.Table) -> pa.Table:
+    return table.set_column(1, "name", pc.ascii_capitalize(table["name"])).sort_by(
+        "user_id"
+    )
+
+
 def problem_1683(table: pa.Table) -> pa.Table:
     return table.filter(
         pc.greater(pc.utf8_length(table["content"]), pa.scalar(15))

@@ -24,6 +24,7 @@ from problems.leetcode import (
     problem_1378,
     problem_1581,
     problem_1633,
+    problem_1667,
     problem_1683,
     problem_1729,
     problem_1757,
@@ -912,6 +913,48 @@ def test_problem_1633(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1633(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"user_id": [1, 2], "name": ["alice", "bob"]},
+            {"user_id": [1, 2], "name": ["Alice", "Bob"]},
+            id="happy_path_simple",
+        ),
+        pytest.param(
+            {"user_id": [2, 1], "name": ["bob", "alice"]},
+            {"user_id": [1, 2], "name": ["Alice", "Bob"]},
+            id="happy_path_unsorted_user_id",
+        ),
+        pytest.param(
+            {"user_id": [3, 4], "name": ["tyler", "MaRy KaThRyN"]},
+            {"user_id": [3, 4], "name": ["Tyler", "Mary kathryn"]},
+            id="edge_case_two_part_name_table",
+        ),
+        pytest.param(
+            {"user_id": [1], "name": [""]},
+            {"user_id": [1], "name": [""]},
+            id="edge_case_empty_name",
+        ),
+        pytest.param(
+            {"user_id": [1], "name": ["ALICE"]},
+            {"user_id": [1], "name": ["Alice"]},
+            id="edge_case_all_caps",
+        ),
+        pytest.param(
+            {"user_id": [1, 2], "name": [None, "bob"]},
+            {"user_id": [1, 2], "name": [None, "Bob"]},
+            id="error_case_none_name",
+        ),
+    ],
+)
+def test_problem_1667(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1667(table)
     assert result.equals(expected_table)
 
 
