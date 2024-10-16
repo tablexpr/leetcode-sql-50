@@ -58,6 +58,13 @@ def problem_595(table: pa.Table) -> pa.Table:
     ).select(["name", "population", "area"])
 
 
+def problem_596(table: pa.Table) -> pa.Table:
+    table_agg = table.group_by("class").aggregate([("student", "count")])
+    return table_agg.filter(
+        pc.greater_equal(table_agg["student_count"], pa.scalar(5))
+    ).select(["class"])
+
+
 def problem_610(table: pa.Table) -> pa.Table:
     return table.append_column(
         "triangle",

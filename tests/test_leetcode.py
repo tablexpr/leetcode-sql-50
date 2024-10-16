@@ -9,6 +9,7 @@ from problems.leetcode import (
     problem_577,
     problem_584,
     problem_595,
+    problem_596,
     problem_610,
     problem_619,
     problem_620,
@@ -238,6 +239,70 @@ def test_problem_595(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_595(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "student": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I",
+                    "J",
+                    "K",
+                    "L",
+                ],
+                "class": [
+                    "Math",
+                    "Math",
+                    "Biology",
+                    "Math",
+                    "Computer",
+                    "Math",
+                    "Math",
+                    "Math",
+                    "Computer",
+                    "Computer",
+                    "Computer",
+                    "Computer",
+                ],
+            },
+            {"class": ["Math", "Computer"]},
+            id="happy_path_multiple_classes",
+        ),
+        pytest.param(
+            {
+                "class": ["History", "History", "History", "History", "History"],
+                "student": ["Alice", "Bob", "Charlie", "David", "Eve"],
+            },
+            {"class": ["History"]},
+            id="edge_case_exactly_5_students",
+        ),
+        pytest.param(
+            {
+                "class": ["Art", "Art", "Art", "Art"],
+                "student": ["Alice", "Bob", "Charlie", "David"],
+            },
+            {"class": []},
+            id="edge_case_less_than_5_students",
+        ),
+    ],
+)
+def test_problem_596(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("class", pa.string())])
+    )
+    result = problem_596(table)
     assert result.equals(expected_table)
 
 
