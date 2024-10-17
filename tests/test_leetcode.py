@@ -669,7 +669,6 @@ def test_problem_1161(input_data, expected_data):
     ],
 )
 def test_problem_1164(input_data, expected_data):
-    # TODO: Add test for all products before cutoff date.
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1164(input_table)
