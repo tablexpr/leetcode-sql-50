@@ -643,6 +643,29 @@ def test_problem_1161(input_data, expected_data):
             {"product_id": [1, 2], "price": [10, 10]},
             id="no-products-before-cutoff",
         ),
+        pytest.param(
+            {
+                "product_id": [1],
+                "change_date": [
+                    datetime(2019, 8, 18),
+                ],
+                "new_price": [20],
+            },
+            {"product_id": [1], "price": [10]},
+            id="single-product-after-cutoff",
+        ),
+        pytest.param(
+            {
+                "product_id": [1, 2],
+                "new_price": [100, 100],
+                "change_date": [
+                    datetime(2019, 8, 1),
+                    datetime(2019, 8, 2),
+                ],
+            },
+            {"product_id": [1, 2], "price": [100, 100]},
+            id="all-products-before-cutoff",
+        ),
     ],
 )
 def test_problem_1164(input_data, expected_data):
