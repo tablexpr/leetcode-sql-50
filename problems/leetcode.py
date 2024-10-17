@@ -199,6 +199,8 @@ def problem_1164(table: pa.Table) -> pa.Table:
     missing_products = missing_products.drop_columns(
         ["new_price", "change_date"]
     ).append_column("price", pa.array([10] * missing_products.num_rows))
+    if missing_products.num_rows == 0:
+        return joined
     return pa.concat_tables([joined, missing_products])
 
 
