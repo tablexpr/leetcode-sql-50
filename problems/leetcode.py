@@ -4,6 +4,22 @@ import pyarrow as pa
 import pyarrow.compute as pc
 
 
+def problem_176(table: pa.Table) -> pa.Table:
+    result = pa.Table.from_arrays(
+        [
+            pc.sort_indices(
+                pc.unique(table["salary"]), sort_keys=[("salary", "descending")]
+            ),
+            pc.unique(table["salary"]),
+        ],
+        names=["index", "SecondHighestSalary"],
+    )
+    result = result.filter(pc.equal(result["index"], pa.scalar(1))).drop("index")
+    if result.num_rows == 0:
+        return pa.Table.from_pydict({"SecondHighestSalary": [None]})
+    return result
+
+
 def problem_196(table: pa.Table) -> pa.Table:
     # There isn't really a way to modify a PyArrow table in place, so we have
     # to create a new table to return the desired results.
