@@ -52,6 +52,42 @@ def problem_197(table: pa.Table) -> pa.Table:
     return joined
 
 
+def problem_550(table: pa.Table) -> pa.Table:
+    grouped = table.group_by("player_id").aggregate([("event_date", "min")])
+    grouped.append_column(
+        "next_date", pc.add(grouped["event_date_min"], pa.scalar(timedelta(days=1)))
+    ).join(
+        table, keys=["player_id", "next_date"], right_keys=["player_id", "event_date"]
+    )
+    joined = grouped.append_column(
+        "next_date", pc.add(grouped["event_date_min"], pa.scalar(timedelta(days=1)))
+    ).join(
+        table, keys=["player_id", "next_date"], right_keys=["player_id", "event_date"]
+    )
+    return pa.Table.from_arrays(
+        [
+            pa.array(
+                [
+                    pc.round(
+                        pc.divide(
+                            pc.cast(
+                                pc.count(joined["games_played"], mode="only_valid"),
+                                pa.float64(),
+                            ),
+                            pc.cast(
+                                pc.count(joined["games_played"], mode="all"),
+                                pa.float64(),
+                            ),
+                        ),
+                        2,
+                    )
+                ]
+            )
+        ],
+        names=["fraction"],
+    )
+
+
 def problem_577(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     return table_1.join(table_2, keys="empId").select(["name", "bonus"])
 
