@@ -43,7 +43,7 @@ Fiddling around with PyArrow.
 - [X] 596. [Classes More Than 5 Students](https://leetcode.com/problems/classes-more-than-5-students) - Easy
 - [X] 1729. [Find Followers Count](https://leetcode.com/problems/find-followers-count) - Easy
 - [X] 619. [Biggest Single Number](https://leetcode.com/problems/biggest-single-number) - Easy
-- [ ] 1045. [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products) - Medium
+- [X] 1045. [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products) - Medium
 
 ### Advanced Select and Joins
 

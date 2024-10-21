@@ -15,6 +15,7 @@ from problems.leetcode import (
     problem_610,
     problem_619,
     problem_620,
+    problem_1045,
     problem_1068,
     problem_1075,
     problem_1141,
@@ -513,6 +514,58 @@ def test_problem_620(input_data, expected_data):
         ),
     )
     result = problem_620(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 2]},
+            {"product_key": [1, 2]},
+            {"customer_id": [1, 2]},
+            id="happy_path_all_bought_all",
+        ),
+        pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 3]},
+            {"product_key": [1]},
+            {"customer_id": []},
+            id="happy_path_no_matching_distinct_count",
+        ),
+        pytest.param(
+            {"customer_id": [], "product_key": []},
+            {"product_key": [1]},
+            {"customer_id": []},
+            id="edge_case_empty_table_1",
+        ),
+        pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 3]},
+            {"product_key": []},
+            {"customer_id": []},
+            id="edge_case_empty_table_2",
+        ),
+        pytest.param(
+            {"customer_id": [], "product_key": []},
+            {"product_key": []},
+            {"customer_id": []},
+            id="edge_case_both_tables_empty",
+        ),
+    ],
+)
+def test_problem_1045(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(
+        input_data_1,
+        schema=pa.schema(
+            [pa.field("customer_id", pa.int64()), pa.field("product_key", pa.int64())]
+        ),
+    )
+    table_2 = pa.Table.from_pydict(
+        input_data_2, schema=pa.schema([pa.field("product_key", pa.int64())])
+    )
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("customer_id", pa.int64())])
+    )
+    result = problem_1045(table_1, table_2)
     assert result.equals(expected_table)
 
 

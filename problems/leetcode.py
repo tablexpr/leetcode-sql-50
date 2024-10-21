@@ -156,6 +156,15 @@ def problem_620(table: pa.Table) -> pa.Table:
     ).sort_by([("id", "descending")])
 
 
+def problem_1045(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    grouped = table_1.group_by("customer_id").aggregate(
+        [("product_key", "count_distinct")]
+    )
+    return grouped.filter(
+        pc.equal(grouped["product_key_count_distinct"], pa.scalar(table_2.num_rows))
+    ).select(["customer_id"])
+
+
 def problem_1068(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     return table_1.join(table_2, keys="product_id").select(
         ["product_name", "year", "price"]
