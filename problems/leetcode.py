@@ -416,6 +416,33 @@ def problem_1757(table: pa.Table) -> pa.Table:
     ).select(["product_id"])
 
 
+def problem_1934(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    joined = table_1.join(table_2, keys=["user_id"], join_type="left outer").select(
+        ["user_id", "action"]
+    )
+    grouped = (
+        joined.append_column(
+            "is_confirmed",
+            pc.fill_null(
+                pc.if_else(
+                    pc.equal(joined["action"], pa.scalar("confirmed")),
+                    pa.scalar(1.0),
+                    pa.scalar(0.0),
+                ),
+                pa.scalar(0.0),
+            ),
+        )
+        .group_by("user_id")
+        .aggregate([("is_confirmed", "sum"), ("is_confirmed", "count")])
+    )
+    return grouped.append_column(
+        "confirmation_rate",
+        pc.round(
+            pc.divide(grouped["is_confirmed_sum"], grouped["is_confirmed_count"]), 2
+        ),
+    ).select(["user_id", "confirmation_rate"])
+
+
 def problem_1978(table: pa.Table) -> pa.Table:
     return (
         table.filter(

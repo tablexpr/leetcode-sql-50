@@ -33,6 +33,7 @@ from problems.leetcode import (
     problem_1683,
     problem_1729,
     problem_1757,
+    problem_1934,
     problem_1978,
     problem_2356,
 )
@@ -1298,6 +1299,72 @@ def test_problem_1757(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     result = problem_1757(table)
     expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1], "action": ["confirmed"]},
+            {"user_id": [1], "confirmation_rate": [1.0]},
+            id="user_confirmed",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1, 1], "action": ["confirmed", "confirmed"]},
+            {"user_id": [1], "confirmation_rate": [1.0]},
+            id="same_user_twice_confirmed",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1], "action": ["pending"]},
+            {"user_id": [1], "confirmation_rate": [0.0]},
+            id="user_not_confirmed",
+        ),
+        pytest.param(
+            {"user_id": []},
+            {"user_id": [], "action": []},
+            {"user_id": [], "confirmation_rate": []},
+            id="empty_tables",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1, 1], "action": ["confirmed", "pending"]},
+            {"user_id": [1], "confirmation_rate": [0.5]},
+            id="mixed_actions",
+        ),
+    ],
+)
+def test_problem_1934(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(
+        input_data_1,
+        schema=pa.schema(
+            [
+                pa.field("user_id", pa.int64()),
+            ]
+        ),
+    )
+    table_2 = pa.Table.from_pydict(
+        input_data_2,
+        schema=pa.schema(
+            [
+                pa.field("user_id", pa.int64()),
+                pa.field("action", pa.string()),
+            ]
+        ),
+    )
+    expected_table = pa.Table.from_pydict(
+        expected_data,
+        schema=pa.schema(
+            [
+                pa.field("user_id", pa.int64()),
+                pa.field("confirmation_rate", pa.float64()),
+            ]
+        ),
+    )
+    result = problem_1934(table_1, table_2)
     assert result.equals(expected_table)
 
 
