@@ -8,6 +8,7 @@ from problems.leetcode import (
     problem_196,
     problem_197,
     problem_550,
+    problem_570,
     problem_577,
     problem_584,
     problem_595,
@@ -220,6 +221,59 @@ def test_problem_550(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_550(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106],
+                "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+                "managerId": [None, 101, 101, 101, 101, 101],
+            },
+            {"name": ["John"]},
+            id="happy_path_one_with_five",
+        ),
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111],
+                "name": [
+                    "John",
+                    "Dan",
+                    "James",
+                    "Amy",
+                    "Anne",
+                    "Ron",
+                    "Alex",
+                    "Bob",
+                    "Charles",
+                    "David",
+                    "Edward",
+                ],
+                "managerId": [None, 101, 101, 101, 101, 101, 110, 110, 110, 110, 110],
+            },
+            {"name": ["John", "David"]},
+            id="happy_path_two_with_five",
+        ),
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106],
+                "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+                "managerId": [None, 101, 101, 101, 101, 102],
+            },
+            {"name": []},
+            id="none_with_five",
+        ),
+    ],
+)
+def test_problem_570(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("name", pa.string())])
+    )
+    result = problem_570(table)
     assert result.equals(expected_table)
 
 

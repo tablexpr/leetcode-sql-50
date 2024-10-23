@@ -88,6 +88,14 @@ def problem_550(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_570(table: pa.Table) -> pa.Table:
+    grouped = table.group_by("managerId").aggregate([("id", "count")])
+    grouped = grouped.filter(pc.greater_equal(grouped["id_count"], pa.scalar(5)))
+    return table.join(
+        grouped, keys="id", right_keys="managerId", join_type="inner"
+    ).select(["name"])
+
+
 def problem_577(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     return table_1.join(table_2, keys="empId").select(["name", "bonus"])
 
