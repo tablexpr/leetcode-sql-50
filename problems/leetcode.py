@@ -416,6 +416,19 @@ def problem_1757(table: pa.Table) -> pa.Table:
     ).select(["product_id"])
 
 
+def problem_1789(table: pa.Table) -> pa.Table:
+    joined = table.join(
+        table.group_by("employee_id").aggregate([("employee_id", "count")]),
+        keys="employee_id",
+    )
+    return joined.filter(
+        pc.or_(
+            pc.equal(joined["primary_flag"], pa.scalar("Y")),
+            pc.equal(joined["employee_id_count"], pa.scalar(1)),
+        )
+    ).select(["employee_id", "department_id"])
+
+
 def problem_1934(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     joined = table_1.join(table_2, keys=["user_id"], join_type="left outer").select(
         ["user_id", "action"]
