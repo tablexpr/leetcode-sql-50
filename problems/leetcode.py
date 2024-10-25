@@ -371,6 +371,15 @@ def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
+def problem_1527(table: pa.Table) -> pa.Table:
+    return table.filter(
+        pc.or_(
+            pc.starts_with(table["conditions"], "DIAB1"),
+            pc.match_like(table["conditions"], "% DIAB1%"),
+        )
+    )
+
+
 def problem_1581(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     joined = table_1.join(table_2, keys="visit_id", join_type="left outer")
     return (

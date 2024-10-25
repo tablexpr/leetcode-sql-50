@@ -28,6 +28,7 @@ from problems.leetcode import (
     problem_1280,
     problem_1327,
     problem_1378,
+    problem_1527,
     problem_1581,
     problem_1633,
     problem_1667,
@@ -1166,6 +1167,33 @@ def test_problem_1378(table_data, table_2_data, expected_data):
     table_2 = pa.Table.from_pydict(table_2_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"conditions": ["DIAB1", "DIAB2", "DIAB3"]},
+            {"conditions": ["DIAB1"]},
+            id="starts_with_DIAB1",
+        ),
+        pytest.param(
+            {"conditions": ["X DIAB1", "Y DIAB2", "Z DIAB1X"]},
+            {"conditions": ["X DIAB1", "Z DIAB1X"]},
+            id="contains_DIAB1",
+        ),
+        pytest.param(
+            {"conditions": ["X DIAB1", "Y +DIAB1", "Z DIAB1X"]},
+            {"conditions": ["X DIAB1", "Z DIAB1X"]},
+            id="contains_DIAB1_and_not_prefixed_strangely",
+        ),
+    ],
+)
+def test_problem_1527(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1527(table)
     assert result.equals(expected_table)
 
 
