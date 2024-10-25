@@ -50,7 +50,7 @@ Fiddling around with PyArrow.
 - [ ] 1731. [The Number of Employees Which Report to Each Employee](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee) - Easy
 - [X] 1789. [Primary Department for Each Employee](https://leetcode.com/problems/primary-department-for-each-employee) - Easy
 - [X] 610. [Triangle Judgement](https://leetcode.com/problems/triangle-judgement) - Easy
-- [ ] 180. [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers) - Medium
+- [X] 180. [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers) - Medium
 - [X] 1164. [Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date) - Medium
 - [ ] 1204. [Last Person to Fit in the Bus](https://leetcode.com/problems/last-person-to-fit-in-the-bus) - Medium
 - [ ] 1907. [Count Salary Categories](https://leetcode.com/problems/count-salary-categories) - Medium

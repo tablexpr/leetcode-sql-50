@@ -20,6 +20,22 @@ def problem_176(table: pa.Table) -> pa.Table:
     return result
 
 
+def problem_180(table: pa.Table) -> pa.Table:
+    if table.num_rows == 0:
+        return pa.Table.from_pydict(
+            {"ConsecutiveNums": [None]},
+            schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())]),
+        )
+    table_lead_1 = table.set_column(0, "id", pc.add(table["id"], pa.scalar(1)))
+    table_lead_2 = table.set_column(0, "id", pc.add(table["id"], pa.scalar(2)))
+    joined = (
+        table.join(table_lead_1, keys=["id", "num"], join_type="inner")
+        .join(table_lead_2, keys=["id", "num"], join_type="inner")
+        .select(["num"])
+    )
+    return pa.Table.from_arrays([pc.unique(joined["num"])], names=["ConsecutiveNums"])
+
+
 def problem_196(table: pa.Table) -> pa.Table:
     # There isn't really a way to modify a PyArrow table in place, so we have
     # to create a new table to return the desired results.
