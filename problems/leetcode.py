@@ -322,6 +322,13 @@ def problem_1193(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1204(table: pa.Table) -> pa.Table:
+    table = table.sort_by("turn")
+    table = table.append_column("weight_cumsum", pc.cumulative_sum(table["weight"]))
+    table = table.filter(pc.less_equal(table["weight_cumsum"], pa.scalar(1000)))
+    return table.take([table.num_rows - 1]).select(["person_name"])
+
+
 def problem_1211(table: pa.Table) -> pa.Table:
     table = table.append_column(
         "quality", pc.divide(table["rating"], table["position"])
