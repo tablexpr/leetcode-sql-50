@@ -348,6 +348,34 @@ def problem_1211(table: pa.Table) -> pa.Table:
     )
 
 
+def problem_1251(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+    joined = table_1.join(table_2, keys="product_id")
+    joined = joined.filter(
+        pc.or_(
+            pc.and_(
+                pc.greater_equal(joined["purchase_date"], joined["start_date"]),
+                pc.less_equal(joined["purchase_date"], joined["end_date"]),
+            ),
+            pc.is_null(joined["purchase_date"]),
+        )
+    )
+    joined = joined.append_column(
+        "total", pc.multiply(joined["price"], joined["units"])
+    )
+    grouped = joined.group_by("product_id").aggregate(
+        [("units", "sum"), ("total", "sum")]
+    )
+    return grouped.append_column(
+        "average_price",
+        pc.round(
+            pc.divide(
+                pc.cast(grouped["total_sum"], pa.float64()), grouped["units_sum"]
+            ),
+            2,
+        ),
+    ).select(["product_id", "average_price"])
+
+
 def problem_1280(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
     table_1 = table_1.append_column("key", pa.array([1] * len(table_1)))
     table_2 = table_2.append_column("key", pa.array([1] * len(table_2)))
