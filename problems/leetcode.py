@@ -500,6 +500,41 @@ def problem_1789(table: pa.Table) -> pa.Table:
     ).select(["employee_id", "department_id"])
 
 
+def problem_1907(table: pa.Table) -> pa.Table:
+    categories = pa.Table.from_pydict(
+        {"category": ["Low Salary", "Average Salary", "High Salary"]}
+    )
+
+    is_low_salary = pc.less(table["income"], pa.scalar(20_000))
+    is_average_salary = pc.and_(
+        pc.greater_equal(table["income"], pa.scalar(20_000)),
+        pc.less_equal(table["income"], pa.scalar(50_000)),
+    )
+    is_high_salary = pc.greater(table["income"], pa.scalar(50_000))
+
+    cond = pa.StructArray.from_arrays(
+        [
+            is_low_salary.combine_chunks(),
+            is_average_salary.combine_chunks(),
+            is_high_salary.combine_chunks(),
+        ],
+        names=["Low Salary", "Average Salary", "High Salary"],
+    )
+
+    table = table.append_column(
+        "category", pc.case_when(cond, "Low Salary", "Average Salary", "High Salary")
+    )
+    grouped = (
+        table.group_by("category")
+        .aggregate([("account_id", "count")])
+        .rename_columns({"account_id_count": "accounts_count"})
+    )
+    joined = categories.join(grouped, keys="category", join_type="left outer")
+    return joined.set_column(
+        1, "accounts_count", pc.fill_null(joined["accounts_count"], pa.scalar(0))
+    )
+
+
 def problem_1934(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     joined = table_1.join(table_2, keys=["user_id"], join_type="left outer").select(
         ["user_id", "action"]

@@ -53,7 +53,7 @@ Fiddling around with PyArrow.
 - [X] 180. [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers) - Medium
 - [X] 1164. [Product Price at a Given Date](https://leetcode.com/problems/product-price-at-a-given-date) - Medium
 - [X] 1204. [Last Person to Fit in the Bus](https://leetcode.com/problems/last-person-to-fit-in-the-bus) - Medium
-- [ ] 1907. [Count Salary Categories](https://leetcode.com/problems/count-salary-categories) - Medium
+- [X] 1907. [Count Salary Categories](https://leetcode.com/problems/count-salary-categories) - Medium
 
 ### Subqueries
 
