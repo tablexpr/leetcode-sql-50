@@ -39,6 +39,7 @@ from problems.leetcode import (
     problem_1729,
     problem_1757,
     problem_1789,
+    problem_1907,
     problem_1934,
     problem_1978,
     problem_2356,
@@ -1600,6 +1601,34 @@ def test_problem_1789(input_data, expected_data):
 
 
 @pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"account_id": [1, 2, 3], "income": [10000, 25000, 100000]},
+            {
+                "category": ["Low Salary", "Average Salary", "High Salary"],
+                "accounts_count": [1, 1, 1],
+            },
+            id="all_three_salary_categories",
+        ),
+        pytest.param(
+            {"account_id": [1, 2], "income": [10000, 25000]},
+            {
+                "category": ["Low Salary", "Average Salary", "High Salary"],
+                "accounts_count": [1, 1, 0],
+            },
+            id="missing_one_salary_category",
+        ),
+    ],
+)
+def test_problem_1907(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1907(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
@@ -1776,6 +1805,3 @@ def test_problem_2356(input_data, expected_data):
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_2356(table)
     assert result.equals(expected_table)
-
-
-# %%
