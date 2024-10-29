@@ -419,6 +419,41 @@ def problem_1327(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
+def problem_1341(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
+    user_most_ratings = (
+        table_3.join(table_2, keys="user_id", join_type="inner")
+        .group_by(["user_id", "name"])
+        .aggregate([("movie_id", "count")])
+        .sort_by([("movie_id_count", "descending"), ("name", "ascending")])
+        .select(["name"])
+        .take([0])["name"]
+    )
+
+    movie_highest_rating = (
+        table_3.filter(
+            pc.equal(pc.strftime(table_3["created_at"], "%Y-%m"), pa.scalar("2020-02"))
+        )
+        .join(table_1, keys="movie_id", join_type="inner")
+        .group_by(["movie_id", "title"])
+        .aggregate([("rating", "mean")])
+        .sort_by([("rating_mean", "descending"), ("title", "ascending")])
+        .select(["title"])
+        .take([0])["title"]
+    )
+
+    return pa.Table.from_arrays(
+        [
+            pa.concat_arrays(
+                [
+                    user_most_ratings.combine_chunks(),
+                    movie_highest_rating.combine_chunks(),
+                ]
+            )
+        ],
+        names=["results"],
+    )
+
+
 def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
     return table.join(table_2, keys="id", join_type="left outer").select(
         ["unique_id", "name"]
