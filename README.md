@@ -59,7 +59,7 @@ Fiddling around with PyArrow.
 
 - [X] 1978. [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company) - Easy
 - [ ] 626. [Exchange Seats](https://leetcode.com/problems/exchange-seats) - Medium
-- [ ] 1341. [Movie Rating](https://leetcode.com/problems/movie-rating) - Medium
+- [X] 1341. [Movie Rating](https://leetcode.com/problems/movie-rating) - Medium
 - [ ] 1321. [Restaurant Growth](https://leetcode.com/problems/restaurant-growth) - Medium
 - [ ] 602. [Friend Requests II: Who Has the Most Friends](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends) - Medium
 - [ ] 585. [Investments in 2016](https://leetcode.com/problems/investments-in-2016) - Medium

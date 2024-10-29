@@ -30,6 +30,7 @@ from problems.leetcode import (
     problem_1251,
     problem_1280,
     problem_1327,
+    problem_1341,
     problem_1378,
     problem_1527,
     problem_1581,
@@ -1321,7 +1322,59 @@ def test_problem_1327(input_data_1, input_data_2, expected_data):
 
 
 @pytest.mark.parametrize(
-    "table_data, table_2_data, expected_data",
+    "input_data_1, input_data_2, input_data_3, expected_data",
+    [
+        pytest.param(
+            {"movie_id": [1, 2, 3], "title": ["Avengers", "Frozen 2", "Joker"]},
+            {"user_id": [1, 2, 3, 4], "name": ["Daniel", "Monica", "Maria", "James"]},
+            {
+                "movie_id": [1, 1, 1, 1, 2, 2, 2, 3, 3],
+                "user_id": [1, 2, 3, 4, 1, 2, 3, 1, 2],
+                "rating": [3, 4, 2, 1, 5, 2, 2, 3, 4],
+                "created_at": [
+                    datetime(2020, 1, 12),
+                    datetime(2020, 2, 11),
+                    datetime(2020, 2, 12),
+                    datetime(2020, 1, 1),
+                    datetime(2020, 2, 17),
+                    datetime(2020, 2, 1),
+                    datetime(2020, 3, 1),
+                    datetime(2020, 2, 22),
+                    datetime(2020, 2, 25),
+                ],
+            },
+            {"results": ["Daniel", "Frozen 2"]},
+            id="tied_length_name",
+        ),
+        pytest.param(
+            {"movie_id": [1], "title": ["The Matrix"]},
+            {"user_id": [1, 2, 3], "name": ["Neo", "Trinity", "Morpheus"]},
+            {
+                "movie_id": [1, 1, 1],
+                "user_id": [1, 2, 3],
+                "rating": [5, 5, 5],
+                "created_at": [
+                    datetime(2020, 2, 1),
+                    datetime(2022, 1, 2),
+                    datetime(2022, 1, 3),
+                ],
+            },
+            {"results": ["Morpheus", "The Matrix"]},
+            id="single_movie_all_high_ratings",
+        ),
+    ],
+)
+def test_problem_1341(input_data_1, input_data_2, input_data_3, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    table_3 = pa.Table.from_pydict(input_data_3)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1341(table_1, table_2, table_3)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
             {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
@@ -1337,11 +1390,11 @@ def test_problem_1327(input_data_1, input_data_2, expected_data):
         ),
     ],
 )
-def test_problem_1378(table_data, table_2_data, expected_data):
-    table = pa.Table.from_pydict(table_data)
-    table_2 = pa.Table.from_pydict(table_2_data)
+def test_problem_1378(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
-    result = problem_1378(table, table_2)
+    result = problem_1378(table_1, table_2)
     assert result.equals(expected_table)
 
 
