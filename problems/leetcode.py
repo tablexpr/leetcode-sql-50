@@ -4,13 +4,13 @@ import pyarrow as pa
 import pyarrow.compute as pc
 
 
-def problem_176(table: pa.Table) -> pa.Table:
+def problem_176(employee: pa.Table) -> pa.Table:
     result = pa.Table.from_arrays(
         [
             pc.sort_indices(
-                pc.unique(table["salary"]), sort_keys=[("salary", "descending")]
+                pc.unique(employee["salary"]), sort_keys=[("salary", "descending")]
             ),
-            pc.unique(table["salary"]),
+            pc.unique(employee["salary"]),
         ],
         names=["index", "SecondHighestSalary"],
     )
@@ -20,41 +20,41 @@ def problem_176(table: pa.Table) -> pa.Table:
     return result
 
 
-def problem_180(table: pa.Table) -> pa.Table:
-    if table.num_rows == 0:
+def problem_180(logs: pa.Table) -> pa.Table:
+    if logs.num_rows == 0:
         return pa.Table.from_pydict(
             {"ConsecutiveNums": [None]},
             schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())]),
         )
-    table_lead_1 = table.set_column(0, "id", pc.add(table["id"], pa.scalar(1)))
-    table_lead_2 = table.set_column(0, "id", pc.add(table["id"], pa.scalar(2)))
+    table_lead_1 = logs.set_column(0, "id", pc.add(logs["id"], pa.scalar(1)))
+    table_lead_2 = logs.set_column(0, "id", pc.add(logs["id"], pa.scalar(2)))
     joined = (
-        table.join(table_lead_1, keys=["id", "num"], join_type="inner")
+        logs.join(table_lead_1, keys=["id", "num"], join_type="inner")
         .join(table_lead_2, keys=["id", "num"], join_type="inner")
         .select(["num"])
     )
     return pa.Table.from_arrays([pc.unique(joined["num"])], names=["ConsecutiveNums"])
 
 
-def problem_196(table: pa.Table) -> pa.Table:
+def problem_196(person: pa.Table) -> pa.Table:
     # There isn't really a way to modify a PyArrow table in place, so we have
     # to create a new table to return the desired results.
     return (
-        table.group_by(["email"])
+        person.group_by(["email"])
         .aggregate([("id", "min")])
         .rename_columns({"id_min": "id"})
         .select(["id", "email"])
     )
 
 
-def problem_197(table: pa.Table) -> pa.Table:
+def problem_197(weather: pa.Table) -> pa.Table:
     lag_table = pa.table(
         {
-            "recordDate": pc.add(table["recordDate"], pa.scalar(timedelta(days=1))),
-            "temperature": table["temperature"],
+            "recordDate": pc.add(weather["recordDate"], pa.scalar(timedelta(days=1))),
+            "temperature": weather["temperature"],
         }
     )
-    joined = table.join(
+    joined = weather.join(
         lag_table,
         keys="recordDate",
         join_type="inner",
@@ -68,17 +68,21 @@ def problem_197(table: pa.Table) -> pa.Table:
     return joined
 
 
-def problem_550(table: pa.Table) -> pa.Table:
-    grouped = table.group_by("player_id").aggregate([("event_date", "min")])
+def problem_550(activity: pa.Table) -> pa.Table:
+    grouped = activity.group_by("player_id").aggregate([("event_date", "min")])
     grouped.append_column(
         "next_date", pc.add(grouped["event_date_min"], pa.scalar(timedelta(days=1)))
     ).join(
-        table, keys=["player_id", "next_date"], right_keys=["player_id", "event_date"]
+        activity,
+        keys=["player_id", "next_date"],
+        right_keys=["player_id", "event_date"],
     )
     joined = grouped.append_column(
         "next_date", pc.add(grouped["event_date_min"], pa.scalar(timedelta(days=1)))
     ).join(
-        table, keys=["player_id", "next_date"], right_keys=["player_id", "event_date"]
+        activity,
+        keys=["player_id", "next_date"],
+        right_keys=["player_id", "event_date"],
     )
     return pa.Table.from_arrays(
         [
@@ -379,16 +383,18 @@ def problem_1251(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     ).select(["product_id", "average_price"])
 
 
-def problem_1280(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
-    table_1 = table_1.append_column("key", pa.array([1] * len(table_1)))
-    table_2 = table_2.append_column("key", pa.array([1] * len(table_2)))
+def problem_1280(
+    students: pa.Table, subjects: pa.Table, examinations: pa.Table
+) -> pa.Table:
+    students = students.append_column("key", pa.array([1] * len(students)))
+    subjects = subjects.append_column("key", pa.array([1] * len(subjects)))
     examinations_agg = (
-        table_3.group_by(["student_id", "subject_name"])
+        examinations.group_by(["student_id", "subject_name"])
         .aggregate([("student_id", "count")])
         .rename_columns({"student_id_count": "attended_exams"})
     )
     joined = (
-        table_1.join(table_2, keys="key")
+        students.join(subjects, keys="key")
         .drop("key")
         .join(
             examinations_agg,
@@ -512,11 +518,11 @@ def problem_1729(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_1757(table: pa.Table) -> pa.Table:
-    return table.filter(
+def problem_1757(products: pa.Table) -> pa.Table:
+    return products.filter(
         pc.and_(
-            pc.equal(table["low_fats"], pa.scalar("Y")),
-            pc.equal(table["recyclable"], pa.scalar("Y")),
+            pc.equal(products["low_fats"], pa.scalar("Y")),
+            pc.equal(products["recyclable"], pa.scalar("Y")),
         )
     ).select(["product_id"])
 
