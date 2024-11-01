@@ -108,10 +108,23 @@ def problem_550(activity: pa.Table) -> pa.Table:
     )
 
 
-def problem_570(table: pa.Table) -> pa.Table:
-    grouped = table.group_by("managerId").aggregate([("id", "count")])
+def problem_570(employee: pa.Table) -> pa.Table:
+    """Write a solution to find managers with at least five direct reports.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    grouped = employee.group_by("managerId").aggregate([("id", "count")])
     grouped = grouped.filter(pc.greater_equal(grouped["id_count"], pa.scalar(5)))
-    return table.join(
+    return employee.join(
         grouped, keys="id", right_keys="managerId", join_type="inner"
     ).select(["name"])
 
@@ -459,17 +472,46 @@ def problem_1341(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.
     )
 
 
-def problem_1378(table: pa.Table, table_2: pa.Table) -> pa.Table:
-    return table.join(table_2, keys="id", join_type="left outer").select(
+def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
+    """Write a solution to show the unique ID of each user, If a user does not have a
+    unique ID replace just show null.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employees : pa.Table
+    employee_uni : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    return employees.join(employee_uni, keys="id", join_type="left outer").select(
         ["unique_id", "name"]
     )
 
 
-def problem_1527(table: pa.Table) -> pa.Table:
-    return table.filter(
+def problem_1527(patients: pa.Table) -> pa.Table:
+    """Write a solution to find the patient_id, patient_name, and conditions of the
+    patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    patients : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    return patients.filter(
         pc.or_(
-            pc.starts_with(table["conditions"], "DIAB1"),
-            pc.match_like(table["conditions"], "% DIAB1%"),
+            pc.starts_with(patients["conditions"], "DIAB1"),
+            pc.match_like(patients["conditions"], "% DIAB1%"),
         )
     )
 
@@ -575,10 +617,10 @@ def problem_1907(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_1934(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    joined = table_1.join(table_2, keys=["user_id"], join_type="left outer").select(
-        ["user_id", "action"]
-    )
+def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
+    joined = signups.join(
+        confirmations, keys=["user_id"], join_type="left outer"
+    ).select(["user_id", "action"])
     grouped = (
         joined.append_column(
             "is_confirmed",
