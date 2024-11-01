@@ -402,16 +402,15 @@ def problem_1280(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.
     )
 
 
-def problem_1327(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    table_2 = table_2.append_column(
-        "year_month", pc.strftime(table_2["order_date"], "%Y-%m")
-    )
-    table_2_agg = (
-        table_2.filter(pc.equal(table_2["year_month"], pa.scalar("2020-02")))
+def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
+    orders_agg = (
+        orders.filter(
+            pc.equal(pc.strftime(pc.field("order_date"), "%Y-%m"), pa.scalar("2020-02"))
+        )
         .group_by(["product_id"])
         .aggregate([("unit", "sum")])
     )
-    joined = table_1.join(table_2_agg, keys=["product_id"])
+    joined = products.join(orders_agg, keys=["product_id"])
     return (
         joined.filter(pc.greater_equal(joined["unit_sum"], pa.scalar(100)))
         .select(["product_name", "unit_sum"])
