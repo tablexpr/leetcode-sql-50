@@ -22,7 +22,6 @@ from problems.leetcode import (
     problem_1075,
     problem_1141,
     problem_1148,
-    problem_1161,
     problem_1164,
     problem_1193,
     problem_1204,
@@ -35,6 +34,7 @@ from problems.leetcode import (
     problem_1527,
     problem_1581,
     problem_1633,
+    problem_1661,
     problem_1667,
     problem_1683,
     problem_1729,
@@ -836,48 +836,6 @@ def test_problem_1148(input_data, expected_data):
     [
         pytest.param(
             {
-                "machine_id": [0, 0, 0, 0],
-                "process_id": [0, 0, 1, 1],
-                "activity_type": ["start", "end", "start", "end"],
-                "timestamp": [0.712, 1.52, 3.14, 4.12],
-            },
-            {"machine_id": [0], "processing_time": [0.894]},
-            id="happy_path_single_machine",
-        ),
-        pytest.param(
-            {
-                "machine_id": [0, 0, 1, 1, 2, 2],
-                "process_id": [0, 0, 1, 1, 2, 2],
-                "activity_type": ["start", "end", "start", "end", "start", "end"],
-                "timestamp": [0.5, 1.5, 0.7, 1.2, 0.9, 2.0],
-            },
-            {"machine_id": [0, 1, 2], "processing_time": [1.0, 0.5, 1.1]},
-            id="multiple_machines",
-        ),
-        pytest.param(
-            {
-                "machine_id": [0, 0, 1],
-                "process_id": [0, 0, 1],
-                "activity_type": ["start", "end", "start"],
-                "timestamp": [0.5, 1.5, 0.7],
-            },
-            {"machine_id": [0, 1], "processing_time": [1.0, None]},
-            id="incomplete_process",
-        ),
-    ],
-)
-def test_problem_1161(input_data, expected_data):
-    input_table = pa.Table.from_pydict(input_data)
-    expected_table = pa.Table.from_pydict(expected_data)
-    result = problem_1161(input_table)
-    assert result.equals(expected_table)
-
-
-@pytest.mark.parametrize(
-    "input_data, expected_data",
-    [
-        pytest.param(
-            {
                 "product_id": [1, 1, 2],
                 "change_date": [
                     datetime(2019, 8, 15),
@@ -1491,6 +1449,48 @@ def test_problem_1633(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1633(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "machine_id": [0, 0, 0, 0],
+                "process_id": [0, 0, 1, 1],
+                "activity_type": ["start", "end", "start", "end"],
+                "timestamp": [0.712, 1.52, 3.14, 4.12],
+            },
+            {"machine_id": [0], "processing_time": [0.894]},
+            id="happy_path_single_machine",
+        ),
+        pytest.param(
+            {
+                "machine_id": [0, 0, 1, 1, 2, 2],
+                "process_id": [0, 0, 1, 1, 2, 2],
+                "activity_type": ["start", "end", "start", "end", "start", "end"],
+                "timestamp": [0.5, 1.5, 0.7, 1.2, 0.9, 2.0],
+            },
+            {"machine_id": [0, 1, 2], "processing_time": [1.0, 0.5, 1.1]},
+            id="multiple_machines",
+        ),
+        pytest.param(
+            {
+                "machine_id": [0, 0, 1],
+                "process_id": [0, 0, 1],
+                "activity_type": ["start", "end", "start"],
+                "timestamp": [0.5, 1.5, 0.7],
+            },
+            {"machine_id": [0, 1], "processing_time": [1.0, None]},
+            id="incomplete_process",
+        ),
+    ],
+)
+def test_problem_1661(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1661(input_table)
     assert result.equals(expected_table)
 
 

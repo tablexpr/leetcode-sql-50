@@ -129,45 +129,45 @@ def problem_570(employee: pa.Table) -> pa.Table:
     ).select(["name"])
 
 
-def problem_577(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    return table_1.join(table_2, keys="empId").select(["name", "bonus"])
+def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
+    return employee.join(bonus, keys="empId").select(["name", "bonus"])
 
 
-def problem_584(table: pa.Table) -> pa.Table:
-    return table.filter(
+def problem_584(customer: pa.Table) -> pa.Table:
+    return customer.filter(
         pc.or_kleene(
-            pc.is_null(table["referee_id"]),
-            pc.not_equal(table["referee_id"], pa.scalar(2)),
+            pc.is_null(customer["referee_id"]),
+            pc.not_equal(customer["referee_id"], pa.scalar(2)),
         )
     ).select(["name"])
 
 
-def problem_595(table: pa.Table) -> pa.Table:
-    return table.filter(
+def problem_595(world: pa.Table) -> pa.Table:
+    return world.filter(
         pc.or_(
-            pc.greater_equal(table["area"], pa.scalar(3_000_000)),
-            pc.greater_equal(table["population"], pa.scalar(25_000_000)),
+            pc.greater_equal(world["area"], pa.scalar(3_000_000)),
+            pc.greater_equal(world["population"], pa.scalar(25_000_000)),
         )
     ).select(["name", "population", "area"])
 
 
-def problem_596(table: pa.Table) -> pa.Table:
-    table_agg = table.group_by("class").aggregate([("student", "count")])
+def problem_596(courses: pa.Table) -> pa.Table:
+    table_agg = courses.group_by("class").aggregate([("student", "count")])
     return table_agg.filter(
         pc.greater_equal(table_agg["student_count"], pa.scalar(5))
     ).select(["class"])
 
 
-def problem_610(table: pa.Table) -> pa.Table:
-    return table.append_column(
+def problem_610(triangle: pa.Table) -> pa.Table:
+    return triangle.append_column(
         "triangle",
         pc.if_else(
             pc.and_(
                 pc.and_(
-                    pc.greater(pc.add(table["x"], table["y"]), table["z"]),
-                    pc.greater(pc.add(table["x"], table["z"]), table["y"]),
+                    pc.greater(pc.add(triangle["x"], triangle["y"]), triangle["z"]),
+                    pc.greater(pc.add(triangle["x"], triangle["z"]), triangle["y"]),
                 ),
-                pc.greater(pc.add(table["y"], table["z"]), table["x"]),
+                pc.greater(pc.add(triangle["y"], triangle["z"]), triangle["x"]),
             ),
             "Yes",
             "No",
@@ -175,8 +175,8 @@ def problem_610(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_619(table: pa.Table) -> pa.Table:
-    grouped = table.group_by("num").aggregate([("num", "count")])
+def problem_619(my_numbers: pa.Table) -> pa.Table:
+    grouped = my_numbers.group_by("num").aggregate([("num", "count")])
     grouped = grouped.filter(pc.equal(grouped["num_count"], pa.scalar(1)))
     if grouped.num_rows == 0:
         return pa.Table.from_pydict({"num": [None]})
@@ -188,33 +188,33 @@ def problem_619(table: pa.Table) -> pa.Table:
         )
 
 
-def problem_620(table: pa.Table) -> pa.Table:
-    return table.filter(
+def problem_620(cinema: pa.Table) -> pa.Table:
+    return cinema.filter(
         pc.and_(
-            pc.equal(pc.bit_wise_and(table["id"], pa.scalar(1)), pa.scalar(1)),
-            pc.not_equal(table["description"], pa.scalar("boring")),
+            pc.equal(pc.bit_wise_and(cinema["id"], pa.scalar(1)), pa.scalar(1)),
+            pc.not_equal(cinema["description"], pa.scalar("boring")),
         )
     ).sort_by([("id", "descending")])
 
 
-def problem_1045(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    grouped = table_1.group_by("customer_id").aggregate(
+def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
+    grouped = customer.group_by("customer_id").aggregate(
         [("product_key", "count_distinct")]
     )
     return grouped.filter(
-        pc.equal(grouped["product_key_count_distinct"], pa.scalar(table_2.num_rows))
+        pc.equal(grouped["product_key_count_distinct"], pa.scalar(product.num_rows))
     ).select(["customer_id"])
 
 
-def problem_1068(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    return table_1.join(table_2, keys="product_id").select(
+def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
+    return sales.join(product, keys="product_id").select(
         ["product_name", "year", "price"]
     )
 
 
-def problem_1075(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
+def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
     joined = (
-        table_1.join(table_2, keys="employee_id", join_type="inner")
+        project.join(employee, keys="employee_id", join_type="inner")
         .group_by("project_id")
         .aggregate([("experience_years", "mean")])
     )
@@ -223,15 +223,19 @@ def problem_1075(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
-def problem_1141(table: pa.Table) -> pa.Table:
+def problem_1141(activity: pa.Table) -> pa.Table:
     return (
-        table.filter(
+        activity.filter(
             pc.and_(
                 pc.greater(
-                    table["activity_date"],
-                    pc.subtract(table["activity_date"], pa.scalar(timedelta(days=30))),
+                    activity["activity_date"],
+                    pc.subtract(
+                        activity["activity_date"], pa.scalar(timedelta(days=30))
+                    ),
                 ),
-                pc.less_equal(table["activity_date"], pa.scalar(datetime(2019, 7, 27))),
+                pc.less_equal(
+                    activity["activity_date"], pa.scalar(datetime(2019, 7, 27))
+                ),
             )
         )
         .group_by("activity_date")
@@ -242,9 +246,9 @@ def problem_1141(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_1148(table: pa.Table) -> pa.Table:
+def problem_1148(views: pa.Table) -> pa.Table:
     return (
-        table.filter(pc.equal(table["author_id"], table["viewer_id"]))
+        views.filter(pc.equal(views["author_id"], views["viewer_id"]))
         .select(["author_id"])
         .rename_columns(["id"])
         .group_by("id")
@@ -253,34 +257,10 @@ def problem_1148(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_1161(table: pa.Table) -> pa.Table:
-    table_starts = table.filter(
-        pc.equal(table["activity_type"], pa.scalar("start"))
-    ).drop("activity_type")
-    table_ends = table.filter(pc.equal(table["activity_type"], pa.scalar("end"))).drop(
-        "activity_type"
+def problem_1164(products: pa.Table) -> pa.Table:
+    table_lte = products.filter(
+        pc.less_equal(products["change_date"], datetime(2019, 8, 16))
     )
-    joined = table_starts.join(
-        table_ends,
-        keys=["machine_id", "process_id"],
-        left_suffix="_start",
-        right_suffix="_end",
-    )
-    joined_agg = (
-        joined.append_column(
-            "processing_time",
-            pc.subtract(joined["timestamp_end"], joined["timestamp_start"]),
-        )
-        .group_by("machine_id")
-        .aggregate([("processing_time", "mean")])
-    )
-    return joined_agg.set_column(
-        1, "processing_time", pc.round(joined_agg["processing_time_mean"], 3)
-    )
-
-
-def problem_1164(table: pa.Table) -> pa.Table:
-    table_lte = table.filter(pc.less_equal(table["change_date"], datetime(2019, 8, 16)))
     products_max_dates = table_lte.group_by("product_id").aggregate(
         [("change_date", "max")]
     )
@@ -294,7 +274,9 @@ def problem_1164(table: pa.Table) -> pa.Table:
         .drop("change_date")
         .rename_columns({"new_price": "price"})
     )
-    table_gt = table.filter(pc.greater(table["change_date"], datetime(2019, 8, 16)))
+    table_gt = products.filter(
+        pc.greater(products["change_date"], datetime(2019, 8, 16))
+    )
     missing_products = table_gt.filter(
         pc.invert(pc.is_in(table_gt["product_id"], joined["product_id"]))
     )
@@ -537,6 +519,32 @@ def problem_1633(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
             2,
         ),
     ).sort_by([("percentage", "descending")])
+
+
+def problem_1661(activity: pa.Table) -> pa.Table:
+    table_starts = activity.filter(
+        pc.equal(activity["activity_type"], pa.scalar("start"))
+    ).drop("activity_type")
+    table_ends = activity.filter(
+        pc.equal(activity["activity_type"], pa.scalar("end"))
+    ).drop("activity_type")
+    joined = table_starts.join(
+        table_ends,
+        keys=["machine_id", "process_id"],
+        left_suffix="_start",
+        right_suffix="_end",
+    )
+    joined_agg = (
+        joined.append_column(
+            "processing_time",
+            pc.subtract(joined["timestamp_end"], joined["timestamp_start"]),
+        )
+        .group_by("machine_id")
+        .aggregate([("processing_time", "mean")])
+    )
+    return joined_agg.set_column(
+        1, "processing_time", pc.round(joined_agg["processing_time_mean"], 3)
+    )
 
 
 def problem_1667(table: pa.Table) -> pa.Table:
