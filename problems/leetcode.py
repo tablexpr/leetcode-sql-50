@@ -288,20 +288,26 @@ def problem_1164(products: pa.Table) -> pa.Table:
     return pa.concat_tables([joined, missing_products])
 
 
-def problem_1193(table: pa.Table) -> pa.Table:
-    table = table.append_column("month", pc.strftime(table["trans_date"], "%Y-%m"))
-    table = table.append_column(
-        "is_approved",
-        pc.if_else(pc.equal(table["state"], "approved"), pa.scalar(1), pa.scalar(0)),
+def problem_1193(transactions: pa.Table) -> pa.Table:
+    transactions = transactions.append_column(
+        "month", pc.strftime(transactions["trans_date"], "%Y-%m")
     )
-    table = table.append_column(
+    transactions = transactions.append_column(
+        "is_approved",
+        pc.if_else(
+            pc.equal(transactions["state"], "approved"), pa.scalar(1), pa.scalar(0)
+        ),
+    )
+    transactions = transactions.append_column(
         "approved_amount",
         pc.if_else(
-            pc.equal(table["is_approved"], pa.scalar(1)), table["amount"], pa.scalar(0)
+            pc.equal(transactions["is_approved"], pa.scalar(1)),
+            transactions["amount"],
+            pa.scalar(0),
         ),
     )
     return (
-        table.group_by(["month", "country"])
+        transactions.group_by(["month", "country"])
         .aggregate(
             [
                 ("id", "count"),
@@ -321,34 +327,36 @@ def problem_1193(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_1204(table: pa.Table) -> pa.Table:
-    table = table.sort_by("turn")
-    table = table.append_column("weight_cumsum", pc.cumulative_sum(table["weight"]))
-    table = table.filter(pc.less_equal(table["weight_cumsum"], pa.scalar(1000)))
-    return table.take([table.num_rows - 1]).select(["person_name"])
+def problem_1204(queue: pa.Table) -> pa.Table:
+    queue = queue.sort_by("turn")
+    queue = queue.append_column("weight_cumsum", pc.cumulative_sum(queue["weight"]))
+    queue = queue.filter(pc.less_equal(queue["weight_cumsum"], pa.scalar(1000)))
+    return queue.take([queue.num_rows - 1]).select(["person_name"])
 
 
-def problem_1211(table: pa.Table) -> pa.Table:
-    table = table.append_column(
-        "quality", pc.divide(table["rating"], table["position"])
+def problem_1211(queries: pa.Table) -> pa.Table:
+    queries = queries.append_column(
+        "quality", pc.divide(queries["rating"], queries["position"])
     ).append_column(
         "poor_query_percentage",
-        pc.if_else(pc.less(table["rating"], pa.scalar(3)), 100, 0),
+        pc.if_else(pc.less(queries["rating"], pa.scalar(3)), 100, 0),
     )
 
-    table_agg = table.group_by("query_name").aggregate(
+    queries_agg = queries.group_by("query_name").aggregate(
         [("quality", "mean"), ("poor_query_percentage", "mean")]
     )
 
-    return table_agg.set_column(
-        1, "quality", pc.round(table_agg["quality_mean"], 2)
+    return queries_agg.set_column(
+        1, "quality", pc.round(queries_agg["quality_mean"], 2)
     ).set_column(
-        2, "poor_query_percentage", pc.round(table_agg["poor_query_percentage_mean"], 2)
+        2,
+        "poor_query_percentage",
+        pc.round(queries_agg["poor_query_percentage_mean"], 2),
     )
 
 
-def problem_1251(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    joined = table_1.join(table_2, keys="product_id")
+def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
+    joined = prices.join(units_sold, keys="product_id")
     joined = joined.filter(
         pc.or_kleene(
             pc.and_(
@@ -419,9 +427,9 @@ def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
     )
 
 
-def problem_1341(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.Table:
+def problem_1341(movies: pa.Table, users: pa.Table, movie_rating: pa.Table) -> pa.Table:
     user_most_ratings = (
-        table_3.join(table_2, keys="user_id", join_type="inner")
+        movie_rating.join(users, keys="user_id", join_type="inner")
         .group_by(["user_id", "name"])
         .aggregate([("movie_id", "count")])
         .sort_by([("movie_id_count", "descending"), ("name", "ascending")])
@@ -430,10 +438,12 @@ def problem_1341(table_1: pa.Table, table_2: pa.Table, table_3: pa.Table) -> pa.
     )
 
     movie_highest_rating = (
-        table_3.filter(
-            pc.equal(pc.strftime(table_3["created_at"], "%Y-%m"), pa.scalar("2020-02"))
+        movie_rating.filter(
+            pc.equal(
+                pc.strftime(movie_rating["created_at"], "%Y-%m"), pa.scalar("2020-02")
+            )
         )
-        .join(table_1, keys="movie_id", join_type="inner")
+        .join(movies, keys="movie_id", join_type="inner")
         .group_by(["movie_id", "title"])
         .aggregate([("rating", "mean")])
         .sort_by([("rating_mean", "descending"), ("title", "ascending")])
@@ -498,8 +508,8 @@ def problem_1527(patients: pa.Table) -> pa.Table:
     )
 
 
-def problem_1581(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    joined = table_1.join(table_2, keys="visit_id", join_type="left outer")
+def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
+    joined = visits.join(transactions, keys="visit_id", join_type="left outer")
     return (
         joined.filter(pc.is_null(joined["transaction_id"]))
         .group_by("customer_id")
@@ -508,14 +518,14 @@ def problem_1581(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
     )
 
 
-def problem_1633(table_1: pa.Table, table_2: pa.Table) -> pa.Table:
-    table_2_agg = table_2.group_by("contest_id").aggregate([("user_id", "count")])
-    total_users = pa.scalar(float(table_1.num_rows))
-    return table_2_agg.set_column(
+def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
+    register_agg = register.group_by("contest_id").aggregate([("user_id", "count")])
+    total_users = pa.scalar(float(users.num_rows))
+    return register_agg.set_column(
         1,
         "percentage",
         pc.round(
-            pc.divide(table_2_agg["user_id_count"], total_users),
+            pc.divide(register_agg["user_id_count"], total_users),
             2,
         ),
     ).sort_by([("percentage", "descending")])
@@ -547,21 +557,21 @@ def problem_1661(activity: pa.Table) -> pa.Table:
     )
 
 
-def problem_1667(table: pa.Table) -> pa.Table:
-    return table.set_column(1, "name", pc.ascii_capitalize(table["name"])).sort_by(
+def problem_1667(users: pa.Table) -> pa.Table:
+    return users.set_column(1, "name", pc.ascii_capitalize(users["name"])).sort_by(
         "user_id"
     )
 
 
-def problem_1683(table: pa.Table) -> pa.Table:
-    return table.filter(
-        pc.greater(pc.utf8_length(table["content"]), pa.scalar(15))
+def problem_1683(tweets: pa.Table) -> pa.Table:
+    return tweets.filter(
+        pc.greater(pc.utf8_length(tweets["content"]), pa.scalar(15))
     ).select(["tweet_id"])
 
 
-def problem_1729(table: pa.Table) -> pa.Table:
+def problem_1729(followers: pa.Table) -> pa.Table:
     return (
-        table.group_by("user_id")
+        followers.group_by("user_id")
         .aggregate([("follower_id", "count")])
         .rename_columns({"follower_id_count": "followers_count"})
         .sort_by("user_id")
@@ -577,9 +587,9 @@ def problem_1757(products: pa.Table) -> pa.Table:
     ).select(["product_id"])
 
 
-def problem_1789(table: pa.Table) -> pa.Table:
-    joined = table.join(
-        table.group_by("employee_id").aggregate([("employee_id", "count")]),
+def problem_1789(employee: pa.Table) -> pa.Table:
+    joined = employee.join(
+        employee.group_by("employee_id").aggregate([("employee_id", "count")]),
         keys="employee_id",
     )
     return joined.filter(
@@ -590,17 +600,17 @@ def problem_1789(table: pa.Table) -> pa.Table:
     ).select(["employee_id", "department_id"])
 
 
-def problem_1907(table: pa.Table) -> pa.Table:
+def problem_1907(accounts: pa.Table) -> pa.Table:
     categories = pa.Table.from_pydict(
         {"category": ["Low Salary", "Average Salary", "High Salary"]}
     )
 
-    is_low_salary = pc.less(table["income"], pa.scalar(20_000))
+    is_low_salary = pc.less(accounts["income"], pa.scalar(20_000))
     is_average_salary = pc.and_(
-        pc.greater_equal(table["income"], pa.scalar(20_000)),
-        pc.less_equal(table["income"], pa.scalar(50_000)),
+        pc.greater_equal(accounts["income"], pa.scalar(20_000)),
+        pc.less_equal(accounts["income"], pa.scalar(50_000)),
     )
-    is_high_salary = pc.greater(table["income"], pa.scalar(50_000))
+    is_high_salary = pc.greater(accounts["income"], pa.scalar(50_000))
 
     cond = pa.StructArray.from_arrays(
         [
@@ -611,11 +621,11 @@ def problem_1907(table: pa.Table) -> pa.Table:
         names=["Low Salary", "Average Salary", "High Salary"],
     )
 
-    table = table.append_column(
+    accounts = accounts.append_column(
         "category", pc.case_when(cond, "Low Salary", "Average Salary", "High Salary")
     )
     grouped = (
-        table.group_by("category")
+        accounts.group_by("category")
         .aggregate([("account_id", "count")])
         .rename_columns({"account_id_count": "accounts_count"})
     )
@@ -652,14 +662,16 @@ def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
     ).select(["user_id", "confirmation_rate"])
 
 
-def problem_1978(table: pa.Table) -> pa.Table:
+def problem_1978(employees: pa.Table) -> pa.Table:
     return (
-        table.filter(
+        employees.filter(
             pc.and_(
-                pc.less(table["salary"], pa.scalar(30_000)),
+                pc.less(employees["salary"], pa.scalar(30_000)),
                 pc.and_(
-                    pc.invert(pc.is_in(table["manager_id"], table["employee_id"])),
-                    pc.invert(pc.is_null(table["manager_id"])),
+                    pc.invert(
+                        pc.is_in(employees["manager_id"], employees["employee_id"])
+                    ),
+                    pc.invert(pc.is_null(employees["manager_id"])),
                 ),
             )
         )
@@ -668,9 +680,9 @@ def problem_1978(table: pa.Table) -> pa.Table:
     )
 
 
-def problem_2356(table: pa.Table) -> pa.Table:
+def problem_2356(teacher: pa.Table) -> pa.Table:
     return (
-        table.group_by("teacher_id")
+        teacher.group_by("teacher_id")
         .aggregate([("subject_id", "count_distinct")])
         .rename_columns({"subject_id_count_distinct": "cnt"})
     )
