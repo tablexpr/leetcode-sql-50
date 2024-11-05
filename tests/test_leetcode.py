@@ -17,6 +17,7 @@ from problems.leetcode import (
     problem_610,
     problem_619,
     problem_620,
+    problem_626,
     problem_1045,
     problem_1068,
     problem_1075,
@@ -633,6 +634,40 @@ def test_problem_620(input_data, expected_data):
         ),
     )
     result = problem_620(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5],
+                "student": ["Abbot", "Doris", "Emerson", "Green", "Jeames"],
+            },
+            {
+                "id": [1, 2, 3, 4, 5],
+                "student": ["Doris", "Abbot", "Green", "Emerson", "Jeames"],
+            },
+            id="swap_students_odd_row_count",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2],
+                "student": ["Abbot", "Doris"],
+            },
+            {
+                "id": [1, 2],
+                "student": ["Doris", "Abbot"],
+            },
+            id="swap_students_even_row_count",
+        ),
+    ],
+)
+def test_problem_626(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_626(table)
     assert result.equals(expected_table)
 
 

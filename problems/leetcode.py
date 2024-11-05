@@ -197,6 +197,33 @@ def problem_620(cinema: pa.Table) -> pa.Table:
     ).sort_by([("id", "descending")])
 
 
+def problem_626(seat: pa.Table) -> pa.Table:
+    seat = seat.append_column(
+        "exchange_id",
+        pc.add(
+            seat["id"],
+            pc.subtract(seat["id"], pc.multiply(pc.divide(seat["id"], 2), 2)),
+        ),
+    )
+    joined = (
+        seat.join(
+            seat,
+            keys="exchange_id",
+            join_type="inner",
+            left_suffix="_x",
+            right_suffix="_y",
+        )
+        .filter(pc.not_equal(pc.field("id_x"), pc.field("id_y")))
+        .select(["id_x", "student_y"])
+        .rename_columns({"id_x": "id", "student_y": "student"})
+    )
+    if joined.num_rows < seat.num_rows:
+        return pa.concat_tables(
+            [joined, seat.select(["id", "student"]).take([seat.num_rows - 1])]
+        )
+    return joined
+
+
 def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
     grouped = customer.group_by("customer_id").aggregate(
         [("product_key", "count_distinct")]
@@ -301,7 +328,14 @@ def problem_1193(transactions: pa.Table) -> pa.Table:
     transactions = transactions.append_column(
         "approved_amount",
         pc.if_else(
-            pc.equal(transactions["is_approved"], pa.scalar(1)),
+            pc.equal(
+                pc.if_else(
+                    pc.equal(transactions["state"], "approved"),
+                    pa.scalar(1),
+                    pa.scalar(0),
+                ),
+                pa.scalar(1),
+            ),
             transactions["amount"],
             pa.scalar(0),
         ),
