@@ -5,6 +5,18 @@ import pyarrow.compute as pc
 
 
 def problem_176(employee: pa.Table) -> pa.Table:
+    """Write a solution to find the second highest distinct salary from the Employee
+    table. If there is no second highest salary, return null.
+
+    Parameters
+    ----------
+    logs : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     result = pa.Table.from_arrays(
         [
             pc.sort_indices(
@@ -21,6 +33,19 @@ def problem_176(employee: pa.Table) -> pa.Table:
 
 
 def problem_180(logs: pa.Table) -> pa.Table:
+    """Find all numbers that appear at least three times consecutively.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    logs : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     if logs.num_rows == 0:
         return pa.Table.from_pydict(
             {"ConsecutiveNums": [None]},
@@ -37,6 +62,20 @@ def problem_180(logs: pa.Table) -> pa.Table:
 
 
 def problem_196(person: pa.Table) -> pa.Table:
+    """Write a solution to delete all duplicate emails, keeping only one unique email
+    with the smallest id.
+
+    The final order of the Person table does not matter.
+
+    Parameters
+    ----------
+    person : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     # There isn't really a way to modify a PyArrow table in place, so we have
     # to create a new table to return the desired results.
     return (
@@ -48,6 +87,20 @@ def problem_196(person: pa.Table) -> pa.Table:
 
 
 def problem_197(weather: pa.Table) -> pa.Table:
+    """Write a solution to find all dates' id with higher temperatures compared to its
+    previous dates (yesterday).
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    weather : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     lag_table = pa.table(
         {
             "recordDate": pc.add(weather["recordDate"], pa.scalar(timedelta(days=1))),
@@ -69,6 +122,21 @@ def problem_197(weather: pa.Table) -> pa.Table:
 
 
 def problem_550(activity: pa.Table) -> pa.Table:
+    """Write a solution to report the fraction of players that logged in again on the
+    day after the day they first logged in, rounded to 2 decimal places. In other
+    words, you need to count the number of players that logged in for at least two
+    consecutive days starting from their first login date, then divide that number by
+    the total number of players.
+
+    Parameters
+    ----------
+    activity : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     grouped = activity.group_by("player_id").aggregate([("event_date", "min")])
     grouped.append_column(
         "next_date", pc.add(grouped["event_date_min"], pa.scalar(timedelta(days=1)))
