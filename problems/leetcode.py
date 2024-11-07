@@ -198,10 +198,39 @@ def problem_570(employee: pa.Table) -> pa.Table:
 
 
 def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
+    """Write a solution to report the name and bonus amount of each employee with a
+    bonus less than 1000.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pa.Table
+    bonus : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return employee.join(bonus, keys="empId").select(["name", "bonus"])
 
 
 def problem_584(customer: pa.Table) -> pa.Table:
+    """Find the names of the customer that are not referred by the customer with
+    id = 2.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    customer : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return customer.filter(
         pc.or_kleene(
             pc.is_null(customer["referee_id"]),
