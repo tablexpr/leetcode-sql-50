@@ -240,6 +240,23 @@ def problem_584(customer: pa.Table) -> pa.Table:
 
 
 def problem_595(world: pa.Table) -> pa.Table:
+    """A country is big if:
+        it has an area of at least three million (i.e., 3000000 km2), or
+        it has a population of at least twenty-five million (i.e., 25000000).
+
+    Write a solution to find the name, population, and area of the big countries.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    world : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return world.filter(
         pc.or_(
             pc.greater_equal(world["area"], pa.scalar(3_000_000)),
@@ -249,6 +266,19 @@ def problem_595(world: pa.Table) -> pa.Table:
 
 
 def problem_596(courses: pa.Table) -> pa.Table:
+    """Write a solution to find all the classes that have at least five students.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    courses : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     table_agg = courses.group_by("class").aggregate([("student", "count")])
     return table_agg.filter(
         pc.greater_equal(table_agg["student_count"], pa.scalar(5))
@@ -256,6 +286,19 @@ def problem_596(courses: pa.Table) -> pa.Table:
 
 
 def problem_610(triangle: pa.Table) -> pa.Table:
+    """Report for every three line segments whether they can form a triangle.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    triangle : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return triangle.append_column(
         "triangle",
         pc.if_else(
@@ -273,6 +316,19 @@ def problem_610(triangle: pa.Table) -> pa.Table:
 
 
 def problem_619(my_numbers: pa.Table) -> pa.Table:
+    """A single number is a number that appeared only once in the MyNumbers table.
+
+    Find the largest single number. If there is no single number, report null.
+
+    Parameters
+    ----------
+    my_numbers : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     grouped = my_numbers.group_by("num").aggregate([("num", "count")])
     grouped = grouped.filter(pc.equal(grouped["num_count"], pa.scalar(1)))
     if grouped.num_rows == 0:
@@ -286,6 +342,20 @@ def problem_619(my_numbers: pa.Table) -> pa.Table:
 
 
 def problem_620(cinema: pa.Table) -> pa.Table:
+    """Write a solution to report the movies with an odd-numbered ID and a description
+    that is not "boring".
+
+    Return the result table ordered by rating in descending order.
+
+    Parameters
+    ----------
+    cinema : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return cinema.filter(
         pc.and_(
             pc.equal(pc.bit_wise_and(cinema["id"], pa.scalar(1)), pa.scalar(1)),
@@ -295,6 +365,20 @@ def problem_620(cinema: pa.Table) -> pa.Table:
 
 
 def problem_626(seat: pa.Table) -> pa.Table:
+    """Write a solution to swap the seat id of every two consecutive students. If the
+    number of students is odd, the id of the last student is not swapped.
+
+    Return the result table ordered by id in ascending order.
+
+    Parameters
+    ----------
+    seat : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     seat = seat.append_column(
         "exchange_id",
         pc.add(
@@ -322,6 +406,21 @@ def problem_626(seat: pa.Table) -> pa.Table:
 
 
 def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
+    """Write a solution to report the customer ids from the Customer table that bought
+    all the products in the Product table.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    customer : pa.Table
+    product : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     grouped = customer.group_by("customer_id").aggregate(
         [("product_key", "count_distinct")]
     )
@@ -331,6 +430,21 @@ def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
 
 
 def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
+    """Write a solution to report the product_name, year, and price for each sale_id in
+    the Sales table.
+
+    Return the resulting table in any order.
+
+    Parameters
+    ----------
+    sales : pa.Table
+    product : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return sales.join(product, keys="product_id").select(
         ["product_name", "year", "price"]
     )
