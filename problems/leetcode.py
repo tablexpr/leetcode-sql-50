@@ -833,6 +833,24 @@ def problem_1757(products: pa.Table) -> pa.Table:
 
 
 def problem_1789(employee: pa.Table) -> pa.Table:
+    """Employees can belong to multiple departments. When the employee joins other
+    departments, they need to decide which department is their primary department. Note
+    that when an employee belongs to only one department, their primary column is 'N'.
+
+    Write a solution to report all the employees with their primary department. For
+    employees who belong to one department, report their only department.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     joined = employee.join(
         employee.group_by("employee_id").aggregate([("employee_id", "count")]),
         keys="employee_id",
@@ -846,6 +864,26 @@ def problem_1789(employee: pa.Table) -> pa.Table:
 
 
 def problem_1907(accounts: pa.Table) -> pa.Table:
+    """Write a solution to calculate the number of bank accounts for each salary
+    category. The salary categories are:
+
+    - "Low Salary": All the salaries strictly less than $20000.
+    - "Average Salary": All the salaries in the inclusive range [$20000, $50000].
+    - "High Salary": All the salaries strictly greater than $50000.
+
+    The result table must contain all three categories. If there are no accounts in a category, return 0.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    accounts : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     categories = pa.Table.from_pydict(
         {"category": ["Low Salary", "Average Salary", "High Salary"]}
     )
@@ -881,6 +919,25 @@ def problem_1907(accounts: pa.Table) -> pa.Table:
 
 
 def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
+    """The confirmation rate of a user is the number of 'confirmed' messages divided by
+    the total number of requested confirmation messages. The confirmation rate of a
+    user that did not request any confirmation messages is 0. Round the confirmation
+    rate to two decimal places.
+
+    Write a solution to find the confirmation rate of each user.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    signups : pa.Table
+    confirmations : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     joined = signups.join(
         confirmations, keys=["user_id"], join_type="left outer"
     ).select(["user_id", "action"])
@@ -908,6 +965,22 @@ def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
 
 
 def problem_1978(employees: pa.Table) -> pa.Table:
+    """Find the IDs of the employees whose salary is strictly less than $30000 and
+    whose manager left the company. When a manager leaves the company, their
+    information is deleted from the Employees table, but the reports still have their
+    manager_id set to the manager that left.
+
+    Return the result table ordered by employee_id.
+
+    Parameters
+    ----------
+    employees : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return (
         employees.filter(
             pc.and_(
@@ -926,6 +999,19 @@ def problem_1978(employees: pa.Table) -> pa.Table:
 
 
 def problem_2356(teacher: pa.Table) -> pa.Table:
+    """Write a solution to calculate the number of unique subjects each teacher teaches in the university.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    teacher : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return (
         teacher.group_by("teacher_id")
         .aggregate([("subject_id", "count_distinct")])
