@@ -451,6 +451,21 @@ def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
 
 
 def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
+    """Write an SQL query that reports the average experience years of all the
+    employees for each project, rounded to 2 digits.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    project : pa.Table
+    employee : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     joined = (
         project.join(employee, keys="employee_id", join_type="inner")
         .group_by("project_id")
@@ -462,6 +477,21 @@ def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
 
 
 def problem_1141(activity: pa.Table) -> pa.Table:
+    """Write a solution to find the daily active user count for a period of 30 days
+    ending 2019-07-27 inclusively. A user was active on someday if they made at least
+    one activity on that day.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    activity : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return (
         activity.filter(
             pc.and_(
@@ -485,6 +515,20 @@ def problem_1141(activity: pa.Table) -> pa.Table:
 
 
 def problem_1148(views: pa.Table) -> pa.Table:
+    """Write a solution to find all the authors that viewed at least one of their own
+    articles.
+
+    Return the result table sorted by id in ascending order.
+
+    Parameters
+    ----------
+    views : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return (
         views.filter(pc.equal(views["author_id"], views["viewer_id"]))
         .select(["author_id"])
@@ -496,6 +540,20 @@ def problem_1148(views: pa.Table) -> pa.Table:
 
 
 def problem_1164(products: pa.Table) -> pa.Table:
+    """Write a solution to find the prices of all products on 2019-08-16. Assume the
+    price of all products before any change is 10.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     table_lte = products.filter(
         pc.less_equal(products["change_date"], datetime(2019, 8, 16))
     )
@@ -527,6 +585,21 @@ def problem_1164(products: pa.Table) -> pa.Table:
 
 
 def problem_1193(transactions: pa.Table) -> pa.Table:
+    """Write an SQL query to find for each month and country, the number of
+    transactions and their total amount, the number of approved transactions and their
+    total amount.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    transactions : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     transactions = transactions.append_column(
         "month", pc.strftime(transactions["trans_date"], "%Y-%m")
     )
@@ -573,6 +646,24 @@ def problem_1193(transactions: pa.Table) -> pa.Table:
 
 
 def problem_1204(queue: pa.Table) -> pa.Table:
+    """There is a queue of people waiting to board a bus. However, the bus has a weight
+    limit of 1000 kilograms, so there may be some people who cannot board.
+
+    Write a solution to find the person_name of the last person that can fit on the bus
+    without exceeding the weight limit. The test cases are generated such that the
+    first person does not exceed the weight limit.
+
+    Note that only one person can board the bus at any given turn.
+
+    Parameters
+    ----------
+    queue : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     queue = queue.sort_by("turn")
     queue = queue.append_column("weight_cumsum", pc.cumulative_sum(queue["weight"]))
     queue = queue.filter(pc.less_equal(queue["weight_cumsum"], pa.scalar(1000)))
@@ -580,6 +671,25 @@ def problem_1204(queue: pa.Table) -> pa.Table:
 
 
 def problem_1211(queries: pa.Table) -> pa.Table:
+    """Write a solution to find each query_name, the quality and poor_query_percentage.
+    We define query quality as:
+        The average of the ratio between query rating and its position.
+    We also define poor query percentage as:
+        The percentage of all queries with rating less than 3.
+
+    Both quality and poor_query_percentage should be rounded to 2 decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    queries : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     queries = queries.append_column(
         "quality", pc.divide(queries["rating"], queries["position"])
     ).append_column(
@@ -601,6 +711,22 @@ def problem_1211(queries: pa.Table) -> pa.Table:
 
 
 def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
+    """Write a solution to find the average selling price for each product.
+    average_price should be rounded to 2 decimal places. If a product does not have any
+    sold units, its average selling price is assumed to be 0.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    prices : pa.Table
+    units_sold : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     joined = prices.join(units_sold, keys="product_id")
     joined = joined.filter(
         pc.or_kleene(
@@ -634,6 +760,21 @@ def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
 def problem_1280(
     students: pa.Table, subjects: pa.Table, examinations: pa.Table
 ) -> pa.Table:
+    """Write a solution to find the number of times each student attended each exam.
+
+    Return the result table ordered by student_id and subject_name.
+
+    Parameters
+    ----------
+    students : pa.Table
+    subjects : pa.Table
+    examinations : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     students = students.append_column("key", pa.array([1] * len(students)))
     subjects = subjects.append_column("key", pa.array([1] * len(subjects)))
     examinations_agg = (
@@ -657,6 +798,21 @@ def problem_1280(
 
 
 def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
+    """Write a solution to get the names of products that have at least 100 units
+    ordered in February 2020 and their amount.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pa.Table
+    orders : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     orders_agg = (
         orders.filter(
             pc.equal(pc.strftime(pc.field("order_date"), "%Y-%m"), pa.scalar("2020-02"))
@@ -673,6 +829,25 @@ def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
 
 
 def problem_1341(movies: pa.Table, users: pa.Table, movie_rating: pa.Table) -> pa.Table:
+    """Write a solution to:
+
+    Find the name of the user who has rated the greatest number of movies. In case of a
+    tie, return the lexicographically smaller user name.
+
+    Find the movie name with the highest average rating in February 2020. In case of a
+    tie, return the lexicographically smaller movie name.
+
+    Parameters
+    ----------
+    movies : pa.Table
+    users : pa.Table
+    movie_rating : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     user_most_ratings = (
         movie_rating.join(users, keys="user_id", join_type="inner")
         .group_by(["user_id", "name"])
@@ -754,6 +929,21 @@ def problem_1527(patients: pa.Table) -> pa.Table:
 
 
 def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
+    """Write a solution to find the IDs of the users who visited without making any
+    transactions and the number of times they made these types of visits.
+
+    Return the result table sorted in any order.
+
+    Parameters
+    ----------
+    visits : pa.Table
+    transactions : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     joined = visits.join(transactions, keys="visit_id", join_type="left outer")
     return (
         joined.filter(pc.is_null(joined["transaction_id"]))
@@ -764,6 +954,22 @@ def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
 
 
 def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
+    """Write a solution to find the percentage of the users registered in each contest
+    rounded to two decimals.
+
+    Return the result table ordered by percentage in descending order. In case of a
+    tie, order it by contest_id in ascending order.
+
+    Parameters
+    ----------
+    users : pa.Table
+    register : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     register_agg = register.group_by("contest_id").aggregate([("user_id", "count")])
     total_users = pa.scalar(float(users.num_rows))
     return register_agg.set_column(
@@ -777,6 +983,28 @@ def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
 
 
 def problem_1661(activity: pa.Table) -> pa.Table:
+    """There is a factory website that has several machines each running the same
+    number of processes. Write a solution to find the average time each machine takes
+    to complete a process.
+
+    The time to complete a process is the 'end' timestamp minus the 'start' timestamp.
+    The average time is calculated by the total time to complete every process on the
+    machine divided by the number of processes that were run.
+
+    The resulting table should have the machine_id along with the average time as
+    processing_time, which should be rounded to 3 decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    activity : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     table_starts = activity.filter(
         pc.equal(activity["activity_type"], pa.scalar("start"))
     ).drop("activity_type")
@@ -803,18 +1031,60 @@ def problem_1661(activity: pa.Table) -> pa.Table:
 
 
 def problem_1667(users: pa.Table) -> pa.Table:
+    """Write a solution to fix the names so that only the first character is uppercase
+    and the rest are lowercase.
+
+    Return the result table ordered by user_id.
+
+    Parameters
+    ----------
+    users : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return users.set_column(1, "name", pc.ascii_capitalize(users["name"])).sort_by(
         "user_id"
     )
 
 
 def problem_1683(tweets: pa.Table) -> pa.Table:
+    """Write a solution to find the IDs of the invalid tweets. The tweet is invalid if
+    the number of characters used in the content of the tweet is strictly greater than
+    15.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    tweets : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return tweets.filter(
         pc.greater(pc.utf8_length(tweets["content"]), pa.scalar(15))
     ).select(["tweet_id"])
 
 
 def problem_1729(followers: pa.Table) -> pa.Table:
+    """Write a solution that will, for each user, return the number of followers.
+
+    Return the result table ordered by user_id in ascending order.
+
+    Parameters
+    ----------
+    followers : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return (
         followers.group_by("user_id")
         .aggregate([("follower_id", "count")])
@@ -824,6 +1094,20 @@ def problem_1729(followers: pa.Table) -> pa.Table:
 
 
 def problem_1757(products: pa.Table) -> pa.Table:
+    """Write a solution to find the ids of products that are both low fat and
+    recyclable.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pa.Table
+
+    Returns
+    -------
+    pa.Table
+
+    """
     return products.filter(
         pc.and_(
             pc.equal(products["low_fats"], pa.scalar("Y")),
