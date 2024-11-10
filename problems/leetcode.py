@@ -5,8 +5,9 @@ import pyarrow.compute as pc
 
 
 def problem_176(employee: pa.Table) -> pa.Table:
-    """Write a solution to find the second highest distinct salary from the Employee
-    table. If there is no second highest salary, return null.
+    """Find the second highest distinct salary from the Employee table.
+
+    If there is no second highest salary, return null.
 
     Parameters
     ----------
@@ -177,7 +178,7 @@ def problem_550(activity: pa.Table) -> pa.Table:
 
 
 def problem_570(employee: pa.Table) -> pa.Table:
-    """Write a solution to find managers with at least five direct reports.
+    """Find managers with at least five direct reports.
 
     Return the result table in any order.
 
@@ -198,8 +199,7 @@ def problem_570(employee: pa.Table) -> pa.Table:
 
 
 def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
-    """Write a solution to report the name and bonus amount of each employee with a
-    bonus less than 1000.
+    """Report the name and bonus amount of each employee with a bonus less than 1000.
 
     Return the result table in any order.
 
@@ -240,11 +240,11 @@ def problem_584(customer: pa.Table) -> pa.Table:
 
 
 def problem_595(world: pa.Table) -> pa.Table:
-    """A country is big if:
+    """Find the name, population, and area of the big countries.
+
+    A country is big if:
         it has an area of at least three million (i.e., 3000000 km2), or
         it has a population of at least twenty-five million (i.e., 25000000).
-
-    Write a solution to find the name, population, and area of the big countries.
 
     Return the result table in any order.
 
@@ -266,7 +266,7 @@ def problem_595(world: pa.Table) -> pa.Table:
 
 
 def problem_596(courses: pa.Table) -> pa.Table:
-    """Write a solution to find all the classes that have at least five students.
+    """Find all the classes that have at least five students.
 
     Return the result table in any order.
 
@@ -316,9 +316,10 @@ def problem_610(triangle: pa.Table) -> pa.Table:
 
 
 def problem_619(my_numbers: pa.Table) -> pa.Table:
-    """A single number is a number that appeared only once in the MyNumbers table.
+    """Find the largest single number.
 
-    Find the largest single number. If there is no single number, report null.
+    A single number is a number that appeared only once in the MyNumbers table. If
+    there is no single number, report null.
 
     Parameters
     ----------
@@ -671,7 +672,8 @@ def problem_1204(queue: pa.Table) -> pa.Table:
 
 
 def problem_1211(queries: pa.Table) -> pa.Table:
-    """Write a solution to find each query_name, the quality and poor_query_percentage.
+    """Find each query_name, the quality and poor_query_percentage.
+
     We define query quality as:
         The average of the ratio between query rating and its position.
     We also define poor query percentage as:
@@ -760,7 +762,7 @@ def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
 def problem_1280(
     students: pa.Table, subjects: pa.Table, examinations: pa.Table
 ) -> pa.Table:
-    """Write a solution to find the number of times each student attended each exam.
+    """Find the number of times each student attended each exam.
 
     Return the result table ordered by student_id and subject_name.
 
@@ -954,11 +956,11 @@ def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
 
 
 def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
-    """Write a solution to find the percentage of the users registered in each contest
-    rounded to two decimals.
+    """Find the percentage of the users registered in each contest.
 
     Return the result table ordered by percentage in descending order. In case of a
-    tie, order it by contest_id in ascending order.
+    tie, order it by contest_id in ascending order. The result should be rounded to two
+    decimals.
 
     Parameters
     ----------
@@ -983,9 +985,10 @@ def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
 
 
 def problem_1661(activity: pa.Table) -> pa.Table:
-    """There is a factory website that has several machines each running the same
-    number of processes. Write a solution to find the average time each machine takes
-    to complete a process.
+    """Find the average time each machine takes to complete a process.
+
+    There is a factory website that has several machines each running the same
+    number of processes.
 
     The time to complete a process is the 'end' timestamp minus the 'start' timestamp.
     The average time is calculated by the total time to complete every process on the
@@ -1031,8 +1034,9 @@ def problem_1661(activity: pa.Table) -> pa.Table:
 
 
 def problem_1667(users: pa.Table) -> pa.Table:
-    """Write a solution to fix the names so that only the first character is uppercase
-    and the rest are lowercase.
+    """Fix the names so that only the first character is uppercase.
+
+    The remaining characters should be lowercase.
 
     Return the result table ordered by user_id.
 
@@ -1051,9 +1055,10 @@ def problem_1667(users: pa.Table) -> pa.Table:
 
 
 def problem_1683(tweets: pa.Table) -> pa.Table:
-    """Write a solution to find the IDs of the invalid tweets. The tweet is invalid if
-    the number of characters used in the content of the tweet is strictly greater than
-    15.
+    """Find the IDs of the invalid tweets.
+
+    The tweet is invalid if the number of characters used in the content of the tweet
+    is strictly greater than 15.
 
     Return the result table in any order.
 
@@ -1072,7 +1077,7 @@ def problem_1683(tweets: pa.Table) -> pa.Table:
 
 
 def problem_1729(followers: pa.Table) -> pa.Table:
-    """Write a solution that will, for each user, return the number of followers.
+    """Return the number of followers for each user.
 
     Return the result table ordered by user_id in ascending order.
 
@@ -1094,8 +1099,7 @@ def problem_1729(followers: pa.Table) -> pa.Table:
 
 
 def problem_1757(products: pa.Table) -> pa.Table:
-    """Write a solution to find the ids of products that are both low fat and
-    recyclable.
+    """Find the ids of products that are both low fat and recyclable.
 
     Return the result table in any order.
 
@@ -1117,12 +1121,13 @@ def problem_1757(products: pa.Table) -> pa.Table:
 
 
 def problem_1789(employee: pa.Table) -> pa.Table:
-    """Employees can belong to multiple departments. When the employee joins other
+    """Report all the employees with their primary department.
+
+    Employees can belong to multiple departments. When the employee joins other
     departments, they need to decide which department is their primary department. Note
     that when an employee belongs to only one department, their primary column is 'N'.
 
-    Write a solution to report all the employees with their primary department. For
-    employees who belong to one department, report their only department.
+    For employees who belong to one department, report their only department.
 
     Return the result table in any order.
 
