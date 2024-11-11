@@ -1153,8 +1153,9 @@ def problem_1789(employee: pa.Table) -> pa.Table:
 
 
 def problem_1907(accounts: pa.Table) -> pa.Table:
-    """Write a solution to calculate the number of bank accounts for each salary
-    category. The salary categories are:
+    """Calculate the number of bank accounts for each salary category.
+
+    The salary categories are:
 
     - "Low Salary": All the salaries strictly less than $20000.
     - "Average Salary": All the salaries in the inclusive range [$20000, $50000].
@@ -1208,12 +1209,12 @@ def problem_1907(accounts: pa.Table) -> pa.Table:
 
 
 def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
-    """The confirmation rate of a user is the number of 'confirmed' messages divided by
+    """Find the confirmation rate of each user.
+
+    The confirmation rate of a user is the number of 'confirmed' messages divided by
     the total number of requested confirmation messages. The confirmation rate of a
     user that did not request any confirmation messages is 0. Round the confirmation
     rate to two decimal places.
-
-    Write a solution to find the confirmation rate of each user.
 
     Return the result table in any order.
 
@@ -1254,10 +1255,10 @@ def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
 
 
 def problem_1978(employees: pa.Table) -> pa.Table:
-    """Find the IDs of the employees whose salary is strictly less than $30000 and
-    whose manager left the company. When a manager leaves the company, their
-    information is deleted from the Employees table, but the reports still have their
-    manager_id set to the manager that left.
+    """Find employees whose salary is less than $30000 and whose manager left.
+
+    When a manager leaves the company, their information is deleted from the Employees
+    table, but the reports still have their manager_id set to the manager that left.
 
     Return the result table ordered by employee_id.
 
@@ -1288,7 +1289,7 @@ def problem_1978(employees: pa.Table) -> pa.Table:
 
 
 def problem_2356(teacher: pa.Table) -> pa.Table:
-    """Write a solution to calculate the number of unique subjects each teacher teaches in the university.
+    """Calculate the number of unique subjects each teacher teaches in the university.
 
     Return the result table in any order.
 
