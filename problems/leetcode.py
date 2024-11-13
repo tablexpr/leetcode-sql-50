@@ -713,7 +713,8 @@ def problem_1211(queries: pa.Table) -> pa.Table:
 
 
 def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
-    """Write a solution to find the average selling price for each product.
+    """Find the average selling price for each product.
+
     average_price should be rounded to 2 decimal places. If a product does not have any
     sold units, its average selling price is assumed to be 0.
 
@@ -887,8 +888,9 @@ def problem_1341(movies: pa.Table, users: pa.Table, movie_rating: pa.Table) -> p
 
 
 def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
-    """Write a solution to show the unique ID of each user, If a user does not have a
-    unique ID replace just show null.
+    """Find the unique ID of each user,.
+
+    If a user does not have a unique ID replace just show null.
 
     Return the result table in any order.
 
@@ -908,8 +910,10 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
 
 
 def problem_1527(patients: pa.Table) -> pa.Table:
-    """Write a solution to find the patient_id, patient_name, and conditions of the
-    patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
+    """Find the patients who have Type I Diabetes.
+
+    Return the patient_id, patient_name, and conditions. Type I Diabetes always starts
+    with DIAB1 prefix.
 
     Return the result table in any order.
 
@@ -931,8 +935,7 @@ def problem_1527(patients: pa.Table) -> pa.Table:
 
 
 def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
-    """Write a solution to find the IDs of the users who visited without making any
-    transactions and the number of times they made these types of visits.
+    """Find users who visited without transactions and count their visit frequency.
 
     Return the result table sorted in any order.
 
