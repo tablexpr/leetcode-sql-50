@@ -12,6 +12,7 @@ def problem_176(employee: pa.Table) -> pa.Table:
     Parameters
     ----------
     logs : pa.Table
+        The table containing employee salary data.
 
     Returns
     -------
@@ -801,15 +802,16 @@ def problem_1280(
 
 
 def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
-    """Write a solution to get the names of products that have at least 100 units
-    ordered in February 2020 and their amount.
+    """Find products that have at least 100 units ordered in February 2020.
 
     Return the result table in any order.
 
     Parameters
     ----------
     products : pa.Table
+        The table containing product data.
     orders : pa.Table
+        The table containing order data.
 
     Returns
     -------
@@ -832,19 +834,22 @@ def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
 
 
 def problem_1341(movies: pa.Table, users: pa.Table, movie_rating: pa.Table) -> pa.Table:
-    """Write a solution to:
+    """Find the top user by ratings and the highest-rated movie in February 2020.
 
-    Find the name of the user who has rated the greatest number of movies. In case of a
-    tie, return the lexicographically smaller user name.
+    Identify the user who has rated the most movies. In case of a tie, return the
+    lexicographically smaller user name.
 
-    Find the movie name with the highest average rating in February 2020. In case of a
+    Identify the movie with the highest average rating in February 2020. In case of a
     tie, return the lexicographically smaller movie name.
 
     Parameters
     ----------
     movies : pa.Table
+        The table containing movie data.
     users : pa.Table
+        The table containing user data.
     movie_rating : pa.Table
+        The table containing movie rating data.
 
     Returns
     -------
@@ -1268,6 +1273,7 @@ def problem_1978(employees: pa.Table) -> pa.Table:
     Parameters
     ----------
     employees : pa.Table
+        The table containing employee data.
 
     Returns
     -------
