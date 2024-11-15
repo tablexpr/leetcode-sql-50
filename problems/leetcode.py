@@ -432,8 +432,7 @@ def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
 
 
 def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
-    """Write a solution to report the product_name, year, and price for each sale_id in
-    the Sales table.
+    """Report the product_name, year, and price for each sale_id in the Sales table.
 
     Return the resulting table in any order.
 
@@ -587,9 +586,10 @@ def problem_1164(products: pa.Table) -> pa.Table:
 
 
 def problem_1193(transactions: pa.Table) -> pa.Table:
-    """Write an SQL query to find for each month and country, the number of
-    transactions and their total amount, the number of approved transactions and their
-    total amount.
+    """Find monthly, country-wise transaction counts, totals, approved counts and sums.
+
+    Find for each month and country, the number of transactions and their total amount,
+    the number of approved transactions and their total amount.
 
     Return the result table in any order.
 
@@ -925,6 +925,7 @@ def problem_1527(patients: pa.Table) -> pa.Table:
     Parameters
     ----------
     patients : pa.Table
+        A containing information of the patients in the hospital.
 
     Returns
     -------
@@ -1142,6 +1143,7 @@ def problem_1789(employee: pa.Table) -> pa.Table:
     Parameters
     ----------
     employee : pa.Table
+        A table containing employee and department data.
 
     Returns
     -------
@@ -1176,6 +1178,7 @@ def problem_1907(accounts: pa.Table) -> pa.Table:
     Parameters
     ----------
     accounts : pa.Table
+        A table containing the account data.
 
     Returns
     -------
@@ -1229,7 +1232,9 @@ def problem_1934(signups: pa.Table, confirmations: pa.Table) -> pa.Table:
     Parameters
     ----------
     signups : pa.Table
+        A table containing the user signups.
     confirmations : pa.Table
+        A table containing the user confirmation messages.
 
     Returns
     -------
