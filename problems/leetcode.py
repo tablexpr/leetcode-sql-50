@@ -1,3 +1,5 @@
+"""Solutions to LeetCode problems in PyArrow."""
+
 from datetime import datetime, timedelta
 
 import pyarrow as pa
@@ -11,7 +13,7 @@ def problem_176(employee: pa.Table) -> pa.Table:
 
     Parameters
     ----------
-    logs : pa.Table
+    employee : pa.Table
         The table containing employee salary data.
 
     Returns
@@ -42,6 +44,7 @@ def problem_180(logs: pa.Table) -> pa.Table:
     Parameters
     ----------
     logs : pa.Table
+        A table containing sequential ids and numbers.
 
     Returns
     -------
@@ -64,7 +67,9 @@ def problem_180(logs: pa.Table) -> pa.Table:
 
 
 def problem_196(person: pa.Table) -> pa.Table:
-    """Write a solution to delete all duplicate emails, keeping only one unique email
+    """Delete duplicate emails, keeping one unique email with the smallest ID.
+
+    Write a solution to delete all duplicate emails, keeping only one unique email
     with the smallest id.
 
     The final order of the Person table does not matter.
@@ -72,6 +77,7 @@ def problem_196(person: pa.Table) -> pa.Table:
     Parameters
     ----------
     person : pa.Table
+        A table containing email addresses.
 
     Returns
     -------
@@ -89,7 +95,9 @@ def problem_196(person: pa.Table) -> pa.Table:
 
 
 def problem_197(weather: pa.Table) -> pa.Table:
-    """Write a solution to find all dates' id with higher temperatures compared to its
+    """Find IDs of dates with higher temperatures than the previous day.
+
+    Write a solution to find all dates' id with higher temperatures compared to its
     previous dates (yesterday).
 
     Return the result table in any order.
@@ -97,6 +105,7 @@ def problem_197(weather: pa.Table) -> pa.Table:
     Parameters
     ----------
     weather : pa.Table
+        A table contains information about the temperature on a certain day.
 
     Returns
     -------
@@ -124,7 +133,9 @@ def problem_197(weather: pa.Table) -> pa.Table:
 
 
 def problem_550(activity: pa.Table) -> pa.Table:
-    """Write a solution to report the fraction of players that logged in again on the
+    """Report the fraction of players who logged in the day after their first login.
+
+    Write a solution to report the fraction of players that logged in again on the
     day after the day they first logged in, rounded to 2 decimal places. In other
     words, you need to count the number of players that logged in for at least two
     consecutive days starting from their first login date, then divide that number by
@@ -133,6 +144,7 @@ def problem_550(activity: pa.Table) -> pa.Table:
     Parameters
     ----------
     activity : pa.Table
+        This table shows the activity of players of some games.
 
     Returns
     -------
@@ -186,6 +198,7 @@ def problem_570(employee: pa.Table) -> pa.Table:
     Parameters
     ----------
     employee : pa.Table
+        Table lists employee names, departments, and their manager's ID.
 
     Returns
     -------
@@ -207,7 +220,9 @@ def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
     Parameters
     ----------
     employee : pa.Table
+        Table shows employee names, IDs, salaries, and their manager's ID.
     bonus : pa.Table
+        Table contains the id of an employee and their respective bonus.
 
     Returns
     -------
@@ -218,14 +233,14 @@ def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
 
 
 def problem_584(customer: pa.Table) -> pa.Table:
-    """Find the names of the customer that are not referred by the customer with
-    id = 2.
+    """Find names of customers not referred by the customer with ID = 2.
 
     Return the result table in any order.
 
     Parameters
     ----------
     customer : pa.Table
+        Table shows customer IDs, names, and the ID of the customer who referred them.
 
     Returns
     -------
@@ -252,6 +267,7 @@ def problem_595(world: pa.Table) -> pa.Table:
     Parameters
     ----------
     world : pa.Table
+        Table lists countries with their continent, area, population, and GDP details.
 
     Returns
     -------
@@ -274,6 +290,7 @@ def problem_596(courses: pa.Table) -> pa.Table:
     Parameters
     ----------
     courses : pa.Table
+        Table indicates the name of a student and the class in which they are enrolled.
 
     Returns
     -------
@@ -294,6 +311,7 @@ def problem_610(triangle: pa.Table) -> pa.Table:
     Parameters
     ----------
     triangle : pa.Table
+        Table contains the lengths of three line segments (x, y, z).
 
     Returns
     -------
@@ -325,6 +343,7 @@ def problem_619(my_numbers: pa.Table) -> pa.Table:
     Parameters
     ----------
     my_numbers : pa.Table
+        Table containing numbers.
 
     Returns
     -------
@@ -344,14 +363,14 @@ def problem_619(my_numbers: pa.Table) -> pa.Table:
 
 
 def problem_620(cinema: pa.Table) -> pa.Table:
-    """Write a solution to report the movies with an odd-numbered ID and a description
-    that is not "boring".
+    """Report movies with odd IDs and descriptions not equal to "boring".
 
     Return the result table ordered by rating in descending order.
 
     Parameters
     ----------
     cinema : pa.Table
+        Table contains information about the name of a movie, genre, and its rating.
 
     Returns
     -------
@@ -367,7 +386,9 @@ def problem_620(cinema: pa.Table) -> pa.Table:
 
 
 def problem_626(seat: pa.Table) -> pa.Table:
-    """Write a solution to swap the seat id of every two consecutive students. If the
+    """Swap seat IDs of consecutive students; leave last ID unchanged if count is odd.
+
+    Write a solution to swap the seat id of every two consecutive students. If the
     number of students is odd, the id of the last student is not swapped.
 
     Return the result table ordered by id in ascending order.
@@ -375,6 +396,7 @@ def problem_626(seat: pa.Table) -> pa.Table:
     Parameters
     ----------
     seat : pa.Table
+        Table indicates the name and the ID of a student.
 
     Returns
     -------
@@ -408,15 +430,16 @@ def problem_626(seat: pa.Table) -> pa.Table:
 
 
 def problem_1045(customer: pa.Table, product: pa.Table) -> pa.Table:
-    """Write a solution to report the customer ids from the Customer table that bought
-    all the products in the Product table.
+    """Report the customer ids that bought all the products in the Product table.
 
     Return the result table in any order.
 
     Parameters
     ----------
     customer : pa.Table
+        Table of customer product purchases.
     product : pa.Table
+        Defines unique products with product_key as the primary key.
 
     Returns
     -------
@@ -439,7 +462,9 @@ def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
     Parameters
     ----------
     sales : pa.Table
+        This table shows a sale on the product product_id in a certain year.
     product : pa.Table
+        This table indicates the product name of each product.
 
     Returns
     -------
@@ -452,15 +477,16 @@ def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
 
 
 def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
-    """Write an SQL query that reports the average experience years of all the
-    employees for each project, rounded to 2 digits.
+    """Report each project's average employee experience, rounded to 2 digits.
 
     Return the result table in any order.
 
     Parameters
     ----------
     project : pa.Table
+        Table shows employees (employee_id) working on projects (project_id).
     employee : pa.Table
+        This table contains information about one employee.
 
     Returns
     -------
@@ -478,15 +504,17 @@ def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
 
 
 def problem_1141(activity: pa.Table) -> pa.Table:
-    """Write a solution to find the daily active user count for a period of 30 days
-    ending 2019-07-27 inclusively. A user was active on someday if they made at least
-    one activity on that day.
+    """Find the daily active user count for a period of 30 days.
+
+    The period ends on 2019-07-27 inclusively. A user was active on someday if they
+    made at least one activity on that day.
 
     Return the result table in any order.
 
     Parameters
     ----------
     activity : pa.Table
+        The table shows the user activities for a social media website.
 
     Returns
     -------
@@ -516,14 +544,14 @@ def problem_1141(activity: pa.Table) -> pa.Table:
 
 
 def problem_1148(views: pa.Table) -> pa.Table:
-    """Write a solution to find all the authors that viewed at least one of their own
-    articles.
+    """Find all the authors that viewed at least one of their own articles.
 
     Return the result table sorted by id in ascending order.
 
     Parameters
     ----------
     views : pa.Table
+        Table logs viewers viewing articles by authors on specific dates.
 
     Returns
     -------
@@ -541,14 +569,16 @@ def problem_1148(views: pa.Table) -> pa.Table:
 
 
 def problem_1164(products: pa.Table) -> pa.Table:
-    """Write a solution to find the prices of all products on 2019-08-16. Assume the
-    price of all products before any change is 10.
+    """Find the prices of all products on 2019-08-16.
+
+    Assume the price of all products before any change is 10.
 
     Return the result table in any order.
 
     Parameters
     ----------
     products : pa.Table
+        Table tracks product price changes with new prices and corresponding dates.
 
     Returns
     -------
@@ -596,6 +626,7 @@ def problem_1193(transactions: pa.Table) -> pa.Table:
     Parameters
     ----------
     transactions : pa.Table
+        The table has information about incoming transactions.
 
     Returns
     -------
@@ -648,18 +679,17 @@ def problem_1193(transactions: pa.Table) -> pa.Table:
 
 
 def problem_1204(queue: pa.Table) -> pa.Table:
-    """There is a queue of people waiting to board a bus. However, the bus has a weight
-    limit of 1000 kilograms, so there may be some people who cannot board.
+    """Find the last person who can board the bus without exceeding the weight limit.
 
-    Write a solution to find the person_name of the last person that can fit on the bus
-    without exceeding the weight limit. The test cases are generated such that the
-    first person does not exceed the weight limit.
+    There is a queue of people waiting to board a bus. However, the bus has a weight
+    limit of 1000 kilograms, so there may be some people who cannot board.
 
     Note that only one person can board the bus at any given turn.
 
     Parameters
     ----------
     queue : pa.Table
+        This table has the information about all people waiting for a bus.
 
     Returns
     -------
@@ -687,6 +717,7 @@ def problem_1211(queries: pa.Table) -> pa.Table:
     Parameters
     ----------
     queries : pa.Table
+        This table contains information collected from some queries on a database.
 
     Returns
     -------
@@ -724,7 +755,9 @@ def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
     Parameters
     ----------
     prices : pa.Table
+        Table shows product prices by product_id for a date range.
     units_sold : pa.Table
+        Table indicates the date, units, and product_id of each product sold.
 
     Returns
     -------
@@ -771,8 +804,11 @@ def problem_1280(
     Parameters
     ----------
     students : pa.Table
+        This table contains the ID and the name of one student in the school.
     subjects : pa.Table
+        This table contains the name of one subject in the school.
     examinations : pa.Table
+        This table indicates that a student attended the exam of subject_name.
 
     Returns
     -------
@@ -902,7 +938,9 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
     Parameters
     ----------
     employees : pa.Table
+        This table contains the id and the name of an employee in a company.
     employee_uni : pa.Table
+        Contains the id and the corresponding unique id of an employee in the company.
 
     Returns
     -------
@@ -948,7 +986,9 @@ def problem_1581(visits: pa.Table, transactions: pa.Table) -> pa.Table:
     Parameters
     ----------
     visits : pa.Table
+        Table containing information about the customers who visited the mall.
     transactions : pa.Table
+        Table containing information about the transactions made during the visit_id.
 
     Returns
     -------
@@ -974,7 +1014,9 @@ def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
     Parameters
     ----------
     users : pa.Table
+        This table contains the name and the id of a user.
     register : pa.Table
+        This table contains the id of a user and the contest they registered into.
 
     Returns
     -------
@@ -1011,6 +1053,7 @@ def problem_1661(activity: pa.Table) -> pa.Table:
     Parameters
     ----------
     activity : pa.Table
+        Table logs machine process activities with unique machine_id, process_id, type.
 
     Returns
     -------
@@ -1052,6 +1095,7 @@ def problem_1667(users: pa.Table) -> pa.Table:
     Parameters
     ----------
     users : pa.Table
+        This table contains the ID and the name of the user.
 
     Returns
     -------
@@ -1074,6 +1118,7 @@ def problem_1683(tweets: pa.Table) -> pa.Table:
     Parameters
     ----------
     tweets : pa.Table
+        This table contains all the tweets in a social media app.
 
     Returns
     -------
@@ -1093,6 +1138,7 @@ def problem_1729(followers: pa.Table) -> pa.Table:
     Parameters
     ----------
     followers : pa.Table
+        Table records user-follower relationships in a social media app.
 
     Returns
     -------
@@ -1115,6 +1161,7 @@ def problem_1757(products: pa.Table) -> pa.Table:
     Parameters
     ----------
     products : pa.Table
+        Table stores products with low_fats and recyclable, keyed by product_id.
 
     Returns
     -------
@@ -1310,6 +1357,7 @@ def problem_2356(teacher: pa.Table) -> pa.Table:
     Parameters
     ----------
     teacher : pa.Table
+        Table links teachers, subjects, and departments with unique subject-dept pairs.
 
     Returns
     -------
