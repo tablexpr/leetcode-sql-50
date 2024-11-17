@@ -14,6 +14,7 @@ from problems.leetcode import (
     problem_584,
     problem_595,
     problem_596,
+    problem_602,
     problem_610,
     problem_619,
     problem_620,
@@ -510,6 +511,33 @@ def test_problem_596(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("class", pa.string())])
     )
     result = problem_596(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"requester_id": [1, 1, 2, 3], "accepter_id": [2, 3, 3, 4]},
+            {"id": [3], "num": [3]},
+            id="balanced",
+        ),
+        pytest.param(
+            {"requester_id": [1, 1, 1, 1], "accepter_id": [2, 3, 4, 5]},
+            {"id": [1], "num": [4]},
+            id="three_ids_1_requester",
+        ),
+        pytest.param(
+            {"requester_id": [2, 3, 4, 5], "accepter_id": [1, 1, 1, 1]},
+            {"id": [1], "num": [4]},
+            id="three_ids_1_accepter",
+        ),
+    ],
+)
+def test_problem_602(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_602(table)
     assert result.equals(expected_table)
 
 
