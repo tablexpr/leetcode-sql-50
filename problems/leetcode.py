@@ -303,6 +303,34 @@ def problem_596(courses: pa.Table) -> pa.Table:
     ).select(["class"])
 
 
+def problem_602(request_accepted: pa.Table) -> pa.Table:
+    """Find who has the most number of friends, report who and how many.
+
+    There can be no ties.
+
+    Parameters
+    ----------
+    request_accepted : pa.Table
+        Table shows the friend requests that have been accepted.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    counted = pa.concat_arrays(
+        [
+            request_accepted["requester_id"].combine_chunks(),
+            request_accepted["accepter_id"].combine_chunks(),
+        ]
+    ).value_counts()
+    return (
+        pa.Table.from_arrays([counted.field(0), counted.field(1)], names=["id", "num"])
+        .sort_by([("num", "descending")])
+        .take([0])
+    )
+
+
 def problem_610(triangle: pa.Table) -> pa.Table:
     """Report for every three line segments whether they can form a triangle.
 
