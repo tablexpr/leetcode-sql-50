@@ -255,6 +255,43 @@ def problem_584(customer: pa.Table) -> pa.Table:
     ).select(["name"])
 
 
+def problem_585(insurance: pa.Table) -> pa.Table:
+    """Report the sum of all total investment values in 2016 given conditions.
+
+    Policyholder must have the same tiv_2015 value as one or more other policyholders,
+    and are not located in the same city as any other policyholder.
+    (i.e., the (lat, lon) attribute pairs must be unique).
+
+    Round tiv_2016 to two decimal places.
+
+    Parameters
+    ----------
+    insurance : pa.Table
+        Table contains information about policy investments.
+
+    Returns
+    -------
+    pa.Table
+    """
+    dropped_duplicates = (
+        insurance.group_by(["lat", "lon"])
+        .aggregate([("pid", "count")])
+        .filter(pc.greater(pc.field("pid_count"), pa.scalar(1)))
+        .join(insurance, keys=["lat", "lon"], join_type="inner")
+        .drop("pid_count")
+        .join(insurance, keys=["lat", "lon"], join_type="right anti")
+    )
+    grouped = (
+        insurance.group_by("tiv_2015")
+        .aggregate([("pid", "count")])
+        .filter(pc.greater(pc.field("pid_count"), pa.scalar(1)))
+    )
+    joined = dropped_duplicates.join(grouped, keys=["tiv_2015"], join_type="inner")
+    return pa.Table.from_arrays(
+        [pa.array([pc.sum(joined["tiv_2016"])])], names=["tiv_2016"]
+    )
+
+
 def problem_595(world: pa.Table) -> pa.Table:
     """Find the name, population, and area of the big countries.
 
