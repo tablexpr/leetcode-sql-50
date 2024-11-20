@@ -1218,6 +1218,50 @@ def problem_1729(followers: pa.Table) -> pa.Table:
     )
 
 
+def problem_1731(employees: pa.Table) -> pa.Table:
+    """Report manager IDs, names, count of direct reports, and mean age of reports.
+
+    For this problem, we will consider a manager an employee who has at least 1 other
+    employee reporting to them.
+
+    Write a solution to report the ids and the names of all managers, the number of
+    employees who report directly to them, and the average age of the reports rounded
+    to the nearest integer.
+
+    Return the result table ordered by employee_id.
+
+    Parameters
+    ----------
+    employees : pa.Table
+        Table contains information about employees and managers.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    joined = (
+        employees.join(
+            employees,
+            keys="employee_id",
+            right_keys="reports_to",
+            join_type="inner",
+            right_suffix="_reports",
+        )
+        .group_by(["employee_id", "name"])
+        .aggregate([("employee_id", "count"), ("age_reports", "mean")])
+        .rename_columns(
+            {
+                "employee_id": "employee_id",
+                "name": "name",
+                "employee_id_count": "reports_count",
+                "age_reports_mean": "average_age",
+            }
+        )
+    )
+    return joined.set_column(3, "average_age", pc.round(joined["average_age"], 2))
+
+
 def problem_1757(products: pa.Table) -> pa.Table:
     """Find the ids of products that are both low fat and recyclable.
 

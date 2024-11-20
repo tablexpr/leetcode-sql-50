@@ -41,6 +41,7 @@ from problems.leetcode import (
     problem_1667,
     problem_1683,
     problem_1729,
+    problem_1731,
     problem_1757,
     problem_1789,
     problem_1907,
@@ -1836,6 +1837,57 @@ def test_problem_1683(input_data, expected_data):
 def test_problem_1729(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     result = problem_1729(table)
+    expected_table = pa.Table.from_pydict(expected_data)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "employee_id": [9, 6, 4, 2],
+                "name": ["Hercy", "Alice", "Bob", "Winston"],
+                "reports_to": [None, 9, 9, None],
+                "age": [43, 41, 36, 37],
+            },
+            {
+                "employee_id": [9],
+                "name": ["Hercy"],
+                "reports_count": [2],
+                "average_age": [38.5],
+            },
+            id="one_manager",
+        ),
+        pytest.param(
+            {
+                "employee_id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "name": [
+                    "Michael",
+                    "Alice",
+                    "Bob",
+                    "Charlie",
+                    "David",
+                    "Eve",
+                    "Frank",
+                    "Grace",
+                ],
+                "reports_to": [None, 1, 1, 2, 2, 3, None, None],
+                "age": [45, 38, 42, 34, 40, 37, 50, 48],
+            },
+            {
+                "employee_id": [1, 2, 3],
+                "name": ["Michael", "Alice", "Bob"],
+                "reports_count": [2, 2, 1],
+                "average_age": [40.0, 37.0, 37.0],
+            },
+            id="three_managers",
+        ),
+    ],
+)
+def test_problem_1731(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    result = problem_1731(table)
     expected_table = pa.Table.from_pydict(expected_data)
     assert result.equals(expected_table)
 

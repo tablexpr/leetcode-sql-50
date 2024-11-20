@@ -47,7 +47,7 @@ Fiddling around with PyArrow.
 
 ### Advanced Select and Joins
 
-- [ ] 1731. [The Number of Employees Which Report to Each Employee](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee) - Easy
+- [X] 1731. [The Number of Employees Which Report to Each Employee](https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee) - Easy
 - [X] 1789. [Primary Department for Each Employee](https://leetcode.com/problems/primary-department-for-each-employee) - Easy
 - [X] 610. [Triangle Judgement](https://leetcode.com/problems/triangle-judgement) - Easy
 - [X] 180. [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers) - Medium
