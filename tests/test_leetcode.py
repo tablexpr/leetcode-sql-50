@@ -22,6 +22,7 @@ from problems.leetcode import (
     problem_626,
     problem_1045,
     problem_1068,
+    problem_1070,
     problem_1075,
     problem_1141,
     problem_1148,
@@ -964,6 +965,50 @@ def test_problem_1068(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1068(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "sale_id": [1, 2, 7],
+                "product_id": [100, 100, 200],
+                "year": [2008, 2009, 2011],
+                "quantity": [10, 12, 15],
+                "price": [5000, 5000, 9000],
+            },
+            {
+                "product_id": [100, 200],
+                "first_year": [2008, 2011],
+                "quantity": [10, 15],
+                "price": [5000, 9000],
+            },
+            id="basic_case_with_distinct_products",
+        ),
+        pytest.param(
+            {
+                "sale_id": [1, 2, 3, 4, 5],
+                "product_id": [100, 100, 200, 200, 200],
+                "year": [2008, 2009, 2011, 2012, 2013],
+                "quantity": [10, 20, 15, 5, 10],
+                "price": [5000, 5000, 9000, 9000, 9000],
+            },
+            {
+                "product_id": [100, 200],
+                "first_year": [2008, 2011],
+                "quantity": [10, 15],
+                "price": [5000, 9000],
+            },
+            id="duplicates_with_minimum_year_aggregation",
+        ),
+    ],
+)
+def test_problem_1070(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1070(input_table, None)
     assert result.equals(expected_table)
 
 

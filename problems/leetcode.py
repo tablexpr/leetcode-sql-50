@@ -272,6 +272,7 @@ def problem_585(insurance: pa.Table) -> pa.Table:
     Returns
     -------
     pa.Table
+
     """
     dropped_duplicates = (
         insurance.group_by(["lat", "lon"])
@@ -538,6 +539,39 @@ def problem_1068(sales: pa.Table, product: pa.Table) -> pa.Table:
     """
     return sales.join(product, keys="product_id").select(
         ["product_name", "year", "price"]
+    )
+
+
+def problem_1070(sales: pa.Table, product: pa.Table) -> pa.Table:
+    """Return details for the first year of every product sold.
+
+    Select the product id, year, quantity, and price
+
+    Return the resulting table in any order.
+
+    Parameters
+    ----------
+    sales : pa.Table
+        This table shows a sale on the product product_id in a certain year.
+
+    product : pa.Table
+        This table indicates the product name of each product.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    min_product_year = sales.group_by("product_id").aggregate([("year", "min")])
+    return (
+        sales.join(
+            min_product_year,
+            keys=["product_id", "year"],
+            right_keys=["product_id", "year_min"],
+            join_type="inner",
+        )
+        .rename_columns({"year": "first_year"})
+        .select(["product_id", "first_year", "quantity", "price"])
     )
 
 
