@@ -6,6 +6,7 @@ import pytest
 from problems.leetcode import (
     problem_176,
     problem_180,
+    problem_185,
     problem_196,
     problem_197,
     problem_550,
@@ -137,6 +138,34 @@ def test_problem_180(input_data, expected_data):
         expected_data, schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())])
     )
     result = problem_180(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5, 6, 7],
+                "name": ["Joe", "Henry", "Sam", "Max", "Janet", "Randy", "Will"],
+                "salary": [85000, 80000, 60000, 90000, 69000, 85000, 70000],
+                "departmentId": [1, 2, 2, 1, 1, 1, 1],
+            },
+            {"id": [1, 2], "name": ["IT", "Sales"]},
+            {
+                "Department": ["IT", "Sales", "Sales", "IT", "IT", "IT", "IT"],
+                "Employee": ["Joe", "Henry", "Sam", "Max", "Janet", "Randy", "Will"],
+                "Salary": [85000, 80000, 60000, 90000, 69000, 85000, 70000],
+            },
+            id="happy_path_basic",
+        )
+    ],
+)
+def test_problem_185(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_185(table_1, table_2)
     assert result.equals(expected_table)
 
 

@@ -66,6 +66,30 @@ def problem_180(logs: pa.Table) -> pa.Table:
     return pa.Table.from_arrays([pc.unique(joined["num"])], names=["ConsecutiveNums"])
 
 
+def problem_185(employee: pa.Table, department: pa.Table) -> pa.Table:
+    """Find the employees who are high earners in each of the departments.
+
+    A company's executives are interested in seeing who earns the most money in each
+    of the company's departments. A high earner in a department is an employee who has
+    a salary in the top three unique salaries for that department.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pa.Table
+        Table containing employee salary data.
+    department : pa.Table
+        Table containing department data.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    pass
+
+
 def problem_196(person: pa.Table) -> pa.Table:
     """Delete duplicate emails, keeping one unique email with the smallest ID.
 
