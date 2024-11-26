@@ -35,6 +35,7 @@ from problems.leetcode import (
     problem_1327,
     problem_1341,
     problem_1378,
+    problem_1517,
     problem_1527,
     problem_1581,
     problem_1633,
@@ -1649,6 +1650,55 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "user_id": [1, 2, 3, 4, 5, 6, 7],
+                "name": [
+                    "Winston",
+                    "Jonathan",
+                    "Annabelle",
+                    "Sally",
+                    "Marwan",
+                    "David",
+                    "Shapiro",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "jonathanisgreat",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                    "quarz#2020@leetcode.com",
+                    "david69@gmail.com",
+                    ".shapo@leetcode.com",
+                ],
+            },
+            {
+                "user_id": [1, 3, 4],
+                "name": [
+                    "Winston",
+                    "Annabelle",
+                    "Sally",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                ],
+            },
+            id="happy_path",
+        ),
+    ],
+)
+def test_problem_1517(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1517(table)
     assert result.equals(expected_table)
 
 

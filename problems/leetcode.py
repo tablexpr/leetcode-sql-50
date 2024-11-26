@@ -1051,6 +1051,28 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
     )
 
 
+def problem_1517(users: pa.Table) -> pa.Table:
+    """Find the users who have valid emails.
+
+    A valid e-mail has a prefix name and a domain where:
+
+    The prefix name is a string that may contain letters (upper or lower case), digits,
+    underscore '_', period '.', and/or dash '-'. The prefix name must start with a
+    letter.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    users : pa.Table
+        Table containing user names and emails.
+
+    Returns
+    -------
+    """
+    pass
+
+
 def problem_1527(patients: pa.Table) -> pa.Table:
     """Find the patients who have Type I Diabetes.
 
