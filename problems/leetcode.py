@@ -1051,6 +1051,26 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
     )
 
 
+def problem_1484(activities: pa.Table) -> pa.Table:
+    """Find for each date the number of different products sold and their names.
+
+    The sold products names for each date should be sorted lexicographically.
+
+    Return the result table ordered by sell_date.
+
+    Parameters
+    ----------
+    activities : pa.Table
+        The table containing the sales data.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    pass
+
+
 def problem_1517(users: pa.Table) -> pa.Table:
     """Find the users who have valid emails.
 

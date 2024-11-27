@@ -35,6 +35,7 @@ from problems.leetcode import (
     problem_1327,
     problem_1341,
     problem_1378,
+    problem_1484,
     problem_1517,
     problem_1527,
     problem_1581,
@@ -1650,6 +1651,54 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table_1, table_2)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "sell_date": [
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                    datetime(2020, 5, 30),
+                ],
+                "product": [
+                    "Headphone",
+                    "Pencil",
+                    "Mask",
+                    "Basketball",
+                    "Bible",
+                    "Mask",
+                    "T-Shirt",
+                ],
+            },
+            {
+                "sell_date": [
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                ],
+                "num_sold": [3, 2, 1],
+                "product": [
+                    "Basketball,Headphone,T-shirt",
+                    "Bible,Pencil",
+                    "Mask",
+                ],
+            },
+            id="happy_path",
+        ),
+    ],
+)
+def test_problem_1484(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1484(table)
     assert result.equals(expected_table)
 
 
