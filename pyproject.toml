@@ -7,7 +7,7 @@ authors = [
   {name = "Tyler White"},
 ]
 dependencies = [
-  "pyarrow==18.0.0"
+  "pyarrow==18.1.0"
 ]
 
 [project.optional-dependencies]
