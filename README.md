@@ -73,4 +73,4 @@ Fiddling around with PyArrow.
 - [X] 176. [Second Highest Salary](https://leetcode.com/problems/second-highest-salary) - Medium
 - [ ] 1484. [Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date) - Easy
 - [X] 1327. [List the Products Ordered in a Period](https://leetcode.com/problems/list-the-products-ordered-in-a-period) - Easy
-- [ ] 1517. [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails) - Easy
+- [X] 1517. [Find Users With Valid E-Mails](https://leetcode.com/problems/find-users-with-valid-e-mails) - Easy

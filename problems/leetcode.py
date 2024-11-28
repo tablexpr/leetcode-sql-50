@@ -1090,7 +1090,11 @@ def problem_1517(users: pa.Table) -> pa.Table:
     Returns
     -------
     """
-    pass
+    return users.filter(
+        pc.match_substring_regex(
+            users["mail"], r"^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode\.com$"
+        )
+    )
 
 
 def problem_1527(patients: pa.Table) -> pa.Table:

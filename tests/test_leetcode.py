@@ -1742,6 +1742,46 @@ def test_problem_1484(input_data, expected_data):
             },
             id="happy_path",
         ),
+        pytest.param(
+            {
+                "user_id": [360, 966, 901, 162, 181, 240, 221, 388, 211, 178],
+                "name": [
+                    "Ezra",
+                    "Daniel",
+                    "Yehudah",
+                    "Daniel",
+                    "Aharon",
+                    "Gavriel",
+                    "Levi",
+                    "Eliyahu",
+                    "Michael",
+                    "Aharon",
+                ],
+                "mail": [
+                    "Ezra4VZabfK",
+                    "DanielEnEMjNoG6",
+                    "Yehudah*5m9@leetcode.com",
+                    "Daniel07L@leetcode.com",
+                    "AharonxuZA530S8Q",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                    ".Michael@leetcode.com",
+                    "AharonnDFFSqcY",
+                ],
+            },
+            {
+                "user_id": [162, 240, 221, 388],
+                "name": ["Daniel", "Gavriel", "Levi", "Eliyahu"],
+                "mail": [
+                    "Daniel07L@leetcode.com",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                ],
+            },
+            id="happy_path_2",
+        ),
     ],
 )
 def test_problem_1517(input_data, expected_data):
