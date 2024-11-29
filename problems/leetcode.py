@@ -87,7 +87,43 @@ def problem_185(employee: pa.Table, department: pa.Table) -> pa.Table:
     pa.Table
 
     """
-    pass
+    distinct_dept_salaries = (
+        employee.group_by(["departmentId", "salary"])
+        .aggregate([])
+        .sort_by([("departmentId", "ascending"), ("salary", "descending")])
+        .group_by(["departmentId"])
+        .aggregate([("salary", "list")])
+    )
+
+    top_3 = pc.list_slice(distinct_dept_salaries["salary_list"], start=0, stop=3)
+
+    top_dept_salaries = pa.Table.from_arrays(
+        [
+            distinct_dept_salaries["departmentId"].take(pc.list_parent_indices(top_3)),
+            pc.list_flatten(top_3),
+        ],
+        names=["departmentId", "salary"],
+    )
+
+    return (
+        employee.join(
+            top_dept_salaries,
+            keys=["departmentId", "salary"],
+            right_keys=["departmentId", "salary"],
+            join_type="inner",
+        )
+        .join(
+            department,
+            keys=["departmentId"],
+            right_keys=["id"],
+            join_type="inner",
+            right_suffix="_r",
+        )
+        .select(["name_r", "name", "salary"])
+        .rename_columns(
+            {"name_r": "Department", "name": "Employee", "salary": "Salary"}
+        )
+    )
 
 
 def problem_196(person: pa.Table) -> pa.Table:
