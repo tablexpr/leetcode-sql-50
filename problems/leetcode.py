@@ -996,6 +996,28 @@ def problem_1280(
     )
 
 
+def problem_1321(customer: pa.Table) -> pa.Table:
+    """Compute the moving average of how much the customer paid in a seven days window.
+
+    You are the restaurant owner and you want to analyze a possible expansion (there
+    will be at least one customer every day). Seven day window refers to current day +
+    6 days before. `average_amount` should be rounded to two decimal places.
+
+    Return the result table ordered by visited_on in ascending order.
+
+    Parameters
+    ----------
+    customer : pa.Table
+        Table shows the amount paid by a customer on a certain day.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    pass
+
+
 def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
     """Find products that have at least 100 units ordered in February 2020.
 
@@ -1149,6 +1171,8 @@ def problem_1517(users: pa.Table) -> pa.Table:
 
     Returns
     -------
+    pa.Table
+
     """
     return users.filter(
         pc.match_substring_regex(
