@@ -28,6 +28,7 @@ from problems.leetcode import (
     problem_1141,
     problem_1148,
     problem_1164,
+    problem_1174,
     problem_1193,
     problem_1204,
     problem_1211,
@@ -1246,6 +1247,44 @@ def test_problem_1164(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1164(input_table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "delivery_id": [1, 2, 3, 4, 5, 6, 7],
+                "customer_id": [1, 2, 1, 3, 3, 2, 4],
+                "order_date": [
+                    datetime(2019, 8, 1),
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 11),
+                    datetime(2019, 8, 24),
+                    datetime(2019, 8, 21),
+                    datetime(2019, 8, 11),
+                    datetime(2019, 8, 9),
+                ],
+                "customer_pref_delivery_date": [
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 12),
+                    datetime(2019, 8, 24),
+                    datetime(2019, 8, 22),
+                    datetime(2019, 8, 13),
+                    datetime(2019, 8, 9),
+                ],
+            },
+            {"immediate_percentage": [50.0]},
+            id="happy_path",
+        )
+    ],
+)
+def test_problem_1174(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1174(table)
     assert result.equals(expected_table)
 
 

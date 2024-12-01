@@ -774,6 +774,29 @@ def problem_1164(products: pa.Table) -> pa.Table:
     return pa.concat_tables([joined, missing_products])
 
 
+def problem_1174(delivery: pa.Table) -> pa.Table:
+    """Find the percentage of immediate orders in the first orders of all customers.
+
+    If the customer's preferred delivery date is the same as the order date, then the
+    order is called immediate; otherwise, it is called scheduled. The first order of a
+    customer is the order with the earliest order date that the customer made. It is
+    guaranteed that a customer has precisely one first order.
+
+    Round the result to 2 decimal places.
+
+    Parameters
+    ----------
+    delivery : pa.Table
+        Table shows the order date, customer name, and preferred delivery date.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    pass
+
+
 def problem_1193(transactions: pa.Table) -> pa.Table:
     """Find monthly, country-wise transaction counts, totals, approved counts and sums.
 
