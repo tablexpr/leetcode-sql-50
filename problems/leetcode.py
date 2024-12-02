@@ -794,7 +794,33 @@ def problem_1174(delivery: pa.Table) -> pa.Table:
     pa.Table
 
     """
-    pass
+    delivery = delivery.append_column(
+        "is_immediate",
+        (pc.equal(delivery["order_date"], delivery["customer_pref_delivery_date"])),
+    )
+    first_orders = delivery.group_by("customer_id").aggregate([("order_date", "min")])
+    joined = delivery.join(
+        first_orders,
+        keys=["customer_id", "order_date"],
+        right_keys=["customer_id", "order_date_min"],
+        join_type="inner",
+    )
+    return pa.Table.from_arrays(
+        [
+            pa.array(
+                [
+                    pc.round(
+                        pc.multiply(
+                            pc.mean(pc.cast(joined["is_immediate"], pa.int16())),
+                            pa.scalar(100.0),
+                        ),
+                        2,
+                    )
+                ]
+            )
+        ],
+        names=["immediate_percentage"],
+    )
 
 
 def problem_1193(transactions: pa.Table) -> pa.Table:

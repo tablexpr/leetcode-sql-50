@@ -32,7 +32,7 @@ Fiddling around with PyArrow.
 - [X] 1633. [Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest) - Easy
 - [X] 1211. [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage) - Easy
 - [X] 1193. [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i) - Medium
-- [ ] 1174. [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii) - Medium
+- [X] 1174. [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii) - Medium
 - [X] 550. [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv) - Medium
 
 ### Sorting and Grouping

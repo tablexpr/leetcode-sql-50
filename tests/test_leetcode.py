@@ -1278,7 +1278,25 @@ def test_problem_1164(input_data, expected_data):
             },
             {"immediate_percentage": [50.0]},
             id="happy_path",
-        )
+        ),
+        pytest.param(
+            {
+                "delivery_id": [1, 2, 3],
+                "customer_id": [1, 1, 2],
+                "order_date": [
+                    datetime(2020, 1, 1),
+                    datetime(2020, 1, 2),
+                    datetime(2020, 1, 3),
+                ],
+                "customer_pref_delivery_date": [
+                    datetime(2020, 1, 1),
+                    datetime(2020, 1, 2),
+                    datetime(2020, 1, 3),
+                ],
+            },
+            {"immediate_percentage": [100.0]},
+            id="all_immediate",
+        ),
     ],
 )
 def test_problem_1174(input_data, expected_data):
