@@ -906,8 +906,8 @@ def problem_1204(queue: pa.Table) -> pa.Table:
     """
     queue = queue.sort_by("turn")
     queue = queue.append_column("weight_cumsum", pc.cumulative_sum(queue["weight"]))
-    queue = queue.filter(pc.less_equal(queue["weight_cumsum"], pa.scalar(1000)))
-    return queue.take([queue.num_rows - 1]).select(["person_name"])
+    queue = queue.filter(pc.less_equal(pc.field("weight_cumsum"), pa.scalar(1000)))
+    return queue.slice(queue.num_rows - 1).select(["person_name"])
 
 
 def problem_1211(queries: pa.Table) -> pa.Table:
