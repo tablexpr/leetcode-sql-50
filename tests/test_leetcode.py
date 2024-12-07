@@ -1899,8 +1899,8 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
                     datetime(2020, 6, 2),
                 ],
                 "num_sold": [3, 2, 1],
-                "product": [
-                    "Basketball,Headphone,T-shirt",
+                "products": [
+                    "Basketball,Headphone,T-Shirt",
                     "Bible,Pencil",
                     "Mask",
                 ],
@@ -1911,9 +1911,8 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
 )
 def test_problem_1484(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
-    expected_table = pa.Table.from_pydict(expected_data)
-    result = problem_1484(table)
-    assert result.equals(expected_table)
+    result = problem_1484(table).to_pydict()
+    assert result == expected_data
 
 
 @pytest.mark.parametrize(

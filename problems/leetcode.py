@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from textwrap import dedent
 
 import datafusion
+import datafusion.functions as F
 import pyarrow as pa
 import pyarrow.compute as pc
 
@@ -1218,7 +1219,30 @@ def problem_1484(activities: pa.Table) -> pa.Table:
     pa.Table
 
     """
-    pass
+    ctx = datafusion.SessionContext()
+    ctx.from_arrow(activities, name="activities")
+    ctx.from_arrow(
+        ctx.table("activities").distinct().to_arrow_table(),
+        name="distinct_product_dates",
+    )
+    ctx.from_arrow(
+        ctx.table("distinct_product_dates")
+        .aggregate(
+            group_by=[
+                F.col("sell_date"),
+            ],
+            aggs=[
+                F.count(F.col("product")).alias("num_sold"),
+                F.array_agg(F.col("product")).alias("products"),
+            ],
+        )
+        .sort(F.col("sell_date"))
+        .to_arrow_table(),
+        name="t",
+    )
+    return ctx.sql(
+        "SELECT sell_date, num_sold, ARRAY_JOIN(ARRAY_SORT(products), ',') AS products FROM t"
+    ).to_arrow_table()
 
 
 def problem_1517(users: pa.Table) -> pa.Table:
