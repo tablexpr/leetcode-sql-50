@@ -1700,6 +1700,48 @@ def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
             },
             id="happy_path",
         ),
+        pytest.param(
+            {
+                "customer_id": [1, 2, 3, 1, 4, 5, 6, 1, 7, 8, 9],
+                "name": [
+                    "Jhon",
+                    "Daniel",
+                    "Jade",
+                    "Jhon",
+                    "Khaled",
+                    "Winston",
+                    "Elvis",
+                    "Jhon",
+                    "Anna",
+                    "Maria",
+                    "Jaze",
+                ],
+                "visited_on": [
+                    datetime(2019, 1, 1),
+                    datetime(2019, 1, 2),
+                    datetime(2019, 1, 3),
+                    datetime(2019, 1, 1),
+                    datetime(2019, 1, 4),
+                    datetime(2019, 1, 5),
+                    datetime(2019, 1, 6),
+                    datetime(2019, 1, 1),
+                    datetime(2019, 1, 7),
+                    datetime(2019, 1, 8),
+                    datetime(2019, 1, 9),
+                ],
+                "amount": [100, 110, 120, 50, 130, 110, 140, 40, 150, 80, 110],
+            },
+            {
+                "visited_on": [
+                    datetime(2019, 1, 7),
+                    datetime(2019, 1, 8),
+                    datetime(2019, 1, 9),
+                ],
+                "amount": [950, 840, 840],
+                "average_amount": [135.71, 120, 120],
+            },
+            id="duplicated_days",
+        ),
     ],
 )
 def test_problem_1321(input_data, expected_data):
