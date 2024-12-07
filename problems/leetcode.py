@@ -1,7 +1,9 @@
 """Solutions to LeetCode problems in PyArrow."""
 
 from datetime import datetime, timedelta
+from textwrap import dedent
 
+import datafusion
 import pyarrow as pa
 import pyarrow.compute as pc
 
@@ -1064,48 +1066,24 @@ def problem_1321(customer: pa.Table) -> pa.Table:
     pa.Table
 
     """
-    customer = customer.set_column(
-        customer.schema.get_field_index("visited_on"),
-        "visited_on",
-        pc.strptime(customer["visited_on"], format="%Y-%m-%d", unit="s"),
+    query = dedent(
+        """
+    SELECT visited_on,
+        SUM(amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS amount,
+        ROUND(AVG(amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND CURRENT ROW), 2) AS average_amount
+    FROM
+    (
+        SELECT visited_on,
+            SUM(amount) AS amount
+        FROM Customer
+        GROUP BY visited_on
     )
-
-    grouped = customer.group_by(["visited_on"]).aggregate([("amount", "sum")])
-
-    dates = grouped["visited_on"]
-    amounts = grouped["amount_sum"]
-
-    rolling_sums = []
-    rolling_averages = []
-
-    for i in range(len(dates)):
-        window_start = pc.subtract(
-            dates[i], pa.scalar(7 * 24 * 60 * 60, type=pa.duration("s"))
-        )
-        mask = pc.and_(
-            pc.greater_equal(dates, window_start),
-            pc.less_equal(dates, dates[i]),
-        )
-        filtered_amounts = pc.filter(amounts, mask)
-        rolling_sum = pc.sum(filtered_amounts).as_py()
-        rolling_avg = round(rolling_sum / 7, 2)
-
-        rolling_sums.append(rolling_sum)
-        rolling_averages.append(rolling_avg)
-
-    grouped = grouped.append_column("rolling_sum", pa.array(rolling_sums))
-    grouped = grouped.append_column(
-        "average_amount", pa.array(rolling_averages, type=pa.float64())
+    OFFSET 6;
+    """
     )
-
-    final_result = grouped.slice(6)
-
-    final_result = final_result.select(["visited_on", "rolling_sum", "average_amount"])
-    final_result = final_result.rename_columns(
-        ["visited_on", "amount", "average_amount"]
-    )
-
-    return final_result
+    ctx = datafusion.SessionContext()
+    ctx.from_arrow(customer, name="customer")
+    return ctx.sql(query).to_arrow_table()
 
 
 def problem_1327(products: pa.Table, orders: pa.Table) -> pa.Table:
