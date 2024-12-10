@@ -1225,7 +1225,7 @@ def problem_1484(activities: pa.Table) -> pa.Table:
         ctx.table("activities").distinct().to_arrow_table(),
         name="distinct_product_dates",
     )
-    ctx.from_arrow(
+    return (
         ctx.table("distinct_product_dates")
         .aggregate(
             group_by=[
@@ -1237,12 +1237,14 @@ def problem_1484(activities: pa.Table) -> pa.Table:
             ],
         )
         .sort(F.col("sell_date"))
-        .to_arrow_table(),
-        name="t",
+        .with_column(
+            "products",
+            F.array_join(
+                F.array_sort(F.col("products")), delimiter=datafusion.lit(",")
+            ),
+        )
+        .to_arrow_table()
     )
-    return ctx.sql(
-        "SELECT sell_date, num_sold, ARRAY_JOIN(ARRAY_SORT(products), ',') AS products FROM t"
-    ).to_arrow_table()
 
 
 def problem_1517(users: pa.Table) -> pa.Table:
