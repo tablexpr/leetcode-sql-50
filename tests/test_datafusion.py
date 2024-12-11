@@ -5,6 +5,7 @@ import pytest
 
 from problems.datafusion import (
     problem_176,
+    problem_620,
     problem_1321,
     problem_1484,
 )
@@ -38,6 +39,51 @@ def test_problem_176(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_176(table)
+    assert result.to_arrow_table().equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4],
+                "description": ["interesting", "boring", "exciting", "boring"],
+            },
+            {"id": [3, 1], "description": ["exciting", "interesting"]},
+            id="happy_path_mixed_ids_and_descriptions",
+        ),
+        pytest.param(
+            {"id": [1, 3], "description": ["boring", "boring"]},
+            {"id": [], "description": []},
+            id="edge_case_all_boring",
+        ),
+        pytest.param(
+            {"id": [2, 4], "description": ["interesting", "exciting"]},
+            {"id": [], "description": []},
+            id="edge_case_no_odd_ids",
+        ),
+        pytest.param(
+            {"id": [1], "description": ["interesting"]},
+            {"id": [1], "description": ["interesting"]},
+            id="edge_case_single_row_matching",
+        ),
+        pytest.param(
+            {"id": [2], "description": ["boring"]},
+            {"id": [], "description": []},
+            id="edge_case_single_row_not_matching",
+        ),
+    ],
+)
+def test_problem_620(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data,
+        schema=pa.schema(
+            [pa.field("id", pa.int64()), pa.field("description", pa.string())]
+        ),
+    )
+    result = problem_620(table)
     assert result.to_arrow_table().equals(expected_table)
 
 

@@ -38,7 +38,29 @@ def problem_176(employee: pa.Table) -> datafusion.dataframe.DataFrame:
     return t
 
 
-def problem_1321(customer: pa.Table) -> pa.Table:
+def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Report movies with odd IDs and descriptions not equal to "boring".
+
+    Return the result table ordered by rating in descending order.
+
+    Parameters
+    ----------
+    cinema : pa.Table
+        Table contains information about the name of a movie, genre, and its rating.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    ctx = datafusion.SessionContext()
+    cinema = ctx.from_arrow(cinema)
+    return cinema.filter(F.col("description") != "boring", F.col("id") % 2 == 1).sort(
+        F.col("id").sort(ascending=False)
+    )
+
+
+def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 
     You are the restaurant owner and you want to analyze a possible expansion (there
