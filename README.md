@@ -1,8 +1,6 @@
-# pyarrow-exercises
+# LeetCode SQL 50
 
-Fiddling around with PyArrow.
-
-## Leetcode SQL 50
+Fiddling around with DataFusion and PyArrow.
 
 ### Select
 
