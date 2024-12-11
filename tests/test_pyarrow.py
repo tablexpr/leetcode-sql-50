@@ -3,7 +3,7 @@ from datetime import datetime
 import pyarrow as pa
 import pytest
 
-from problems.leetcode import (
+from problems.pyarrow import (
     problem_176,
     problem_180,
     problem_185,
@@ -34,11 +34,9 @@ from problems.leetcode import (
     problem_1211,
     problem_1251,
     problem_1280,
-    problem_1321,
     problem_1327,
     problem_1341,
     problem_1378,
-    problem_1484,
     problem_1517,
     problem_1527,
     problem_1581,
@@ -1655,103 +1653,6 @@ def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
 
 
 @pytest.mark.parametrize(
-    "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "customer_id": [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 3],
-                "name": [
-                    "Jhon",
-                    "Daniel",
-                    "Jade",
-                    "Khaled",
-                    "Winston",
-                    "Elvis",
-                    "Anna",
-                    "Maria",
-                    "Jaze",
-                    "Jhon",
-                    "Jade",
-                ],
-                "visited_on": [
-                    datetime(2019, 1, 1),
-                    datetime(2019, 1, 2),
-                    datetime(2019, 1, 3),
-                    datetime(2019, 1, 4),
-                    datetime(2019, 1, 5),
-                    datetime(2019, 1, 6),
-                    datetime(2019, 1, 7),
-                    datetime(2019, 1, 8),
-                    datetime(2019, 1, 9),
-                    datetime(2019, 1, 10),
-                    datetime(2019, 1, 10),
-                ],
-                "amount": [100, 110, 120, 130, 110, 140, 150, 80, 110, 130, 150],
-            },
-            {
-                "visited_on": [
-                    datetime(2019, 1, 7),
-                    datetime(2019, 1, 8),
-                    datetime(2019, 1, 9),
-                    datetime(2019, 1, 10),
-                ],
-                "amount": [860, 840, 840, 1000],
-                "average_amount": [122.86, 120, 120, 142.86],
-            },
-            id="happy_path",
-        ),
-        pytest.param(
-            {
-                "customer_id": [1, 2, 3, 1, 4, 5, 6, 1, 7, 8, 9],
-                "name": [
-                    "Jhon",
-                    "Daniel",
-                    "Jade",
-                    "Jhon",
-                    "Khaled",
-                    "Winston",
-                    "Elvis",
-                    "Jhon",
-                    "Anna",
-                    "Maria",
-                    "Jaze",
-                ],
-                "visited_on": [
-                    datetime(2019, 1, 1),
-                    datetime(2019, 1, 2),
-                    datetime(2019, 1, 3),
-                    datetime(2019, 1, 1),
-                    datetime(2019, 1, 4),
-                    datetime(2019, 1, 5),
-                    datetime(2019, 1, 6),
-                    datetime(2019, 1, 1),
-                    datetime(2019, 1, 7),
-                    datetime(2019, 1, 8),
-                    datetime(2019, 1, 9),
-                ],
-                "amount": [100, 110, 120, 50, 130, 110, 140, 40, 150, 80, 110],
-            },
-            {
-                "visited_on": [
-                    datetime(2019, 1, 7),
-                    datetime(2019, 1, 8),
-                    datetime(2019, 1, 9),
-                ],
-                "amount": [950, 840, 840],
-                "average_amount": [135.71, 120, 120],
-            },
-            id="duplicated_days",
-        ),
-    ],
-)
-def test_problem_1321(input_data, expected_data):
-    table = pa.Table.from_pydict(input_data)
-    expected_table = pa.Table.from_pydict(expected_data)
-    result = problem_1321(table)
-    assert result.equals(expected_table)
-
-
-@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
@@ -1866,53 +1767,6 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table_1, table_2)
     assert result.equals(expected_table)
-
-
-@pytest.mark.parametrize(
-    "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "sell_date": [
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                    datetime(2020, 5, 30),
-                ],
-                "product": [
-                    "Headphone",
-                    "Pencil",
-                    "Mask",
-                    "Basketball",
-                    "Bible",
-                    "Mask",
-                    "T-Shirt",
-                ],
-            },
-            {
-                "sell_date": [
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                ],
-                "num_sold": [3, 2, 1],
-                "products": [
-                    "Basketball,Headphone,T-Shirt",
-                    "Bible,Pencil",
-                    "Mask",
-                ],
-            },
-            id="happy_path",
-        ),
-    ],
-)
-def test_problem_1484(input_data, expected_data):
-    table = pa.Table.from_pydict(input_data)
-    result = problem_1484(table).to_pydict()
-    assert result == expected_data
 
 
 @pytest.mark.parametrize(
