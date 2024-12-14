@@ -2153,11 +2153,17 @@ def test_problem_1731(input_data, expected_data):
                 "recyclable": ["N", "Y", "Y", "Y", "N"],
             },
             {"product_id": [1, 3]},
-        )
+        ),
+        (
+            {
+                "product_id": [0, 1, 2, 3, 4],
+                "low_fats": ["Y", "Y", "Y", "Y", "Y"],
+                "recyclable": ["Y", "Y", "Y", "Y", "Y"],
+            },
+            {"product_id": [0, 1, 2, 3, 4]},
+        ),
     ],
-    ids=[
-        "happy_path_mixed_values",
-    ],
+    ids=["happy_path_mixed_values", "all_ys"],
 )
 def test_problem_1757(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)

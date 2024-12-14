@@ -59,3 +59,25 @@ def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
         .loc[6:]
     )
     return grouped.assign(average_amount=(grouped["amount"] / 7).round(2))
+
+
+def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
+    """Find the ids of products that are both low fat and recyclable.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pa.Table
+        Table stores products with low_fats and recyclable, keyed by product_id.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    return pd.DataFrame(
+        products[(products["low_fats"] == "Y") & (products["recyclable"] == "Y")][
+            "product_id"
+        ]
+    )

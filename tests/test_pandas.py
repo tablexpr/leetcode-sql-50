@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from problems.pandas import problem_176, problem_1321
+from problems.pandas import problem_176, problem_1321, problem_1757
 
 
 @pytest.mark.parametrize(
@@ -141,4 +141,35 @@ def test_problem_1321(input_data, expected_data):
     for col in expected_table.columns:
         assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
 
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        (
+            {
+                "product_id": [0, 1, 2, 3, 4],
+                "low_fats": ["Y", "Y", "N", "Y", "N"],
+                "recyclable": ["N", "Y", "Y", "Y", "N"],
+            },
+            {"product_id": [1, 3]},
+        ),
+        (
+            {
+                "product_id": [0, 1, 2, 3, 4],
+                "low_fats": ["Y", "Y", "Y", "Y", "Y"],
+                "recyclable": ["Y", "Y", "Y", "Y", "Y"],
+            },
+            {"product_id": [0, 1, 2, 3, 4]},
+        )
+    ],
+    ids=[
+        "happy_path_mixed_values", "all_ys"
+    ],
+)
+def test_problem_1757(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1757(table).reset_index(drop=True)
     assert result.equals(expected_table)
