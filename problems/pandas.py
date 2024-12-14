@@ -31,6 +31,25 @@ def problem_176(employee: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
+    """Find names of customers not referred by the customer with ID = 2.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    customer : pa.Table
+        Table shows customer IDs, names, and the ID of the customer who referred them.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    mask = customer[(customer["referee_id"].isnull()) | (customer["referee_id"] != 2)]
+    return mask[["name"]]
+
+
 def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 

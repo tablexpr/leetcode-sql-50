@@ -7,7 +7,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 | Problem # | Title | Difficulty | PyArrow | DataFusion | pandas |
 |----------:|:------|:-----------|:-------:|:----------:|:------:|
 | 1757      | [Recyclable and Low Fat Products](https://leetcode.com/problems/recyclable-and-low-fat-products) | Easy | ✅ | ❌ | ✅ |
-| 584       | [Find Customer Referee](https://leetcode.com/problems/find-customer-referee) | Easy | ✅ | ❌ | ❌ |
+| 584       | [Find Customer Referee](https://leetcode.com/problems/find-customer-referee) | Easy | ✅ | ❌ | ✅ |
 | 595       | [Big Countries](https://leetcode.com/problems/big-countries) | Easy | ✅ | ❌ | ❌ |
 | 1148      | [Article Views I](https://leetcode.com/problems/article-views-i) | Easy | ✅ | ❌ | ❌ |
 | 1683      | [Invalid Tweets](https://leetcode.com/problems/invalid-tweets) | Easy | ✅ | ❌ | ❌ |

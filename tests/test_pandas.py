@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from problems.pandas import problem_176, problem_1321, problem_1757
+from problems.pandas import problem_176, problem_584, problem_1321, problem_1757
 
 
 @pytest.mark.parametrize(
@@ -35,6 +35,51 @@ def test_problem_176(input_data, expected_data):
     expected_table = pd.DataFrame(expected_data)
     result = problem_176(table)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 4, 5],
+                "name": ["Will", "Jane", "Bill", "Zack"],
+                "referee_id": [None, None, None, 1],
+            },
+            {"name": ["Will", "Jane", "Bill", "Zack"]},
+            id="happy_path_all_valid",
+        ),
+        pytest.param(
+            {
+                "id": [3, 6],
+                "name": ["Alex", "Mark"],
+                "referee_id": [2, 2],
+            },
+            {"name": []},
+            id="edge_case_all_referee_id_2",
+        ),
+        pytest.param(
+            {
+                "id": [1, 3, 5, 6],
+                "name": ["Will", "Alex", "Zack", "Mark"],
+                "referee_id": [None, 2, 1, 2],
+            },
+            {"name": ["Will", "Zack"]},
+            id="mixed_case_some_valid",
+        ),
+    ],
+)
+def test_problem_584(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_584(table).reset_index(drop=True)
+    if result.shape == (0, len(expected_table.columns)):
+        assert result.shape == expected_table.shape
+        assert result.columns.equals(expected_table.columns)
+    else:
+        assert result.equals(
+            expected_table
+        ), f"Expected table {expected_table}, but got {result}"
 
 
 @pytest.mark.parametrize(
@@ -162,11 +207,9 @@ def test_problem_1321(input_data, expected_data):
                 "recyclable": ["Y", "Y", "Y", "Y", "Y"],
             },
             {"product_id": [0, 1, 2, 3, 4]},
-        )
+        ),
     ],
-    ids=[
-        "happy_path_mixed_values", "all_ys"
-    ],
+    ids=["happy_path_mixed_values", "all_ys"],
 )
 def test_problem_1757(input_data, expected_data):
     table = pd.DataFrame(input_data)
