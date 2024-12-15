@@ -3,7 +3,13 @@ from datetime import datetime
 import pandas as pd
 import pytest
 
-from problems.pandas import problem_176, problem_584, problem_1321, problem_1757
+from problems.pandas import (
+    problem_176,
+    problem_584,
+    problem_595,
+    problem_1321,
+    problem_1757,
+)
 
 
 @pytest.mark.parametrize(
@@ -73,6 +79,60 @@ def test_problem_584(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_584(table).reset_index(drop=True)
+    if result.shape == (0, len(expected_table.columns)):
+        assert result.shape == expected_table.shape
+        assert result.columns.equals(expected_table.columns)
+    else:
+        assert result.equals(
+            expected_table
+        ), f"Expected table {expected_table}, but got {result}"
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "name": ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola"],
+                "continent": ["Asia", "Europe", "Africa", "Europe", "Africa"],
+                "area": [652_230, 28_748, 2_381_741, 468, 1_246_700],
+                "population": [25_500_100, 2_831_741, 37_100_000, 78_115, 20_609_294],
+                "gdp": [
+                    20_343_000_000,
+                    12_960_000_000,
+                    188_681_000_000,
+                    3_712_000_000,
+                    100_990_000_000,
+                ],
+            },
+            {
+                "name": ["Afghanistan", "Algeria"],
+                "population": [25_500_100, 37_100_000],
+                "area": [652_230, 2_381_741],
+            },
+            id="happy_path_various_countries",
+        ),
+        pytest.param(
+            {
+                "name": ["CountryA", "CountryB"],
+                "continent": ["ContinentA", "ContinentB"],
+                "area": [3_000_000, 4_000_000],
+                "population": [30_000_000, 40_000_000],
+                "gdp": [1_000_000_000, 2_000_000_000],
+            },
+            {
+                "name": ["CountryA", "CountryB"],
+                "population": [30_000_000, 40_000_000],
+                "area": [3_000_000, 4_000_000],
+            },
+            id="edge_case_all_countries_meeting_criteria",
+        ),
+    ],
+)
+def test_problem_595(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_595(table).reset_index(drop=True)
     if result.shape == (0, len(expected_table.columns)):
         assert result.shape == expected_table.shape
         assert result.columns.equals(expected_table.columns)

@@ -50,6 +50,31 @@ def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
     return mask[["name"]]
 
 
+def problem_595(world: pd.DataFrame) -> pd.DataFrame:
+    """Find the name, population, and area of the big countries.
+
+    A country is big if:
+        it has an area of at least three million (i.e., 3000000 km2), or
+        it has a population of at least twenty-five million (i.e., 25000000).
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    world : pd.DataFrame
+        Table lists countries with their continent, area, population, and GDP details.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    columns = ["name", "population", "area"]
+    big_mask = (world["area"] >= 3_000_000) | (world["population"] >= 25_000_000)
+    world = world[big_mask]
+    return world[columns]
+
+
 def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 
