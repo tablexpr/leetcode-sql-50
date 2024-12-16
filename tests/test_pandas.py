@@ -7,6 +7,7 @@ from problems.pandas import (
     problem_176,
     problem_584,
     problem_595,
+    problem_1148,
     problem_1321,
     problem_1757,
 )
@@ -140,6 +141,46 @@ def test_problem_595(input_data, expected_data):
         assert result.equals(
             expected_table
         ), f"Expected table {expected_table}, but got {result}"
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "article_id": [1, 2, 3],
+                "author_id": [3, 7, 4],
+                "viewer_id": [3, 7, 4],
+                "view_date": [
+                    datetime(2019, 8, 1),
+                    datetime(2019, 8, 1),
+                    datetime(2019, 7, 21),
+                ],
+            },
+            {
+                "id": [3, 4, 7],
+            },
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "article_id": [1, 2],
+                "author_id": [3, 7],
+                "viewer_id": [3, 7],
+                "view_date": [datetime(2019, 8, 1), datetime(2019, 8, 1)],
+            },
+            {
+                "id": [3, 7],
+            },
+            id="all_match",
+        ),
+    ],
+)
+def test_problem_1148(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1148(table).reset_index(drop=True)
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(

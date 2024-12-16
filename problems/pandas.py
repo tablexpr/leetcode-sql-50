@@ -75,6 +75,29 @@ def problem_595(world: pd.DataFrame) -> pd.DataFrame:
     return world[columns]
 
 
+def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
+    """Find all the authors that viewed at least one of their own articles.
+
+    Return the result table sorted by id in ascending order.
+
+    Parameters
+    ----------
+    views : pd.DataFrame
+        Table logs viewers viewing articles by authors on specific dates.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return (
+        views[views["author_id"] == views["viewer_id"]][["author_id"]]
+        .drop_duplicates()
+        .sort_values("author_id")
+        .rename(columns={"author_id": "id"})
+    )
+
+
 def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 
