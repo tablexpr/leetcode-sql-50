@@ -128,6 +128,27 @@ def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     return grouped.assign(average_amount=(grouped["amount"] / 7).round(2))
 
 
+def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
+    """Find the IDs of the invalid tweets.
+
+    The tweet is invalid if the number of characters used in the content of the tweet
+    is strictly greater than 15.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    tweets : pd.DataFrame
+        This table contains all the tweets in a social media app.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return tweets[tweets["content"].str.len() > 15][["tweet_id"]]
+
+
 def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
     """Find the ids of products that are both low fat and recyclable.
 

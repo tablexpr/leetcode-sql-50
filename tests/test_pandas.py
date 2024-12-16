@@ -9,6 +9,7 @@ from problems.pandas import (
     problem_595,
     problem_1148,
     problem_1321,
+    problem_1683,
     problem_1757,
 )
 
@@ -287,6 +288,33 @@ def test_problem_1321(input_data, expected_data):
     for col in expected_table.columns:
         assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
 
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        (
+            {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
+            {"tweet_id": [2]},
+        ),
+        (
+            {
+                "tweet_id": [1, 2],
+                "content": ["This is a long tweet", "Another long tweet"],
+            },
+            {"tweet_id": [1, 2]},
+        ),
+    ],
+    ids=[
+        "content_greater_than_15",
+        "all_content_greater_than_15",
+    ],
+)
+def test_problem_1683(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1683(table).reset_index(drop=True)
     assert result.equals(expected_table)
 
 
