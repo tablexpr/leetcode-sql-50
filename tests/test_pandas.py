@@ -5,6 +5,7 @@ import pytest
 
 from problems.pandas import (
     problem_176,
+    problem_180,
     problem_584,
     problem_595,
     problem_1148,
@@ -43,6 +44,64 @@ def test_problem_176(input_data, expected_data):
     expected_table = pd.DataFrame(expected_data)
     result = problem_176(table)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "num": [1, 2, 3, 1, 1, 1, 4, 5],
+            },
+            {
+                "ConsecutiveNums": [1],
+            },
+            id="one_consecutive_number_three_times",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "num": [1, 2, 3, 1, 1, 1, 1, 5],
+            },
+            {
+                "ConsecutiveNums": [1],
+            },
+            id="one_consecutive_number_four_times",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5],
+                "num": [1, 2, 3, 4, 5],
+            },
+            {
+                "ConsecutiveNums": [],
+            },
+            id="no_consecutive_numbers",
+        ),
+        pytest.param(
+            {
+                "id": [],
+                "num": [],
+            },
+            {
+                "ConsecutiveNums": [None],
+            },
+            id="empty_table",
+        ),
+    ],
+)
+def test_problem_180(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_180(table).reset_index(drop=True)
+    if result.shape == (0, len(expected_table.columns)):
+        assert result.shape == expected_table.shape
+        assert result.columns.equals(expected_table.columns)
+    else:
+        assert result.equals(
+            expected_table
+        ), f"Expected table {expected_table}, but got {result}"
 
 
 @pytest.mark.parametrize(

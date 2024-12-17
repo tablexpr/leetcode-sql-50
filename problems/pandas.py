@@ -30,6 +30,35 @@ def problem_176(employee: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame([None], columns=["SecondHighestSalary"])
     return result
 
+def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
+    """Find all numbers that appear at least three times consecutively.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    logs : pd.DataFrame
+        A table containing sequential ids and numbers.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    if logs.empty:
+        return pd.DataFrame({"ConsecutiveNums": [None]})
+
+    logs_lead_1 = logs.assign(id=logs["id"] + 1)
+    logs_lead_2 = logs.assign(id=logs["id"] + 2)
+
+    return (
+        logs.merge(logs_lead_1, on=["id", "num"])
+        .merge(logs_lead_2, on=["id", "num"])[["num"]]
+        .drop_duplicates()
+        .rename(columns={"num": "ConsecutiveNums"})
+    )
+
+
 
 def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
     """Find names of customers not referred by the customer with ID = 2.
