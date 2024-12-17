@@ -30,6 +30,7 @@ def problem_176(employee: pd.DataFrame) -> pd.DataFrame:
         return pd.DataFrame([None], columns=["SecondHighestSalary"])
     return result
 
+
 def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
     """Find all numbers that appear at least three times consecutively.
 
@@ -57,7 +58,6 @@ def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
         .drop_duplicates()
         .rename(columns={"num": "ConsecutiveNums"})
     )
-
 
 
 def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
