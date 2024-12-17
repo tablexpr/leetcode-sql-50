@@ -157,6 +157,28 @@ def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     return grouped.assign(average_amount=(grouped["amount"] / 7).round(2))
 
 
+def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.DataFrame:
+    """Find the unique ID of each user,.
+
+    If a user does not have a unique ID replace just show null.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employees : pa.Table
+        This table contains the id and the name of an employee in a company.
+    employee_uni : pa.Table
+        Contains the id and the corresponding unique id of an employee in the company.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    return employees.merge(employee_uni, how="left", on="id")[["unique_id", "name"]]
+
+
 def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
     """Find the IDs of the invalid tweets.
 

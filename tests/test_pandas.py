@@ -10,6 +10,7 @@ from problems.pandas import (
     problem_595,
     problem_1148,
     problem_1321,
+    problem_1378,
     problem_1683,
     problem_1757,
 )
@@ -338,6 +339,41 @@ def test_problem_1321(input_data, expected_data):
     expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
     result = (
         problem_1321(table)
+        .reset_index(drop=True)
+        .astype(expected_table.dtypes.to_dict())
+    )
+    assert list(result.index) == list(
+        expected_table.index
+    ), f"Index mismatch: {result.index} vs {expected_table.index}"
+    for col in expected_table.columns:
+        assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
+
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [1, 2], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_matching_ids",
+        ),
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [3, 4], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_non_matching_ids",
+        ),
+    ],
+)
+def test_problem_1378(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    result = (
+        problem_1378(table_1, table_2)
         .reset_index(drop=True)
         .astype(expected_table.dtypes.to_dict())
     )
