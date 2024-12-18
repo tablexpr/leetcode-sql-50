@@ -8,6 +8,7 @@ from problems.pandas import (
     problem_180,
     problem_584,
     problem_595,
+    problem_1068,
     problem_1148,
     problem_1321,
     problem_1378,
@@ -202,6 +203,44 @@ def test_problem_595(input_data, expected_data):
         assert result.equals(
             expected_table
         ), f"Expected table {expected_table}, but got {result}"
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "product_id": [1, 2, 3],
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            {"product_id": [1, 2, 3]},
+            {
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            id="happy_path",
+        )
+    ],
+)
+def test_problem_1068(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    result = (
+        problem_1068(table_1, table_2)
+        .reset_index(drop=True)
+        .astype(expected_table.dtypes.to_dict())
+    )
+    assert list(result.index) == list(
+        expected_table.index
+    ), f"Index mismatch: {result.index} vs {expected_table.index}"
+    for col in expected_table.columns:
+        assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
+
+    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
