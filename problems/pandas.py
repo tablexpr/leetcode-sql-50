@@ -250,6 +250,54 @@ def problem_1581(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFra
     )
 
 
+def problem_1661(activity: pd.DataFrame) -> pd.DataFrame:
+    """Find the average time each machine takes to complete a process.
+
+    There is a factory website that has several machines each running the same
+    number of processes.
+
+    The time to complete a process is the 'end' timestamp minus the 'start' timestamp.
+    The average time is calculated by the total time to complete every process on the
+    machine divided by the number of processes that were run.
+
+    The resulting table should have the machine_id along with the average time as
+    processing_time, which should be rounded to 3 decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    activity : pd.DataFrame
+        Table logs machine process activities with unique machine_id, process_id, type.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    activity_starts = activity.loc[
+        activity["activity_type"] == "start", ["machine_id", "process_id", "timestamp"]
+    ]
+    activity_ends = activity.loc[
+        activity["activity_type"] == "end", ["machine_id", "process_id", "timestamp"]
+    ]
+    joined = activity_starts.merge(
+        activity_ends,
+        on=["machine_id", "process_id"],
+        how="outer",
+        suffixes=("_start", "_end"),
+    )
+    joined["processing_time"] = joined["timestamp_end"] - joined["timestamp_start"]
+    result = (
+        joined.groupby("machine_id", dropna=False)
+        .agg(processing_time=("processing_time", "mean"))
+        .reset_index()
+    )
+    result["processing_time"] = result["processing_time"].round(3)
+
+    return result
+
+
 def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
     """Find the IDs of the invalid tweets.
 
