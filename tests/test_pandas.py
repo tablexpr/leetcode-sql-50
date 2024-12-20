@@ -2,6 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 import pytest
+from pandas.testing import assert_frame_equal
 
 from problems.pandas import (
     problem_176,
@@ -12,6 +13,7 @@ from problems.pandas import (
     problem_1148,
     problem_1321,
     problem_1378,
+    problem_1581,
     problem_1683,
     problem_1757,
 )
@@ -423,6 +425,41 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
         assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
 
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "visit_id": [1, 2, 5, 5, 5, 4, 6, 7, 8],
+                "customer_id": [23, 9, 54, 54, 54, 30, 96, 54, 54],
+            },
+            {
+                "visit_id": [1, 2, 5],
+                "transaction_id": [12, 13, 9],
+                "amount": [910, 970, 200],
+            },
+            {"customer_id": [30, 96, 54], "count_no_trans": [1, 1, 2]},
+            id="happy_path",
+        ),
+        pytest.param(
+            {"visit_id": [10, 11], "customer_id": [100, 101]},
+            {"visit_id": [1, 2], "transaction_id": [12, 13], "amount": [910, 970]},
+            {"customer_id": [100, 101], "count_no_trans": [1, 1]},
+            id="no_matching_visit_id",
+        ),
+    ],
+)
+def test_problem_1581(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = (
+        pd.DataFrame(expected_data).sort_values(by="customer_id").reset_index(drop=True)
+    )
+    result = problem_1581(table_1, table_2).sort_values(by="customer_id")
+
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
 
 
 @pytest.mark.parametrize(

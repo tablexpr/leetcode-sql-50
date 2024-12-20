@@ -199,6 +199,32 @@ def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.Data
     return employees.merge(employee_uni, how="left", on="id")[["unique_id", "name"]]
 
 
+def problem_1581(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
+    """Find users who visited without transactions and count their visit frequency.
+
+    Return the result table sorted in any order.
+
+    Parameters
+    ----------
+    visits : pd.DataFrame
+        Table containing information about the customers who visited the mall.
+    transactions : pd.DataFrame
+        Table containing information about the transactions made during the visit_id.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    joined = visits.merge(transactions, how="left")
+    return (
+        joined.loc[joined["transaction_id"].isnull(), ["visit_id", "customer_id"]]
+        .groupby("customer_id", as_index=False)
+        .count()
+        .rename(columns={"visit_id": "count_no_trans"})
+    )
+
+
 def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
     """Find the IDs of the invalid tweets.
 
