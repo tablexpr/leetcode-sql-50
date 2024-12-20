@@ -15,6 +15,7 @@ from problems.pandas import (
     problem_1321,
     problem_1378,
     problem_1581,
+    problem_1661,
     problem_1683,
     problem_1757,
 )
@@ -522,6 +523,53 @@ def test_problem_1581(input_data_1, input_data_2, expected_data):
         pd.DataFrame(expected_data).sort_values(by="customer_id").reset_index(drop=True)
     )
     result = problem_1581(table_1, table_2).sort_values(by="customer_id")
+
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "machine_id": [0, 0, 0, 0],
+                "process_id": [0, 0, 1, 1],
+                "activity_type": ["start", "end", "start", "end"],
+                "timestamp": [0.712, 1.52, 3.14, 4.12],
+            },
+            {"machine_id": [0], "processing_time": [0.894]},
+            id="happy_path_single_machine",
+        ),
+        pytest.param(
+            {
+                "machine_id": [0, 0, 1, 1, 2, 2],
+                "process_id": [0, 0, 1, 1, 2, 2],
+                "activity_type": ["start", "end", "start", "end", "start", "end"],
+                "timestamp": [0.5, 1.5, 0.7, 1.2, 0.9, 2.0],
+            },
+            {"machine_id": [0, 1, 2], "processing_time": [1.0, 0.5, 1.1]},
+            id="multiple_machines",
+        ),
+        pytest.param(
+            {
+                "machine_id": [0, 0, 1],
+                "process_id": [0, 0, 1],
+                "activity_type": ["start", "end", "start"],
+                "timestamp": [0.5, 1.5, 0.7],
+            },
+            {"machine_id": [0, 1], "processing_time": [1.0, None]},
+            id="incomplete_process",
+        ),
+    ],
+)
+def test_problem_1661(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = (
+        pd.DataFrame(
+            expected_data
+        )  # .sort_values(by="customer_id").reset_index(drop=True)
+    )
+    result = problem_1661(table)  # .sort_values(by="customer_id")
 
     assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
 
