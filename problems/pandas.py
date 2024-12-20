@@ -60,6 +60,31 @@ def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_197(weather: pd.DataFrame) -> pd.DataFrame:
+    """Find IDs of dates with higher temperatures than the previous day.
+
+    Write a solution to find all dates' id with higher temperatures compared to its
+    previous dates (yesterday).
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    weather : pd.DataFrame
+        A table contains information about the temperature on a certain day.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    weather = weather.sort_values("recordDate")
+    mask = (weather["temperature"] > weather["temperature"].shift(1)) & (
+        weather["recordDate"].shift(1) == weather["recordDate"] - pd.Timedelta("1 day")
+    )
+    return weather[mask][["id"]]
+
+
 def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
     """Find names of customers not referred by the customer with ID = 2.
 

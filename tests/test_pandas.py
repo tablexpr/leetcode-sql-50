@@ -7,6 +7,7 @@ from pandas.testing import assert_frame_equal
 from problems.pandas import (
     problem_176,
     problem_180,
+    problem_197,
     problem_584,
     problem_595,
     problem_1068,
@@ -99,6 +100,69 @@ def test_problem_180(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_180(table).reset_index(drop=True)
+    if result.shape == (0, len(expected_table.columns)):
+        assert result.shape == expected_table.shape
+        assert result.columns.equals(expected_table.columns)
+    else:
+        assert result.equals(
+            expected_table
+        ), f"Expected table {expected_table}, but got {result}"
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+                "temperature": [20, 25],
+                "id": [1, 2],
+            },
+            {"id": [2]},
+            id="happy_path_basic",
+        ),
+        pytest.param(
+            {
+                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+                "temperature": [25, 25],
+                "id": [1, 2],
+            },
+            {"id": []},
+            id="no_temperature_increase",
+        ),
+        pytest.param(
+            {
+                "recordDate": [datetime(2023, 1, 1)],
+                "temperature": [20],
+                "id": [1],
+            },
+            {"id": []},
+            id="single_record",
+        ),
+        pytest.param(
+            {
+                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+                "temperature": [25, 20],
+                "id": [1, 2],
+            },
+            {"id": []},
+            id="temperature_decrease",
+        ),
+        pytest.param(
+            {
+                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 3)],
+                "temperature": [20, 25],
+                "id": [1, 2],
+            },
+            {"id": []},
+            id="skip_a_day",
+        ),
+    ],
+)
+def test_problem_197(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_197(table).reset_index(drop=True)
     if result.shape == (0, len(expected_table.columns)):
         assert result.shape == expected_table.shape
         assert result.columns.equals(expected_table.columns)
