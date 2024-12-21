@@ -7,6 +7,7 @@ from problems.datafusion import (
     problem_176,
     problem_620,
     problem_1321,
+    problem_1378,
     problem_1484,
 )
 
@@ -181,6 +182,31 @@ def test_problem_1321(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1321(table)
+    assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [1, 2], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_matching_ids",
+        ),
+        pytest.param(
+            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            {"id": [3, 4], "extra": ["x", "y"]},
+            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+            id="happy_path_non_matching_ids",
+        ),
+    ],
+)
+def test_problem_1378(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1378(table_1, table_2)
     assert result.equals(expected_table)
 
 

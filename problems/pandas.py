@@ -203,7 +203,7 @@ def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
 
 
 def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.DataFrame:
-    """Find the unique ID of each user,.
+    """Find the unique ID of each user.
 
     If a user does not have a unique ID replace just show null.
 

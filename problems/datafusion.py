@@ -102,6 +102,35 @@ def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     return ctx.sql(query).to_arrow_table()
 
 
+def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
+    """Find the unique ID of each user.
+
+    If a user does not have a unique ID replace just show null.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employees : pa.Table
+        This table contains the id and the name of an employee in a company.
+    employee_uni : pa.Table
+        Contains the id and the corresponding unique id of an employee in the company.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    ctx = datafusion.SessionContext()
+    employees = ctx.from_arrow(employees, name="employees")
+    employee_uni = ctx.from_arrow(employee_uni, name="employee_uni")
+    return (
+        employees.join(employee_uni, join_keys=(["id"], ["id"]), how="left")
+        .select("unique_id", "name")
+        .to_arrow_table()
+    )
+
+
 def problem_1484(activities: pa.Table) -> pa.Table:
     """Find for each date the number of different products sold and their names.
 

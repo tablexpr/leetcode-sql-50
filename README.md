@@ -16,7 +16,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 
 | Problem # | Title | Difficulty | PyArrow | DataFusion | pandas |
 |----------:|:------|:-----------|:-------:|:----------:|:------:|
-| 1378 | [Replace Employee ID With The Unique Identifier](https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier) | Easy | ✅ | ❌ | ✅ |
+| 1378 | [Replace Employee ID With The Unique Identifier](https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier) | Easy | ✅ | ✅ | ✅ |
 | 1068 | [Product Sales Analysis I](https://leetcode.com/problems/product-sales-analysis-i) | Easy | ✅ | ❌ | ✅ |
 | 1581 | [Customer Who Visited but Did Not Make Any Transactions](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions) | Easy | ✅ | ❌ | ✅ |
 | 197  | [Rising Temperature](https://leetcode.com/problems/rising-temperature) | Easy | ✅ | ❌ | ✅ |
