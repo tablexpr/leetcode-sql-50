@@ -19,7 +19,7 @@ def problem_176(employee: pa.Table) -> datafusion.dataframe.DataFrame:
 
     Returns
     -------
-    pa.Table
+    datafusion.dataframe.DataFrame
 
     """
     ctx = datafusion.SessionContext()
@@ -50,7 +50,7 @@ def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
 
     Returns
     -------
-    pa.Table
+    datafusion.dataframe.DataFrame
 
     """
     ctx = datafusion.SessionContext()
@@ -76,7 +76,7 @@ def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
 
     Returns
     -------
-    pa.Table
+    datafusion.dataframe.DataFrame
 
     """
     query = dedent(
@@ -99,10 +99,12 @@ def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     ctx.from_arrow(customer).aggregate(
         group_by=[F.col("visited_on")], aggs=[F.sum(F.col("amount")).alias("amount")]
     )
-    return ctx.sql(query).to_arrow_table()
+    return ctx.sql(query)
 
 
-def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
+def problem_1378(
+    employees: pa.Table, employee_uni: pa.Table
+) -> datafusion.dataframe.DataFrame:
     """Find the unique ID of each user.
 
     If a user does not have a unique ID replace just show null.
@@ -118,16 +120,14 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
 
     Returns
     -------
-    pa.Table
+    datafusion.dataframe.DataFrame
 
     """
     ctx = datafusion.SessionContext()
     employees = ctx.from_arrow(employees, name="employees")
     employee_uni = ctx.from_arrow(employee_uni, name="employee_uni")
-    return (
-        employees.join(employee_uni, join_keys=(["id"], ["id"]), how="left")
-        .select("unique_id", "name")
-        .to_arrow_table()
+    return employees.join(employee_uni, join_keys=(["id"], ["id"]), how="left").select(
+        "unique_id", "name"
     )
 
 
