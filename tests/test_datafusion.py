@@ -253,5 +253,18 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
 )
 def test_problem_1484(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
-    result = problem_1484(table).to_pydict()
-    assert result == expected_data
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1484(table)
+    assert (
+        result.to_arrow_table()
+        .cast(
+            pa.schema(
+                [
+                    pa.field("sell_date", pa.timestamp("us")),
+                    pa.field("num_sold", pa.int64()),
+                    pa.field("products", pa.utf8()),
+                ]
+            )
+        )
+        .equals(expected_table)
+    )
