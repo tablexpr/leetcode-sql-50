@@ -5,6 +5,8 @@ import pytest
 
 from problems.datafusion import (
     problem_176,
+    problem_584,
+    problem_595,
     problem_620,
     problem_1321,
     problem_1378,
@@ -40,6 +42,95 @@ def test_problem_176(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_176(table)
+    assert result.to_arrow_table().equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 4, 5],
+                "name": ["Will", "Jane", "Bill", "Zack"],
+                "referee_id": [None, None, None, 1],
+            },
+            {"name": ["Will", "Jane", "Bill", "Zack"]},
+            id="happy_path_all_valid",
+        ),
+        pytest.param(
+            {
+                "id": [3, 6],
+                "name": ["Alex", "Mark"],
+                "referee_id": [2, 2],
+            },
+            {"name": []},
+            id="edge_case_all_referee_id_2",
+        ),
+        pytest.param(
+            {
+                "id": [1, 3, 5, 6],
+                "name": ["Will", "Alex", "Zack", "Mark"],
+                "referee_id": [None, 2, 1, 2],
+            },
+            {"name": ["Will", "Zack"]},
+            id="mixed_case_some_valid",
+        ),
+    ],
+)
+def test_problem_584(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("name", pa.string())])
+    )
+    result = problem_584(input_table)
+    assert result.to_arrow_table().equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "name": ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola"],
+                "continent": ["Asia", "Europe", "Africa", "Europe", "Africa"],
+                "area": [652_230, 28_748, 2_381_741, 468, 1_246_700],
+                "population": [25_500_100, 2_831_741, 37_100_000, 78_115, 20_609_294],
+                "gdp": [
+                    20_343_000_000,
+                    12_960_000_000,
+                    188_681_000_000,
+                    3_712_000_000,
+                    100_990_000_000,
+                ],
+            },
+            {
+                "name": ["Afghanistan", "Algeria"],
+                "population": [25_500_100, 37_100_000],
+                "area": [652_230, 2_381_741],
+            },
+            id="happy_path_various_countries",
+        ),
+        pytest.param(
+            {
+                "name": ["CountryA", "CountryB"],
+                "continent": ["ContinentA", "ContinentB"],
+                "area": [3_000_000, 4_000_000],
+                "population": [30_000_000, 40_000_000],
+                "gdp": [1_000_000_000, 2_000_000_000],
+            },
+            {
+                "name": ["CountryA", "CountryB"],
+                "population": [30_000_000, 40_000_000],
+                "area": [3_000_000, 4_000_000],
+            },
+            id="edge_case_all_countries_meeting_criteria",
+        ),
+    ],
+)
+def test_problem_595(input_data, expected_data):
+    input_table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_595(input_table)
     assert result.to_arrow_table().equals(expected_table)
 
 
@@ -182,7 +273,7 @@ def test_problem_1321(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1321(table)
-    assert result.equals(expected_table)
+    assert result.to_arrow_table().equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -207,7 +298,7 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_2 = pa.Table.from_pydict(input_data_2)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_1378(table_1, table_2)
-    assert result.equals(expected_table)
+    assert result.to_arrow_table().equals(expected_table)
 
 
 @pytest.mark.parametrize(
