@@ -131,7 +131,7 @@ def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
     )
 
 
-def problem_1484(activities: pa.Table) -> pa.Table:
+def problem_1484(activities: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find for each date the number of different products sold and their names.
 
     The sold products names for each date should be sorted lexicographically.
@@ -145,7 +145,25 @@ def problem_1484(activities: pa.Table) -> pa.Table:
 
     Returns
     -------
-    pa.Table
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1484
+    >>> from problems.datasets import load_problem_1484
+    >>> ctx = datafusion.SessionContext()
+    >>> activities = pa.table(load_problem_1484())
+    >>> problem_1484(activities)
+    DataFrame()
+    +---------------------+----------+------------------------------+
+    | sell_date           | num_sold | products                     |
+    +---------------------+----------+------------------------------+
+    | 2020-05-30T00:00:00 | 3        | Basketball,Headphone,T-Shirt |
+    | 2020-06-01T00:00:00 | 2        | Bible,Pencil                 |
+    | 2020-06-02T00:00:00 | 1        | Mask                         |
+    +---------------------+----------+------------------------------+
 
     """
     ctx = datafusion.SessionContext()
@@ -172,5 +190,4 @@ def problem_1484(activities: pa.Table) -> pa.Table:
                 F.array_sort(F.col("products")), delimiter=datafusion.lit(",")
             ),
         )
-        .to_arrow_table()
     )
