@@ -21,7 +21,7 @@ classifiers = [
 [project.optional-dependencies]
 dev = [
   "ipykernel==6.29.5",
-  "ipython==8.30.0",
+  "ipython==8.31.0",
   "pre-commit==4.0.1",
   "pytest==8.3.4",
   "pytest-cov==6.0.0",
