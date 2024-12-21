@@ -3,6 +3,37 @@
 import pandas as pd
 
 
+def load_problem_197() -> pd.DataFrame:
+    data = [
+        [1, "2015-01-01", 10],
+        [2, "2015-01-02", 25],
+        [3, "2015-01-03", 20],
+        [4, "2015-01-04", 30],
+    ]
+    return pd.DataFrame(data, columns=["id", "recordDate", "temperature"]).astype(
+        {"id": "Int64", "recordDate": "datetime64[ns]", "temperature": "Int64"}
+    )
+
+
+def load_problem_577() -> tuple:
+    data = [
+        [3, "Brad", None, 4000],
+        [1, "John", 3, 1000],
+        [2, "Dan", 3, 2000],
+        [4, "Thomas", 3, 4000],
+    ]
+    employee = pd.DataFrame(
+        data, columns=["empId", "name", "supervisor", "salary"]
+    ).astype(
+        {"empId": "Int64", "name": "object", "supervisor": "Int64", "salary": "Int64"}
+    )
+    data = [[2, 500], [4, 2000]]
+    bonus = pd.DataFrame(data, columns=["empId", "bonus"]).astype(
+        {"empId": "Int64", "bonus": "Int64"}
+    )
+    return employee, bonus
+
+
 def load_problem_584() -> pd.DataFrame:
     data = [
         [1, "Will", None],
@@ -34,6 +65,28 @@ def load_problem_595() -> pd.DataFrame:
             "area": "Int64",
             "population": "Int64",
             "gdp": "Int64",
+        }
+    )
+
+
+def load_problem_1148() -> pd.DataFrame:
+    data = [
+        [1, 3, 5, "2019-08-01"],
+        [1, 3, 6, "2019-08-02"],
+        [2, 7, 7, "2019-08-01"],
+        [2, 7, 6, "2019-08-02"],
+        [4, 7, 1, "2019-07-22"],
+        [3, 4, 4, "2019-07-21"],
+        [3, 4, 4, "2019-07-21"],
+    ]
+    return pd.DataFrame(
+        data, columns=["article_id", "author_id", "viewer_id", "view_date"]
+    ).astype(
+        {
+            "article_id": "Int64",
+            "author_id": "Int64",
+            "viewer_id": "Int64",
+            "view_date": "datetime64[ns]",
         }
     )
 
@@ -77,6 +130,13 @@ def load_problem_1517() -> pd.DataFrame:
     ]
     return pd.DataFrame(data, columns=["user_id", "name", "mail"]).astype(
         {"user_id": "int64", "name": "object", "mail": "object"}
+    )
+
+
+def load_problem_1683() -> pd.DataFrame:
+    data = [[1, "Let us Code"], [2, "More than fifteen chars are here!"]]
+    return pd.DataFrame(data, columns=["tweet_id", "content"]).astype(
+        {"tweet_id": "Int64", "content": "object"}
     )
 
 
