@@ -1137,7 +1137,7 @@ def problem_1341(movies: pa.Table, users: pa.Table, movie_rating: pa.Table) -> p
 
 
 def problem_1378(employees: pa.Table, employee_uni: pa.Table) -> pa.Table:
-    """Find the unique ID of each user,.
+    """Find the unique ID of each user.
 
     If a user does not have a unique ID replace just show null.
 
