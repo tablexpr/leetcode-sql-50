@@ -38,6 +38,54 @@ def problem_176(employee: pa.Table) -> datafusion.dataframe.DataFrame:
     return t
 
 
+def problem_584(customer: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find names of customers not referred by the customer with ID = 2.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    customer : pa.Table
+        Table shows customer IDs, names, and the ID of the customer who referred them.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    """
+    ctx = datafusion.SessionContext()
+    customer = ctx.from_arrow(customer)
+    return customer.filter(
+        (F.col("referee_id") != 2) | (F.col("referee_id").is_null())
+    ).select("name")
+
+
+def problem_595(world: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find the name, population, and area of the big countries.
+
+    A country is big if:
+        it has an area of at least three million (i.e., 3000000 km2), or
+        it has a population of at least twenty-five million (i.e., 25000000).
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    world : pa.Table
+        Table lists countries with their continent, area, population, and GDP details.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    """
+    ctx = datafusion.SessionContext()
+    world = ctx.from_arrow(world)
+    return world.filter(
+        (F.col("area") >= 3_000_000) | (F.col("population") >= 25_000_000)
+    ).select("name", "population", "area")
+
+
 def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
     """Report movies with odd IDs and descriptions not equal to "boring".
 
@@ -121,6 +169,18 @@ def problem_1378(
     Returns
     -------
     datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1378
+    >>> from problems.datasets import load_problem_1378
+    >>> ctx = datafusion.SessionContext()
+    >>> data = load_problem_1378()
+    >>> employees = data[0]
+    >>> employee_uni = data[1]
+    >>> problem_1378(employees, employee_uni)
 
     """
     ctx = datafusion.SessionContext()
