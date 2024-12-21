@@ -38,6 +38,36 @@ def load_problem_595() -> pd.DataFrame:
     )
 
 
+def load_problem_1484() -> pd.DataFrame:
+    data = [
+        ["2020-05-30", "Headphone"],
+        ["2020-06-01", "Pencil"],
+        ["2020-06-02", "Mask"],
+        ["2020-05-30", "Basketball"],
+        ["2020-06-01", "Bible"],
+        ["2020-06-02", "Mask"],
+        ["2020-05-30", "T-Shirt"],
+    ]
+    return pd.DataFrame(data, columns=["sell_date", "product"]).astype(
+        {"sell_date": "datetime64[ns]", "product": "object"}
+    )
+
+
+def load_problem_1517() -> pd.DataFrame:
+    data = [
+        [1, "Winston", "winston@leetcode.com"],
+        [2, "Jonathan", "jonathanisgreat"],
+        [3, "Annabelle", "bella-@leetcode.com"],
+        [4, "Sally", "sally.come@leetcode.com"],
+        [5, "Marwan", "quarz#2020@leetcode.com"],
+        [6, "David", "david69@gmail.com"],
+        [7, "Shapiro", ".shapo@leetcode.com"],
+    ]
+    return pd.DataFrame(data, columns=["user_id", "name", "mail"]).astype(
+        {"user_id": "int64", "name": "object", "mail": "object"}
+    )
+
+
 def load_problem_1757() -> pd.DataFrame:
     data = [
         ["0", "Y", "N"],
