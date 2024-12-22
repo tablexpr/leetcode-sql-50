@@ -38,6 +38,64 @@ def problem_176(employee: pa.Table) -> datafusion.dataframe.DataFrame:
     return t
 
 
+def problem_180(logs: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find all numbers that appear at least three times consecutively.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    logs : pa.Table
+        A table containing sequential ids and numbers.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import datafusion.functions as F
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_180
+    >>> from problems.datasets import load_problem_180
+    >>> ctx = datafusion.SessionContext()
+    >>> logs = pa.table(load_problem_180())
+    >>> problem_180(logs)
+    DataFrame()
+    +-----------------+
+    | ConsecutiveNums |
+    +-----------------+
+    | 1               |
+    +-----------------+
+
+    """
+    ctx = datafusion.SessionContext()
+    logs = ctx.from_arrow(logs)
+    logs = logs.select(
+        F.col("num"),
+        F.lag(F.col("num"), order_by=[F.col("id")]).alias("num_lag_1"),
+        F.lag(F.col("num"), 2, order_by=[F.col("id")]).alias("num_lag_2"),
+    )
+    filtered = (
+        logs.filter(
+            (F.col("num") == F.col("num_lag_1")) & (F.col("num") == F.col("num_lag_2"))
+        )
+        .select("num")
+        .with_column_renamed("num", "ConsecutiveNums")
+    )
+    ctx.from_arrow(filtered.to_arrow_table(), "filtered")
+    result = ctx.sql("""SELECT DISTINCT "ConsecutiveNums" FROM filtered""")
+    if result.to_arrow_table().num_rows == 0:
+        return ctx.from_arrow(
+            pa.table(
+                {"ConsecutiveNums": [pa.scalar(None, type=pa.int64())]},
+                schema=pa.schema({"ConsecutiveNums": pa.int64()}),
+            )
+        )
+    return result
+
+
 def problem_584(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find names of customers not referred by the customer with ID = 2.
 

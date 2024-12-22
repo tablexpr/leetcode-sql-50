@@ -1,5 +1,7 @@
 """Functions to load LeetCode problem datasets to pandas DataFrames."""
 
+from typing import Tuple
+
 import pandas as pd
 
 
@@ -17,7 +19,7 @@ def load_problem_180() -> pd.DataFrame:
     )
 
 
-def load_problem_185() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_185() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [1, "Joe", 85000, 1],
         [2, "Henry", 80000, 2],
@@ -92,7 +94,7 @@ def load_problem_570() -> pd.DataFrame:
     )
 
 
-def load_problem_577() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_577() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [3, "Brad", None, 4000],
         [1, "John", 3, 1000],
@@ -233,7 +235,7 @@ def load_problem_626() -> pd.DataFrame:
     )
 
 
-def load_problem_1045() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1045() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [[1, 5], [2, 6], [3, 5], [3, 6], [1, 6]]
     customer = pd.DataFrame(data, columns=["customer_id", "product_key"]).astype(
         {"customer_id": "Int64", "product_key": "Int64"}
@@ -269,7 +271,7 @@ def load_problem_1068() -> pd.DataFrame:
     return sales, product
 
 
-def load_problem_1070() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1070() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [1, 100, 2008, 10, 5000],
         [2, 100, 2009, 12, 5000],
@@ -293,7 +295,7 @@ def load_problem_1070() -> tuple(pd.DataFrame, pd.DataFrame):
     return sales, product
 
 
-def load_problem_1075() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1075() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [[1, 1], [1, 2], [1, 3], [2, 1], [2, 4]]
     project = pd.DataFrame(data, columns=["project_id", "employee_id"]).astype(
         {"project_id": "Int64", "employee_id": "Int64"}
@@ -459,7 +461,7 @@ def load_problem_1211() -> pd.DataFrame:
     )
 
 
-def load_problem_1251() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1251() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [1, "2019-02-17", "2019-02-28", 5],
         [1, "2019-03-01", "2019-03-22", 20],
@@ -490,7 +492,7 @@ def load_problem_1251() -> tuple(pd.DataFrame, pd.DataFrame):
     return prices, units_sold
 
 
-def load_problem_1280() -> tuple(pd.DataFrame, pd.DataFrame, pd.DataFrame):
+def load_problem_1280() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     data = [[1, "Alice"], [2, "Bob"], [13, "John"], [6, "Alex"]]
     students = pd.DataFrame(data, columns=["student_id", "student_name"]).astype(
         {"student_id": "Int64", "student_name": "object"}
@@ -544,7 +546,7 @@ def load_problem_1321() -> pd.DataFrame:
     )
 
 
-def load_problem_1327() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1327() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [1, "Leetcode Solutions", "Book"],
         [2, "Jewels of Stringology", "Book"],
@@ -577,7 +579,7 @@ def load_problem_1327() -> tuple(pd.DataFrame, pd.DataFrame):
     return products, orders
 
 
-def load_problem_1341() -> tuple(pd.DataFrame, pd.DataFrame, pd.DataFrame):
+def load_problem_1341() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     data = [[1, "Avengers"], [2, "Frozen 2"], [3, "Joker"]]
     movies = pd.DataFrame(data, columns=["movie_id", "title"]).astype(
         {"movie_id": "Int64", "title": "object"}
@@ -610,7 +612,7 @@ def load_problem_1341() -> tuple(pd.DataFrame, pd.DataFrame, pd.DataFrame):
     return movies, users, movie_rating
 
 
-def load_problem_1378() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1378() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [[1, "Alice"], [7, "Bob"], [11, "Meir"], [90, "Winston"], [3, "Jonathan"]]
     employees = pd.DataFrame(data, columns=["id", "name"]).astype(
         {"id": "int64", "name": "object"}
@@ -665,7 +667,7 @@ def load_problem_1527() -> pd.DataFrame:
     ).astype({"patient_id": "int64", "patient_name": "object", "conditions": "object"})
 
 
-def load_problem_1581() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1581() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [[1, 23], [2, 9], [4, 30], [5, 54], [6, 96], [7, 54], [8, 54]]
     visits = pd.DataFrame(data, columns=["visit_id", "customer_id"]).astype(
         {"visit_id": "Int64", "customer_id": "Int64"}
@@ -677,7 +679,7 @@ def load_problem_1581() -> tuple(pd.DataFrame, pd.DataFrame):
     return visits, transactions
 
 
-def load_problem_1633() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1633() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [[6, "Alice"], [2, "Bob"], [7, "Alex"]]
     users = pd.DataFrame(data, columns=["user_id", "user_name"]).astype(
         {"user_id": "Int64", "user_name": "object"}
@@ -806,7 +808,7 @@ def load_problem_1907() -> pd.DataFrame:
     )
 
 
-def load_problem_1934() -> tuple(pd.DataFrame, pd.DataFrame):
+def load_problem_1934() -> Tuple[pd.DataFrame, pd.DataFrame]:
     data = [
         [3, "2020-03-21 10:16:13"],
         [7, "2020-01-04 13:57:59"],

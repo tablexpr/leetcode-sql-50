@@ -5,6 +5,7 @@ import pytest
 
 from problems.datafusion import (
     problem_176,
+    problem_180,
     problem_584,
     problem_595,
     problem_620,
@@ -42,6 +43,63 @@ def test_problem_176(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_176(table)
+    assert result.to_arrow_table().equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "num": [1, 2, 3, 1, 1, 1, 4, 5],
+            },
+            {
+                "ConsecutiveNums": [1],
+            },
+            id="one_consecutive_number_three_times",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "num": [1, 2, 3, 1, 1, 1, 1, 5],
+            },
+            {
+                "ConsecutiveNums": [1],
+            },
+            id="one_consecutive_number_four_times",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5],
+                "num": [1, 2, 3, 4, 5],
+            },
+            {
+                "ConsecutiveNums": [None],
+            },
+            id="no_consecutive_numbers",
+        ),
+        pytest.param(
+            {
+                "id": [],
+                "num": [],
+            },
+            {
+                "ConsecutiveNums": [None],
+            },
+            id="empty_table",
+        ),
+    ],
+)
+def test_problem_180(input_data, expected_data):
+    table = pa.Table.from_pydict(
+        input_data,
+        schema=pa.schema([pa.field("id", pa.int64()), pa.field("num", pa.int64())]),
+    )
+    expected_table = pa.Table.from_pydict(
+        expected_data, schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())])
+    )
+    result = problem_180(table)
     assert result.to_arrow_table().equals(expected_table)
 
 
