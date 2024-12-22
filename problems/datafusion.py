@@ -110,6 +110,25 @@ def problem_584(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     -------
     datafusion.dataframe.DataFrame
 
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_584
+    >>> from problems.datasets import load_problem_584
+    >>> ctx = datafusion.SessionContext()
+    >>> customer = pa.table(load_problem_584())
+    >>> problem_584(customer)
+    DataFrame()
+    +------+
+    | name |
+    +------+
+    | Will |
+    | Jane |
+    | Bill |
+    | Zack |
+    +------+
+
     """
     ctx = datafusion.SessionContext()
     customer = ctx.from_arrow(customer)
@@ -136,6 +155,23 @@ def problem_595(world: pa.Table) -> datafusion.dataframe.DataFrame:
     -------
     datafusion.dataframe.DataFrame
 
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_595
+    >>> from problems.datasets import load_problem_595
+    >>> ctx = datafusion.SessionContext()
+    >>> world = pa.table(load_problem_595())
+    >>> problem_595(world)
+    DataFrame()
+    +-------------+------------+---------+
+    | name        | population | area    |
+    +-------------+------------+---------+
+    | Afghanistan | 25500100   | 652230  |
+    | Algeria     | 37100000   | 2381741 |
+    +-------------+------------+---------+
+
     """
     ctx = datafusion.SessionContext()
     world = ctx.from_arrow(world)
@@ -157,6 +193,22 @@ def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
     Returns
     -------
     datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_620
+    >>> from problems.datasets import load_problem_620
+    >>> ctx = datafusion.SessionContext()
+    >>> cinema = pa.table(load_problem_620())
+    >>> problem_620(cinema)
+    +----+------------+-------------+--------+
+    | id | movie      | description | rating |
+    +----+------------+-------------+--------+
+    | 5  | House card | Interesting | 9.1    |
+    | 1  | War        | great 3D    | 8.9    |
+    +----+------------+-------------+--------+
 
     """
     ctx = datafusion.SessionContext()
@@ -183,6 +235,25 @@ def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     Returns
     -------
     datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1321
+    >>> from problems.datasets import load_problem_1321
+    >>> ctx = datafusion.SessionContext()
+    >>> customer = pa.table(load_problem_1321())
+    >>> problem_1321(customer)
+    DataFrame()
+    +---------------------+--------+----------------+
+    | visited_on          | amount | average_amount |
+    +---------------------+--------+----------------+
+    | 2019-01-07T00:00:00 | 860    | 122.86         |
+    | 2019-01-08T00:00:00 | 840    | 120.0          |
+    | 2019-01-09T00:00:00 | 840    | 120.0          |
+    | 2019-01-10T00:00:00 | 1000   | 142.86         |
+    +---------------------+--------+----------------+
 
     """
     query = dedent(
