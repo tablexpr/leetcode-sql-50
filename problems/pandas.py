@@ -85,6 +85,39 @@ def problem_197(weather: pd.DataFrame) -> pd.DataFrame:
     return weather[mask][["id"]]
 
 
+def problem_577(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
+    """Report the name and bonus amount of each employee with a bonus less than 1000.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pd.DataFrame
+        Table shows employee names, IDs, salaries, and their manager's ID.
+    bonus : pd.DataFrame
+        Table contains the id of an employee and their respective bonus.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from problems.pandas import problem_577
+    >>> from problems.datasets import load_problem_577
+    >>> data = load_problem_577()
+    >>> employee = data[0]
+    >>> bonus = data[1]
+    >>> problem_577(employee, bonus)
+
+    """
+    joined = employee.merge(bonus, how="left")
+    return joined.loc[
+        (joined["bonus"] < 1000) | joined["bonus"].isnull(), ["name", "bonus"]
+    ]
+
+
 def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
     """Find names of customers not referred by the customer with ID = 2.
 
