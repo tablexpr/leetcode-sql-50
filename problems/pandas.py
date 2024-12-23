@@ -205,6 +205,41 @@ def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1280(
+    students: pd.DataFrame, subjects: pd.DataFrame, examinations: pd.DataFrame
+) -> pd.DataFrame:
+    """Find the number of times each student attended each exam.
+
+    Return the result table ordered by student_id and subject_name.
+
+    Parameters
+    ----------
+    students : pd.DataFrame
+        This table contains the ID and the name of one student in the school.
+    subjects : pd.DataFrame
+        This table contains the name of one subject in the school.
+    examinations : pd.DataFrame
+        This table indicates that a student attended the exam of subject_name.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    examinations_agg = (
+        examinations.groupby(["student_id", "subject_name"])
+        .size()
+        .reset_index(name="attended_exams")
+    )
+    joined = joined = (
+        students.merge(subjects, how="cross")
+        .merge(examinations_agg, how="left")
+        .sort_values(["student_id", "subject_name"])
+    )
+    joined["attended_exams"] = joined["attended_exams"].fillna(0).astype(int)
+    return joined
+
+
 def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 

@@ -13,6 +13,7 @@ from problems.pandas import (
     problem_595,
     problem_1068,
     problem_1148,
+    problem_1280,
     problem_1321,
     problem_1378,
     problem_1581,
@@ -375,6 +376,142 @@ def test_problem_1148(input_data, expected_data):
     expected_table = pd.DataFrame(expected_data)
     result = problem_1148(table).reset_index(drop=True)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, input_data_3, expected_data",
+    [
+        pytest.param(
+            {
+                "student_id": [1, 2, 13, 6],
+                "student_name": ["Alice", "Bob", "John", "Alex"],
+            },
+            {"subject_name": ["Math", "Physics", "Programming"]},
+            {
+                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                "subject_name": [
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                ],
+            },
+            {
+                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                "student_name": [
+                    "Alice",
+                    "Alice",
+                    "Alice",
+                    "Bob",
+                    "Bob",
+                    "Bob",
+                    "Alex",
+                    "Alex",
+                    "Alex",
+                    "John",
+                    "John",
+                    "John",
+                ],
+                "subject_name": [
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                ],
+                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+            },
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "student_id": [1, 2, 13, 6],
+                "student_name": ["Alice", "Bob", "John", None],
+            },
+            {"subject_name": ["Math", "Physics", "Programming"]},
+            {
+                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
+                "subject_name": [
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Math",
+                ],
+            },
+            {
+                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
+                "student_name": [
+                    "Alice",
+                    "Alice",
+                    "Alice",
+                    "Bob",
+                    "Bob",
+                    "Bob",
+                    None,
+                    None,
+                    None,
+                    "John",
+                    "John",
+                    "John",
+                ],
+                "subject_name": [
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Math",
+                    "Physics",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                    "Programming",
+                    "Physics",
+                    "Math",
+                ],
+                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
+            },
+            id="happy_path_null_name",
+        ),
+    ],
+)
+def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    table_3 = pd.DataFrame(input_data_3)
+    expected_table = (
+        pd.DataFrame(expected_data)
+        .sort_values(["student_id", "subject_name"])
+        .reset_index(drop=True)
+    )
+    result = (
+        problem_1280(table_1, table_2, table_3)
+        .sort_values(["student_id", "subject_name"])
+        .reset_index(drop=True)
+    )
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
