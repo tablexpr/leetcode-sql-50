@@ -288,8 +288,23 @@ def problem_577(employee: pa.Table, bonus: pa.Table) -> pa.Table:
     -------
     pa.Table
 
+    Examples
+    --------
+    >>> import pyarrow as pa
+    >>> from problems.pyarrow import problem_577
+    >>> from problems.datasets import load_problem_577
+    >>> data = load_problem_577()
+    >>> employee = pa.table(data[0])
+    >>> bonus = pa.table(data[1])
+    >>> problem_577(employee, bonus)
+
     """
-    return employee.join(bonus, keys="empId").select(["name", "bonus"])
+    joined = employee.join(bonus, keys="empId").select(["name", "bonus"])
+    return joined.filter(
+        pc.or_kleene(
+            pc.less(pc.field("bonus"), pa.scalar(1000)), pc.is_null(pc.field("bonus"))
+        )
+    )
 
 
 def problem_584(customer: pa.Table) -> pa.Table:

@@ -410,9 +410,14 @@ def test_problem_570(input_data, expected_data):
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
-            {"empId": [1, 2], "name": ["Alice", "Bob"]},
-            {"empId": [1, 2], "bonus": [1000, 1500]},
-            {"name": ["Alice", "Bob"], "bonus": [1000, 1500]},
+            {
+                "empId": [3, 1, 2, 4],
+                "name": ["Brad", "John", "Dan", "Thomas"],
+                "supervisor": [None, 3, 3, 3],
+                "salary": [4000, 1000, 2000, 4000],
+            },
+            {"empId": [2, 4], "bonus": [500, 2000]},
+            {"name": ["Brad", "John", "Dan"], "bonus": [None, None, 500]},
             id="happy_path_basic",
         )
     ],
@@ -420,8 +425,10 @@ def test_problem_570(input_data, expected_data):
 def test_problem_577(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)
     table_2 = pa.Table.from_pydict(input_data_2)
-    expected_table = pa.Table.from_pydict(expected_data)
-    result = problem_577(table_1, table_2)
+    expected_table = pa.Table.from_pydict(expected_data).sort_by(
+        [("name", "ascending")]
+    )
+    result = problem_577(table_1, table_2).sort_by([("name", "ascending")])
     assert result.equals(expected_table)
 
 
