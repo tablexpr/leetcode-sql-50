@@ -16,6 +16,7 @@ from problems.pandas import (
     problem_1280,
     problem_1321,
     problem_1378,
+    problem_1517,
     problem_1581,
     problem_1661,
     problem_1683,
@@ -606,7 +607,7 @@ def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
 )
 def test_problem_1321(input_data, expected_data):
     table = pd.DataFrame(input_data)
-    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    expected_table = pd.DataFrame(expected_data)
     result = (
         problem_1321(table)
         .reset_index(drop=True)
@@ -641,7 +642,7 @@ def test_problem_1321(input_data, expected_data):
 def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_1 = pd.DataFrame(input_data_1)
     table_2 = pd.DataFrame(input_data_2)
-    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    expected_table = pd.DataFrame(expected_data)
     result = (
         problem_1378(table_1, table_2)
         .reset_index(drop=True)
@@ -654,6 +655,97 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
         assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
 
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "user_id": [1, 2, 3, 4, 5, 6, 7],
+                "name": [
+                    "Winston",
+                    "Jonathan",
+                    "Annabelle",
+                    "Sally",
+                    "Marwan",
+                    "David",
+                    "Shapiro",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "jonathanisgreat",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                    "quarz#2020@leetcode.com",
+                    "david69@gmail.com",
+                    ".shapo@leetcode.com",
+                ],
+            },
+            {
+                "user_id": [1, 3, 4],
+                "name": [
+                    "Winston",
+                    "Annabelle",
+                    "Sally",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                ],
+            },
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "user_id": [360, 966, 901, 162, 181, 240, 221, 388, 211, 178],
+                "name": [
+                    "Ezra",
+                    "Daniel",
+                    "Yehudah",
+                    "Daniel",
+                    "Aharon",
+                    "Gavriel",
+                    "Levi",
+                    "Eliyahu",
+                    "Michael",
+                    "Aharon",
+                ],
+                "mail": [
+                    "Ezra4VZabfK",
+                    "DanielEnEMjNoG6",
+                    "Yehudah*5m9@leetcode.com",
+                    "Daniel07L@leetcode.com",
+                    "AharonxuZA530S8Q",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                    ".Michael@leetcode.com",
+                    "AharonnDFFSqcY",
+                ],
+            },
+            {
+                "user_id": [162, 240, 221, 388],
+                "name": ["Daniel", "Gavriel", "Levi", "Eliyahu"],
+                "mail": [
+                    "Daniel07L@leetcode.com",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                ],
+            },
+            id="happy_path_2",
+        ),
+    ],
+)
+def test_problem_1517(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1517(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(

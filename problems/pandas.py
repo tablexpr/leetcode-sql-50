@@ -292,6 +292,32 @@ def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.Data
     return employees.merge(employee_uni, how="left", on="id")[["unique_id", "name"]]
 
 
+def problem_1517(users: pd.DataFrame) -> pd.DataFrame:
+    """Find the users who have valid emails.
+
+    A valid e-mail has a prefix name and a domain where:
+
+    The prefix name is a string that may contain letters (upper or lower case), digits,
+    underscore '_', period '.', and/or dash '-'. The prefix name must start with a
+    letter.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    users : pd.DataFrame
+        Table containing user names and emails.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return users.loc[
+        users["mail"].str.match(r"^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode\.com$")
+    ]
+
+
 def problem_1581(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
     """Find users who visited without transactions and count their visit frequency.
 
