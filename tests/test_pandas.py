@@ -8,6 +8,7 @@ from problems.pandas import (
     problem_176,
     problem_180,
     problem_197,
+    problem_570,
     problem_577,
     problem_584,
     problem_595,
@@ -174,6 +175,59 @@ def test_problem_197(input_data, expected_data):
         assert result.equals(
             expected_table
         ), f"Expected table {expected_table}, but got {result}"
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106],
+                "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+                "managerId": [None, 101, 101, 101, 101, 101],
+            },
+            {"name": ["John"]},
+            id="happy_path_one_with_five",
+        ),
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111],
+                "name": [
+                    "John",
+                    "Dan",
+                    "James",
+                    "Amy",
+                    "Anne",
+                    "Ron",
+                    "Alex",
+                    "Bob",
+                    "Charles",
+                    "David",
+                    "Edward",
+                ],
+                "managerId": [None, 101, 101, 101, 101, 101, 110, 110, 110, 110, 110],
+            },
+            {"name": ["John", "David"]},
+            id="happy_path_two_with_five",
+        ),
+        pytest.param(
+            {
+                "id": [101, 102, 103, 104, 105, 106],
+                "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+                "managerId": [None, 101, 101, 101, 101, 102],
+            },
+            {"name": []},
+            id="none_with_five",
+        ),
+    ],
+)
+def test_problem_570(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    result = problem_570(table)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(

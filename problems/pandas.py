@@ -292,6 +292,28 @@ def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.Data
     return employees.merge(employee_uni, how="left", on="id")[["unique_id", "name"]]
 
 
+def problem_570(employee: pd.DataFrame) -> pd.DataFrame:
+    """Find managers with at least five direct reports.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pd.DataFrame
+        Table lists employee names, departments, and their manager's ID.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    grouped = employee.groupby("managerId", as_index=False).aggregate(
+        reports=pd.NamedAgg("id", "count")
+    )
+    grouped = grouped.loc[grouped["reports"] >= 5]
+    return employee.merge(grouped, left_on="id", right_on="managerId")[["name"]]
+
+
 def problem_1517(users: pd.DataFrame) -> pd.DataFrame:
     """Find the users who have valid emails.
 
