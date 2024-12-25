@@ -218,6 +218,31 @@ def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
     )
 
 
+def problem_1148(views: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find all the authors that viewed at least one of their own articles.
+
+    Return the result table sorted by id in ascending order.
+
+    Parameters
+    ----------
+    views : pa.Table
+        Table logs viewers viewing articles by authors on specific dates.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    """
+    ctx = datafusion.SessionContext()
+    views = ctx.from_arrow(views)
+    return (
+        views.filter(F.col("author_id") == F.col("viewer_id"))
+        .select(F.col("author_id").alias("id"))
+        .distinct()
+        .sort(F.col("id").sort())
+    )
+
+
 def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     """Compute the moving average of how much the customer paid in a seven days window.
 
