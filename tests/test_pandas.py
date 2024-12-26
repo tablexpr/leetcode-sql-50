@@ -22,6 +22,7 @@ from problems.pandas import (
     problem_1661,
     problem_1683,
     problem_1757,
+    problem_1934,
 )
 
 
@@ -874,12 +875,8 @@ def test_problem_1581(input_data_1, input_data_2, expected_data):
 )
 def test_problem_1661(input_data, expected_data):
     table = pd.DataFrame(input_data)
-    expected_table = (
-        pd.DataFrame(
-            expected_data
-        )  # .sort_values(by="customer_id").reset_index(drop=True)
-    )
-    result = problem_1661(table)  # .sort_values(by="customer_id")
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1661(table)
 
     assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
 
@@ -938,3 +935,46 @@ def test_problem_1757(input_data, expected_data):
     expected_table = pd.DataFrame(expected_data)
     result = problem_1757(table).reset_index(drop=True)
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1], "action": ["confirmed"]},
+            {"user_id": [1], "confirmation_rate": [1.0]},
+            id="user_confirmed",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1, 1], "action": ["confirmed", "confirmed"]},
+            {"user_id": [1], "confirmation_rate": [1.0]},
+            id="same_user_twice_confirmed",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1], "action": ["pending"]},
+            {"user_id": [1], "confirmation_rate": [0.0]},
+            id="user_not_confirmed",
+        ),
+        pytest.param(
+            {"user_id": []},
+            {"user_id": [], "action": []},
+            {"user_id": [], "confirmation_rate": []},
+            id="empty_tables",
+        ),
+        pytest.param(
+            {"user_id": [1]},
+            {"user_id": [1, 1], "action": ["confirmed", "pending"]},
+            {"user_id": [1], "confirmation_rate": [0.5]},
+            id="mixed_actions",
+        ),
+    ],
+)
+def test_problem_1934(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1934(table_1, table_2).reset_index(drop=True)
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)

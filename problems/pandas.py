@@ -455,3 +455,36 @@ def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
             "product_id"
         ]
     )
+
+
+def problem_1934(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataFrame:
+    """Find the confirmation rate of each user.
+
+    The confirmation rate of a user is the number of 'confirmed' messages divided by
+    the total number of requested confirmation messages. The confirmation rate of a
+    user that did not request any confirmation messages is 0. Round the confirmation
+    rate to two decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    signups : pd.DataFrame
+        A table containing the user signups.
+    confirmations : pd.DataFrame
+        A table containing the user confirmation messages.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    joined = signups.merge(confirmations, on="user_id", how="left")
+    joined["is_confirmed"] = joined["action"] == "confirmed"
+    grouped = joined.groupby("user_id", as_index=False).aggregate(
+        confirmed=pd.NamedAgg("is_confirmed", "sum"),
+        total=pd.NamedAgg("is_confirmed", "count"),
+    )
+    return grouped.assign(
+        confirmation_rate=(grouped["confirmed"] / grouped["total"]).round(2)
+    )[["user_id", "confirmation_rate"]]
