@@ -405,3 +405,42 @@ def problem_1484(activities: pa.Table) -> datafusion.dataframe.DataFrame:
             ),
         )
     )
+
+
+def problem_1757(products: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find the ids of products that are both low fat and recyclable.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pa.Table
+        Table stores products with low_fats and recyclable, keyed by product_id.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1757
+    >>> from problems.datasets import load_problem_1757
+    >>> ctx = datafusion.SessionContext()
+    >>> products = ctx.from_arrow(products)
+    >>> problem_1757(activities)
+    DataFrame()
+    +------------+
+    | product_id |
+    +------------+
+    | 1          |
+    | 3          |
+    +------------+
+
+    """
+    ctx = datafusion.SessionContext()
+    products = ctx.from_arrow(products)
+    return products.filter(F.col("low_fats") == "Y", F.col("recyclable") == "Y").select(
+        "product_id"
+    )
