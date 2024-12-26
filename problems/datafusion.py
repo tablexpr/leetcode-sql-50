@@ -232,6 +232,23 @@ def problem_1148(views: pa.Table) -> datafusion.dataframe.DataFrame:
     -------
     datafusion.dataframe.DataFrame
 
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1148
+    >>> from problems.datasets import load_problem_1148
+    >>> ctx = datafusion.SessionContext()
+    >>> views = pa.table(load_problem_1148())
+    >>> problem_1148(views)
+    DataFrame()
+    +----+
+    | id |
+    +----+
+    | 4  |
+    | 7  |
+    +----+
+
     """
     ctx = datafusion.SessionContext()
     views = ctx.from_arrow(views)
