@@ -13,6 +13,7 @@ from problems.datafusion import (
     problem_1321,
     problem_1378,
     problem_1484,
+    problem_1683,
     problem_1757,
 )
 
@@ -461,6 +462,33 @@ def test_problem_1484(input_data, expected_data):
         )
         .equals(expected_table)
     )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        (
+            {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
+            {"tweet_id": [2]},
+        ),
+        (
+            {
+                "tweet_id": [1, 2],
+                "content": ["This is a long tweet", "Another long tweet"],
+            },
+            {"tweet_id": [1, 2]},
+        ),
+    ],
+    ids=[
+        "content_greater_than_15",
+        "all_content_greater_than_15",
+    ],
+)
+def test_problem_1683(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1683(table)
+    assert result.to_arrow_table().equals(expected_table)
 
 
 @pytest.mark.parametrize(

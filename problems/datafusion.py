@@ -424,6 +424,45 @@ def problem_1484(activities: pa.Table) -> datafusion.dataframe.DataFrame:
     )
 
 
+def problem_1683(tweets: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find the IDs of the invalid tweets.
+
+    The tweet is invalid if the number of characters used in the content of the tweet
+    is strictly greater than 15.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    tweets : pa.Table
+        This table contains all the tweets in a social media app.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1683
+    >>> from problems.datasets import load_problem_1683
+    >>> ctx = datafusion.SessionContext()
+    >>> tweets = pa.table(load_problem_1683())
+    >>> problem_1683(tweets)
+    DataFrame()
+    +----------+
+    | tweet_id |
+    +----------+
+    | 2        |
+    +----------+
+
+    """
+    ctx = datafusion.SessionContext()
+    tweets = ctx.from_arrow(tweets)
+    return tweets.filter(F.length(F.col("content")) > 15).select("tweet_id")
+
+
 def problem_1757(products: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find the ids of products that are both low fat and recyclable.
 
