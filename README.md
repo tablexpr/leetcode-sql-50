@@ -30,7 +30,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 
 | Problem # | Title | Difficulty | PyArrow | DataFusion | pandas |
 |----------:|:------|:-----------|:-------:|:----------:|:------:|
-| 620  | [Not Boring Movies](https://leetcode.com/problems/not-boring-movies) | Easy | ✅ | ✅ | ❌ |
+| 620  | [Not Boring Movies](https://leetcode.com/problems/not-boring-movies) | Easy | ✅ | ✅ | ✅ |
 | 1251 | [Average Selling Price](https://leetcode.com/problems/average-selling-price) | Easy | ✅ | ❌ | ❌ |
 | 1075 | [Project Employees I](https://leetcode.com/problems/project-employees-i) | Easy | ✅ | ❌ | ❌ |
 | 1633 | [Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest) | Easy | ✅ | ❌ | ❌ |

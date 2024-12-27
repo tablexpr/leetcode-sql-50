@@ -85,6 +85,25 @@ def problem_197(weather: pd.DataFrame) -> pd.DataFrame:
     return weather[mask][["id"]]
 
 
+def problem_620(cinema: pd.DataFrame) -> pd.DataFrame:
+    """Report movies with odd IDs and descriptions not equal to "boring".
+
+    Return the result table ordered by rating in descending order.
+
+    Parameters
+    ----------
+    cinema : pd.DataFrame
+        Table contains information about the name of a movie, genre, and its rating.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    mask = (cinema["id"] % 2 == 1) & (cinema["description"] != "boring")
+    return cinema[mask].sort_values("rating", ascending=False)
+
+
 def problem_577(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
     """Report the name and bonus amount of each employee with a bonus less than 1000.
 
