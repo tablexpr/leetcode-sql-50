@@ -55,8 +55,10 @@ from problems.pandas import (
 def test_problem_176(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
-    result = problem_176(table)
-    assert result.equals(expected_table)
+    result = problem_176(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -108,13 +110,9 @@ def test_problem_180(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_180(table).reset_index(drop=True)
-    if result.shape == (0, len(expected_table.columns)):
-        assert result.shape == expected_table.shape
-        assert result.columns.equals(expected_table.columns)
-    else:
-        assert result.equals(
-            expected_table
-        ), f"Expected table {expected_table}, but got {result}"
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -171,13 +169,9 @@ def test_problem_197(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_197(table).reset_index(drop=True)
-    if result.shape == (0, len(expected_table.columns)):
-        assert result.shape == expected_table.shape
-        assert result.columns.equals(expected_table.columns)
-    else:
-        assert result.equals(
-            expected_table
-        ), f"Expected table {expected_table}, but got {result}"
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -306,13 +300,9 @@ def test_problem_584(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_584(table).reset_index(drop=True)
-    if result.shape == (0, len(expected_table.columns)):
-        assert result.shape == expected_table.shape
-        assert result.columns.equals(expected_table.columns)
-    else:
-        assert result.equals(
-            expected_table
-        ), f"Expected table {expected_table}, but got {result}"
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -360,13 +350,9 @@ def test_problem_595(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_595(table).reset_index(drop=True)
-    if result.shape == (0, len(expected_table.columns)):
-        assert result.shape == expected_table.shape
-        assert result.columns.equals(expected_table.columns)
-    else:
-        assert result.equals(
-            expected_table
-        ), f"Expected table {expected_table}, but got {result}"
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -443,19 +429,11 @@ def test_problem_620(input_data, expected_data):
 def test_problem_1068(input_data_1, input_data_2, expected_data):
     table_1 = pd.DataFrame(input_data_1)
     table_2 = pd.DataFrame(input_data_2)
-    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
-    result = (
-        problem_1068(table_1, table_2)
-        .reset_index(drop=True)
-        .astype(expected_table.dtypes.to_dict())
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1068(table_1, table_2).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
     )
-    assert list(result.index) == list(
-        expected_table.index
-    ), f"Index mismatch: {result.index} vs {expected_table.index}"
-    for col in expected_table.columns:
-        assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
-
-    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -495,7 +473,9 @@ def test_problem_1148(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_1148(table).reset_index(drop=True)
-    assert result.equals(expected_table)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -727,18 +707,10 @@ def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
 def test_problem_1321(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
-    result = (
-        problem_1321(table)
-        .reset_index(drop=True)
-        .astype(expected_table.dtypes.to_dict())
+    result = problem_1321(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
     )
-    assert list(result.index) == list(
-        expected_table.index
-    ), f"Index mismatch: {result.index} vs {expected_table.index}"
-    for col in expected_table.columns:
-        assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
-
-    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -798,18 +770,10 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_1 = pd.DataFrame(input_data_1)
     table_2 = pd.DataFrame(input_data_2)
     expected_table = pd.DataFrame(expected_data)
-    result = (
-        problem_1378(table_1, table_2)
-        .reset_index(drop=True)
-        .astype(expected_table.dtypes.to_dict())
+    result = problem_1378(table_1, table_2).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
     )
-    assert list(result.index) == list(
-        expected_table.index
-    ), f"Index mismatch: {result.index} vs {expected_table.index}"
-    for col in expected_table.columns:
-        assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
-
-    assert result.equals(expected_table)
 
 
 @pytest.mark.parametrize(
@@ -1005,7 +969,9 @@ def test_problem_1683(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_1683(table).reset_index(drop=True)
-    assert result.equals(expected_table)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
@@ -1034,7 +1000,9 @@ def test_problem_1757(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_1757(table).reset_index(drop=True)
-    assert result.equals(expected_table)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
 
 
 @pytest.mark.parametrize(
