@@ -424,6 +424,54 @@ def problem_1484(activities: pa.Table) -> datafusion.dataframe.DataFrame:
     )
 
 
+def problem_1517(users: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Find the users who have valid emails.
+
+    A valid e-mail has a prefix name and a domain where:
+
+    The prefix name is a string that may contain letters (upper or lower case), digits,
+    underscore '_', period '.', and/or dash '-'. The prefix name must start with a
+    letter.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    users : pa.Table
+        Table containing user names and emails.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1517
+    >>> from problems.datasets import load_problem_1517
+    >>> ctx = datafusion.SessionContext()
+    >>> users = pa.table(load_problem_1517())
+    >>> problem_1517(users)
+    DataFrame()
+    +---------+-----------+-------------------------+
+    | user_id | name      | mail                    |
+    +---------+-----------+-------------------------+
+    | 1       | Winston   | winston@leetcode.com    |
+    | 3       | Annabelle | bella-@leetcode.com     |
+    | 4       | Sally     | sally.come@leetcode.com |
+    +---------+-----------+-------------------------+
+
+    """
+    ctx = datafusion.SessionContext()
+    users = ctx.from_arrow(users, "users")
+    return ctx.sql("""
+        SELECT *
+        FROM users
+        WHERE REGEXP_MATCH(mail, '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode\\.com$') IS NOT NULL
+    """)
+
+
 def problem_1683(tweets: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find the IDs of the invalid tweets.
 

@@ -13,6 +13,7 @@ from problems.datafusion import (
     problem_1321,
     problem_1378,
     problem_1484,
+    problem_1517,
     problem_1683,
     problem_1757,
 )
@@ -462,6 +463,95 @@ def test_problem_1484(input_data, expected_data):
         )
         .equals(expected_table)
     )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "user_id": [1, 2, 3, 4, 5, 6, 7],
+                "name": [
+                    "Winston",
+                    "Jonathan",
+                    "Annabelle",
+                    "Sally",
+                    "Marwan",
+                    "David",
+                    "Shapiro",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "jonathanisgreat",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                    "quarz#2020@leetcode.com",
+                    "david69@gmail.com",
+                    ".shapo@leetcode.com",
+                ],
+            },
+            {
+                "user_id": [1, 3, 4],
+                "name": [
+                    "Winston",
+                    "Annabelle",
+                    "Sally",
+                ],
+                "mail": [
+                    "winston@leetcode.com",
+                    "bella-@leetcode.com",
+                    "sally.come@leetcode.com",
+                ],
+            },
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "user_id": [360, 966, 901, 162, 181, 240, 221, 388, 211, 178],
+                "name": [
+                    "Ezra",
+                    "Daniel",
+                    "Yehudah",
+                    "Daniel",
+                    "Aharon",
+                    "Gavriel",
+                    "Levi",
+                    "Eliyahu",
+                    "Michael",
+                    "Aharon",
+                ],
+                "mail": [
+                    "Ezra4VZabfK",
+                    "DanielEnEMjNoG6",
+                    "Yehudah*5m9@leetcode.com",
+                    "Daniel07L@leetcode.com",
+                    "AharonxuZA530S8Q",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                    ".Michael@leetcode.com",
+                    "AharonnDFFSqcY",
+                ],
+            },
+            {
+                "user_id": [162, 240, 221, 388],
+                "name": ["Daniel", "Gavriel", "Levi", "Eliyahu"],
+                "mail": [
+                    "Daniel07L@leetcode.com",
+                    "GavrielLVC@leetcode.com",
+                    "Leviz6OzK@leetcode.com",
+                    "Eliyahu--wzsgX@leetcode.com",
+                ],
+            },
+            id="happy_path_2",
+        ),
+    ],
+)
+def test_problem_1517(input_data, expected_data):
+    table = pa.Table.from_pydict(input_data)
+    expected_table = pa.Table.from_pydict(expected_data)
+    result = problem_1517(table)
+    assert result.to_arrow_table().equals(expected_table)
 
 
 @pytest.mark.parametrize(
