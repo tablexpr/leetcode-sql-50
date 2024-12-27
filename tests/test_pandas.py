@@ -246,7 +246,18 @@ def test_problem_570(input_data, expected_data):
             {"empId": [2, 4], "bonus": [500, 2000]},
             {"name": ["Brad", "John", "Dan"], "bonus": [None, None, 500]},
             id="happy_path_basic",
-        )
+        ),
+        pytest.param(
+            {
+                "empId": [1, 2],
+                "name": ["John", "Dan"],
+                "supervisor": [None, 1],
+                "salary": [3000, 2000],
+            },
+            {"empId": [1, 2], "bonus": [500, 1000]},
+            {"name": ["John"], "bonus": [500]},
+            id="bonus_filtering_with_matching_empIds",
+        ),
     ],
 )
 def test_problem_577(input_data_1, input_data_2, expected_data):
