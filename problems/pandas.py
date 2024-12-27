@@ -270,6 +270,32 @@ def problem_1321(customer: pd.DataFrame) -> pd.DataFrame:
     return grouped.assign(average_amount=(grouped["amount"] / 7).round(2))
 
 
+def problem_1327(products: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
+    """Find products that have at least 100 units ordered in February 2020.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pd.DataFrame
+        The table containing product data.
+    orders : pd.DataFrame
+        The table containing order data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    orders_agg = (
+        orders.loc[orders["order_date"].dt.strftime("%Y-%m") == "2020-02"]
+        .groupby("product_id", as_index=False)
+        .aggregate(unit=pd.NamedAgg("unit", "sum"))
+    )
+    joined = products.merge(orders_agg, on=["product_id"])
+    return joined.loc[joined["unit"] >= 100][["product_name", "unit"]]
+
+
 def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.DataFrame:
     """Find the unique ID of each user.
 

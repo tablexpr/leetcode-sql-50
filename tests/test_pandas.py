@@ -16,6 +16,7 @@ from problems.pandas import (
     problem_1148,
     problem_1280,
     problem_1321,
+    problem_1327,
     problem_1378,
     problem_1517,
     problem_1581,
@@ -675,6 +676,42 @@ def test_problem_1321(input_data, expected_data):
         assert result[col].equals(expected_table[col]), f"Mismatch in column '{col}'"
 
     assert result.equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"product_id": [1, 2], "product_name": ["Product A", "Product B"]},
+            {
+                "product_id": [1, 2],
+                "order_date": [datetime(2020, 2, 15), datetime(2020, 2, 20)],
+                "unit": [150, 50],
+            },
+            {"product_name": ["Product A"], "unit": [150]},
+            id="happy_path_single_match",
+        ),
+        pytest.param(
+            {"product_id": [1], "product_name": ["Product A"]},
+            {"product_id": [1], "order_date": [datetime(2020, 3, 1)], "unit": [150]},
+            {"product_name": [], "unit": []},
+            id="no_matching_year_month",
+        ),
+        pytest.param(
+            {"product_id": [1], "product_name": ["Product A"]},
+            {"product_id": [1], "order_date": [datetime(2020, 2, 15)], "unit": [50]},
+            {"product_name": [], "unit": []},
+            id="no_products_with_unit_sum_gte_100",
+        ),
+    ],
+)
+def test_problem_1327(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1327(table_1, table_2).reset_index(drop=True)
+
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
 
 
 @pytest.mark.parametrize(
