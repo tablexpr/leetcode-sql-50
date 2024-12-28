@@ -15,6 +15,7 @@ from problems.pandas import (
     problem_620,
     problem_1068,
     problem_1148,
+    problem_1251,
     problem_1280,
     problem_1321,
     problem_1327,
@@ -473,6 +474,83 @@ def test_problem_1148(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_1148(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "product_id": [1, 1, 2, 2],
+                "start_date": [
+                    datetime(2019, 2, 7),
+                    datetime(2019, 3, 1),
+                    datetime(2019, 2, 1),
+                    datetime(2019, 2, 21),
+                ],
+                "end_date": [
+                    datetime(2019, 2, 28),
+                    datetime(2019, 3, 22),
+                    datetime(2019, 2, 20),
+                    datetime(2019, 3, 31),
+                ],
+                "price": [5, 20, 15, 30],
+            },
+            {
+                "product_id": [1, 1, 2, 2],
+                "purchase_date": [
+                    datetime(2019, 2, 25),
+                    datetime(2019, 3, 1),
+                    datetime(2019, 2, 10),
+                    datetime(2019, 3, 22),
+                ],
+                "units": [100, 15, 200, 30],
+            },
+            {"product_id": [1, 2], "average_price": [6.96, 16.96]},
+            id="two_products_with_purchases",
+        ),
+        pytest.param(
+            {
+                "product_id": [1, 1, 2, 2, 3],
+                "start_date": [
+                    datetime(2019, 2, 7),
+                    datetime(2019, 3, 1),
+                    datetime(2019, 2, 1),
+                    datetime(2019, 2, 21),
+                    datetime(2019, 2, 21),
+                ],
+                "end_date": [
+                    datetime(2019, 2, 28),
+                    datetime(2019, 3, 22),
+                    datetime(2019, 2, 20),
+                    datetime(2019, 3, 31),
+                    datetime(2019, 3, 31),
+                ],
+                "price": [5, 20, 15, 30, 30],
+            },
+            {
+                "product_id": [1, 1, 2, 2],
+                "purchase_date": [
+                    datetime(2019, 2, 25),
+                    datetime(2019, 3, 1),
+                    datetime(2019, 2, 10),
+                    datetime(2019, 3, 22),
+                ],
+                "units": [100, 15, 200, 30],
+            },
+            {"product_id": [1, 2, 3], "average_price": [6.96, 16.96, 0]},
+            id="two_products_with_purchases_one_missing",
+        ),
+    ],
+)
+def test_problem_1251(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1251(table_1, table_2).reset_index(drop=True)
     assert_frame_equal(
         result, expected_table, check_dtype=False, check_index_type=False
     )

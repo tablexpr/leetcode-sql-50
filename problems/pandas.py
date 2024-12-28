@@ -224,6 +224,48 @@ def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1251(prices: pd.DataFrame, units_sold: pd.DataFrame) -> pd.DataFrame:
+    """Find the average selling price for each product.
+
+    average_price should be rounded to 2 decimal places. If a product does not have any
+    sold units, its average selling price is assumed to be 0.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    prices : pd.DataFrame
+        Table shows product prices by product_id for a date range.
+    units_sold : pd.DataFrame
+        Table indicates the date, units, and product_id of each product sold.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    joined = prices.merge(units_sold, how="left")
+    joined = (
+        joined.loc[
+            (
+                (joined["purchase_date"] >= joined["start_date"])
+                & (joined["purchase_date"] <= joined["end_date"])
+            )
+            | (joined["purchase_date"].isna())
+        ]
+        .assign(total=joined["price"] * joined["units"])
+        .fillna(0)
+    )
+    grouped = joined.groupby("product_id", as_index=False).aggregate(
+        total_units=pd.NamedAgg("units", "sum"), total=pd.NamedAgg("total", "sum")
+    )
+    return grouped.assign(
+        average_price=((grouped["total"] / grouped["total_units"]).round(2)).astype(
+            float
+        )
+    )[["product_id", "average_price"]].fillna(0)
+
+
 def problem_1280(
     students: pd.DataFrame, subjects: pd.DataFrame, examinations: pd.DataFrame
 ) -> pd.DataFrame:
