@@ -96,6 +96,39 @@ def problem_180(logs: pa.Table) -> datafusion.dataframe.DataFrame:
     return result
 
 
+def problem_550(activity: pa.Table) -> pa.Table:
+    """Report the fraction of players who logged in the day after their first login.
+
+    Write a solution to report the fraction of players that logged in again on the
+    day after the day they first logged in, rounded to 2 decimal places. In other
+    words, you need to count the number of players that logged in for at least two
+    consecutive days starting from their first login date, then divide that number by
+    the total number of players.
+
+    Parameters
+    ----------
+    activity : pa.Table
+        This table shows the activity of players of some games.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    ctx = datafusion.SessionContext()
+    activity = ctx.from_arrow(activity)
+    # TODO: Why do I need to cache for this to work without an Internal error?
+    distinct_players = activity.select("player_id").distinct().cache().count()
+    expr = F.lag(
+        F.col("event_date"),
+        partition_by=[F.col("player_id")],
+        order_by=[F.col("event_date")],
+    ).alias("event_date_lag")
+    ctx.from_arrow(
+        activity.select("event_date", expr).to_arrow_table(), name="event_date_lags"
+    )
+
+
 def problem_584(customer: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find names of customers not referred by the customer with ID = 2.
 
@@ -255,6 +288,33 @@ def problem_1068(sales: pa.Table, product: pa.Table) -> datafusion.dataframe.Dat
     ).select("product_name", "year", "price")
 
 
+def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
+    """Report each project's average employee experience, rounded to 2 digits.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    project : pa.Table
+        Table shows employees (employee_id) working on projects (project_id).
+    employee : pa.Table
+        This table contains information about one employee.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    joined = (
+        project.join(employee, keys="employee_id", join_type="inner")
+        .group_by("project_id")
+        .aggregate([("experience_years", "mean")])
+    )
+    return joined.set_column(
+        1, "average_years", pc.round(joined["experience_years_mean"], 2)
+    )
+
+
 def problem_1148(views: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find all the authors that viewed at least one of their own articles.
 
@@ -295,6 +355,147 @@ def problem_1148(views: pa.Table) -> datafusion.dataframe.DataFrame:
         .distinct()
         .sort(F.col("id").sort())
     )
+
+
+def problem_1174(delivery: pa.Table) -> pa.Table:
+    """Find the percentage of immediate orders in the first orders of all customers.
+
+    If the customer's preferred delivery date is the same as the order date, then the
+    order is called immediate; otherwise, it is called scheduled. The first order of a
+    customer is the order with the earliest order date that the customer made. It is
+    guaranteed that a customer has precisely one first order.
+
+    Round the result to 2 decimal places.
+
+    Parameters
+    ----------
+    delivery : pa.Table
+        Table shows the order date, customer name, and preferred delivery date.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    delivery = delivery.append_column(
+        "is_immediate",
+        (pc.equal(delivery["order_date"], delivery["customer_pref_delivery_date"])),
+    )
+    first_orders = delivery.group_by("customer_id").aggregate([("order_date", "min")])
+    joined = delivery.join(
+        first_orders,
+        keys=["customer_id", "order_date"],
+        right_keys=["customer_id", "order_date_min"],
+        join_type="inner",
+    )
+    return pa.Table.from_arrays(
+        [
+            pa.array(
+                [
+                    pc.round(
+                        pc.multiply(
+                            pc.mean(pc.cast(joined["is_immediate"], pa.int16())),
+                            pa.scalar(100.0),
+                        ),
+                        2,
+                    )
+                ]
+            )
+        ],
+        names=["immediate_percentage"],
+    )
+
+
+def problem_1211(queries: pa.Table) -> pa.Table:
+    """Find each query_name, the quality and poor_query_percentage.
+
+    We define query quality as:
+        The average of the ratio between query rating and its position.
+    We also define poor query percentage as:
+        The percentage of all queries with rating less than 3.
+
+    Both quality and poor_query_percentage should be rounded to 2 decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    queries : pa.Table
+        This table contains information collected from some queries on a database.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    queries = queries.append_column(
+        "quality", pc.divide(queries["rating"], queries["position"])
+    ).append_column(
+        "poor_query_percentage",
+        pc.if_else(pc.less(queries["rating"], pa.scalar(3)), 100, 0),
+    )
+
+    queries_agg = queries.group_by("query_name").aggregate(
+        [("quality", "mean"), ("poor_query_percentage", "mean")]
+    )
+
+    return queries_agg.set_column(
+        1, "quality", pc.round(queries_agg["quality_mean"], 2)
+    ).set_column(
+        2,
+        "poor_query_percentage",
+        pc.round(queries_agg["poor_query_percentage_mean"], 2),
+    )
+
+
+def problem_1251(prices: pa.Table, units_sold: pa.Table) -> pa.Table:
+    """Find the average selling price for each product.
+
+    average_price should be rounded to 2 decimal places. If a product does not have any
+    sold units, its average selling price is assumed to be 0.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    prices : pa.Table
+        Table shows product prices by product_id for a date range.
+    units_sold : pa.Table
+        Table indicates the date, units, and product_id of each product sold.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    joined = prices.join(units_sold, keys="product_id")
+    joined = joined.filter(
+        pc.or_kleene(
+            pc.and_(
+                pc.greater_equal(joined["purchase_date"], joined["start_date"]),
+                pc.less_equal(joined["purchase_date"], joined["end_date"]),
+            ),
+            pc.is_null(joined["purchase_date"]),
+        )
+    )
+    joined = joined.append_column(
+        "total", pc.multiply(joined["price"], joined["units"])
+    )
+    grouped = joined.group_by("product_id").aggregate(
+        [("units", "sum"), ("total", "sum")]
+    )
+    return grouped.append_column(
+        "average_price",
+        pc.round(
+            pc.fill_null(
+                pc.divide(
+                    pc.cast(grouped["total_sum"], pa.float64()), grouped["units_sum"]
+                ),
+                0,
+            ),
+            2,
+        ),
+    ).select(["product_id", "average_price"])
 
 
 def problem_1321(customer: pa.Table) -> datafusion.dataframe.DataFrame:
@@ -507,6 +708,37 @@ def problem_1517(users: pa.Table) -> datafusion.dataframe.DataFrame:
         FROM users
         WHERE REGEXP_MATCH(mail, '^[a-zA-Z][a-zA-Z0-9_.-]*@leetcode\\.com$') IS NOT NULL
     """)
+
+
+def problem_1633(users: pa.Table, register: pa.Table) -> pa.Table:
+    """Find the percentage of the users registered in each contest.
+
+    Return the result table ordered by percentage in descending order. In case of a
+    tie, order it by contest_id in ascending order. The result should be rounded to two
+    decimals.
+
+    Parameters
+    ----------
+    users : pa.Table
+        This table contains the name and the id of a user.
+    register : pa.Table
+        This table contains the id of a user and the contest they registered into.
+
+    Returns
+    -------
+    pa.Table
+
+    """
+    register_agg = register.group_by("contest_id").aggregate([("user_id", "count")])
+    total_users = pa.scalar(float(users.num_rows))
+    return register_agg.set_column(
+        1,
+        "percentage",
+        pc.round(
+            pc.divide(register_agg["user_id_count"], total_users),
+            2,
+        ),
+    ).sort_by([("percentage", "descending")])
 
 
 def problem_1683(tweets: pa.Table) -> datafusion.dataframe.DataFrame:
