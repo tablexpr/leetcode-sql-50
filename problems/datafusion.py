@@ -218,6 +218,43 @@ def problem_620(cinema: pa.Table) -> datafusion.dataframe.DataFrame:
     )
 
 
+def problem_1068(sales: pa.Table, product: pa.Table) -> datafusion.dataframe.DataFrame:
+    """Report the product_name, year, and price for each sale_id in the Sales table.
+
+    Return the resulting table in any order.
+
+    Parameters
+    ----------
+    sales : pd.DataFrame
+        This table shows a sale on the product product_id in a certain year.
+    product : pd.DataFrame
+        This table indicates the product name of each product.
+
+    Returns
+    -------
+    datafusion.dataframe.DataFrame
+
+    Examples
+    --------
+    >>> import datafusion
+    >>> import pyarrow as pa
+    >>> from problems.datafusion import problem_1068
+    >>> from problems.datasets import load_problem_1068
+    >>> ctx = datafusion.SessionContext()
+    >>> data = load_problem_1068()
+    >>> sales = data[0]
+    >>> product = data[1]
+    >>> problem_1068(sales, product)
+
+    """
+    ctx = datafusion.SessionContext()
+    sales = ctx.from_arrow(sales)
+    product = ctx.from_arrow(product)
+    return sales.join(
+        product, join_keys=(["product_id"], ["product_id"]), how="inner"
+    ).select("product_name", "year", "price")
+
+
 def problem_1148(views: pa.Table) -> datafusion.dataframe.DataFrame:
     """Find all the authors that viewed at least one of their own articles.
 

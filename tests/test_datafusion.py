@@ -9,6 +9,7 @@ from problems.datafusion import (
     problem_584,
     problem_595,
     problem_620,
+    problem_1068,
     problem_1148,
     problem_1321,
     problem_1378,
@@ -238,6 +239,36 @@ def test_problem_620(input_data, expected_data):
         ),
     )
     result = problem_620(table)
+    assert result.to_arrow_table().equals(expected_table)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {
+                "product_id": [1, 2, 3],
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            {"product_id": [1, 2, 3]},
+            {
+                "product_name": ["Nokia", "Nokia", "Apple"],
+                "year": [2008, 2009, 2011],
+                "price": [5000, 5000, 9000],
+            },
+            id="happy_path",
+        )
+    ],
+)
+def test_problem_1068(input_data_1, input_data_2, expected_data):
+    table_1 = pa.Table.from_pydict(input_data_1)
+    table_2 = pa.Table.from_pydict(input_data_2)
+    expected_table = pa.Table.from_pydict(
+        expected_data,
+    )
+    result = problem_1068(table_1, table_2)
     assert result.to_arrow_table().equals(expected_table)
 
 
