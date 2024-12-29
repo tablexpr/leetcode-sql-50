@@ -201,6 +201,33 @@ def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     return sales.merge(product, on="product_id")[["product_name", "year", "price"]]
 
 
+def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
+    """Report each project's average employee experience, rounded to 2 digits.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    project : pd.DataFrame
+        Table shows employees (employee_id) working on projects (project_id).
+    employee : pd.DataFrame
+        This table contains information about one employee.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    joined = (
+        project.merge(employee)
+        .groupby("project_id")
+        .aggregate(average_years=pd.NamedAgg(column="experience_years", aggfunc="mean"))
+        .reset_index()
+    )
+    joined["average_years"] = joined["average_years"].round(2)
+    return joined
+
+
 def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     """Find all the authors that viewed at least one of their own articles.
 

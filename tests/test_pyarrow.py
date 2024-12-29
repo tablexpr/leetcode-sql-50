@@ -1101,7 +1101,7 @@ def test_problem_1070(input_data, expected_data):
                 "experience_years": [5, 10, 15],
             },
             {"employee_id": [1, 2, 3], "department": ["HR", "IT", "Finance"]},
-            {"project_id": [101, 102, 103], "experience_years": [5.0, 10.0, 15.0]},
+            {"project_id": [101, 102, 103], "average_years": [5.0, 10.0, 15.0]},
             id="happy_path",
         ),
         pytest.param(
@@ -1111,7 +1111,7 @@ def test_problem_1070(input_data, expected_data):
                 "experience_years": [33, 34, 34],
             },
             {"employee_id": [1, 2, 3], "department": ["HR", "IT", "IT"]},
-            {"project_id": [101], "experience_years": [33.67]},
+            {"project_id": [101], "average_years": [33.67]},
             id="happy_path_rounding_2",
         ),
     ],

@@ -673,7 +673,7 @@ def problem_1075(project: pa.Table, employee: pa.Table) -> pa.Table:
         .aggregate([("experience_years", "mean")])
     )
     return joined.set_column(
-        1, "experience_years", pc.round(joined["experience_years_mean"], 2)
+        1, "average_years", pc.round(joined["experience_years_mean"], 2)
     )
 
 
