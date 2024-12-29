@@ -253,6 +253,42 @@ def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1211(queries: pd.DataFrame) -> pd.DataFrame:
+    """Find each query_name, the quality and poor_query_percentage.
+
+    We define query quality as:
+        The average of the ratio between query rating and its position.
+    We also define poor query percentage as:
+        The percentage of all queries with rating less than 3.
+
+    Both quality and poor_query_percentage should be rounded to 2 decimal places.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    queries : pd.DataFrame
+        This table contains information collected from some queries on a database.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    queries["quality"] = queries["rating"] / queries["position"]
+    queries["poor_query_percentage"] = (queries["rating"] < 3) * 100
+    return (
+        queries.groupby("query_name")[["quality", "poor_query_percentage"]]
+        .mean()
+        .map(
+            lambda value: Decimal(value).quantize(
+                Decimal("0.01"), rounding=ROUND_HALF_UP
+            )
+        )
+        .reset_index()
+    )
+
+
 def problem_1251(prices: pd.DataFrame, units_sold: pd.DataFrame) -> pd.DataFrame:
     """Find the average selling price for each product.
 
