@@ -1,5 +1,7 @@
 """Solutions to LeetCode problems in pandas."""
 
+from decimal import ROUND_HALF_UP, Decimal
+
 import pandas as pd
 
 
@@ -477,6 +479,39 @@ def problem_1581(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFra
         .groupby("customer_id", as_index=False)
         .count()
         .rename(columns={"visit_id": "count_no_trans"})
+    )
+
+
+def problem_1633(users: pd.DataFrame, register: pd.DataFrame) -> pd.DataFrame:
+    """Find the percentage of the users registered in each contest.
+
+    Return the result table ordered by percentage in descending order. In case of a
+    tie, order it by contest_id in ascending order. The result should be rounded to two
+    decimals.
+
+    Parameters
+    ----------
+    users : pd.DataFrame
+        This table contains the name and the id of a user.
+    register : pd.DataFrame
+        This table contains the id of a user and the contest they registered into.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    register_agg = register.groupby("contest_id", as_index=False).aggregate(
+        user_count=pd.NamedAgg("user_id", "count")
+    )
+    register_agg["percentage"] = (
+        (register_agg["user_count"] / len(users.index)) * 100
+    ).apply(
+        lambda value: Decimal(value).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    )
+    register_agg.drop(columns=["user_count"], inplace=True)
+    return register_agg.sort_values(
+        ["percentage", "contest_id"], ascending=[False, True]
     )
 
 

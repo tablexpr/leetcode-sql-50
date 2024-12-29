@@ -23,6 +23,7 @@ from problems.pandas import (
     problem_1378,
     problem_1517,
     problem_1581,
+    problem_1633,
     problem_1661,
     problem_1683,
     problem_1757,
@@ -1014,6 +1015,42 @@ def test_problem_1581(input_data_1, input_data_2, expected_data):
     result = problem_1581(table_1, table_2).sort_values(by="customer_id")
 
     assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
+            {"contest_id": [1, 2], "user_id": [1, 2]},
+            {"contest_id": [1, 1, 2], "user_id": [1, 2, 3]},
+            {
+                "contest_id": [1, 2],
+                "percentage": [100.00, 50.0],
+            },
+            id="happy-path-1",
+        ),
+        pytest.param(
+            {"contest_id": [1], "user_id": [1]},
+            {"contest_id": [1], "user_id": [1]},
+            {"contest_id": [1], "percentage": [100.00]},
+            id="edge-single-row-table-2",
+        ),
+    ],
+)
+def test_problem_1633(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data).reset_index(drop=True)
+    result = problem_1633(table_1, table_2).reset_index(drop=True)
+
+    assert_frame_equal(
+        result,
+        expected_table,
+        check_dtype=False,
+        check_index_type=False,
+        rtol=1e-2,
+        atol=1e-2,
+    )
 
 
 @pytest.mark.parametrize(
