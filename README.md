@@ -32,7 +32,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 |         1211 | [Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage)                 | Easy         | ❌           | ✅       | ✅        |
 |         1193 | [Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i)                                 | Medium       | ❌           | ✅       | ✅        |
 |         1174 | [Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii)                         | Medium       | ❌           | ✅       | ✅        |
-|          550 | [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv)                                   | Medium       | ❌           | ❌       | ✅        |
+|          550 | [Game Play Analysis IV](https://leetcode.com/problems/game-play-analysis-iv)                                   | Medium       | ❌           | ✅       | ✅        |
 ## Sorting and Grouping
 |   problem_id | title                                                                                                                              | difficulty   | DataFusion   | pandas   | PyArrow   |
 |-------------:|:-----------------------------------------------------------------------------------------------------------------------------------|:-------------|:-------------|:---------|:----------|

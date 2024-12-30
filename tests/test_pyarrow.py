@@ -274,6 +274,7 @@ def test_problem_197(input_data, expected_data):
         pytest.param(
             {
                 "player_id": [1, 1, 1, 2, 2],
+                "device_id": [2, 2, 3, 1, 4],
                 "event_date": [
                     datetime(2023, 1, 1),
                     datetime(2023, 1, 2),
@@ -289,6 +290,7 @@ def test_problem_197(input_data, expected_data):
         pytest.param(
             {
                 "player_id": [1],
+                "device_id": [1],
                 "event_date": [datetime(2023, 1, 1)],
                 "games_played": [1],
             },

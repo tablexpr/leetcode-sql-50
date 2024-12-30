@@ -1,5 +1,6 @@
 """Solutions to LeetCode problems in pandas."""
 
+from datetime import timedelta
 from decimal import ROUND_HALF_UP, Decimal
 
 import pandas as pd
@@ -85,6 +86,36 @@ def problem_197(weather: pd.DataFrame) -> pd.DataFrame:
         weather["recordDate"].shift(1) == weather["recordDate"] - pd.Timedelta("1 day")
     )
     return weather[mask][["id"]]
+
+
+def problem_550(activity: pd.DataFrame) -> pd.DataFrame:
+    """Report the fraction of players who logged in the day after their first login.
+
+    Write a solution to report the fraction of players that logged in again on the
+    day after the day they first logged in, rounded to 2 decimal places. In other
+    words, you need to count the number of players that logged in for at least two
+    consecutive days starting from their first login date, then divide that number by
+    the total number of players.
+
+    Parameters
+    ----------
+    activity : pd.DataFrame
+        This table shows the activity of players of some games.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    grouped = activity.groupby("player_id", as_index=False).aggregate(
+        min_event_date=pd.NamedAgg("event_date", "min")
+    )
+    grouped["event_date"] = grouped["min_event_date"] + timedelta(days=1)
+    joined = grouped.merge(activity, how="left", on=["player_id", "event_date"])
+    joined.device_id.notna().sum() / len(joined.index)
+    return pd.DataFrame(
+        [joined.games_played.notna().sum() / len(joined.index)], columns=["fraction"]
+    ).round(2)
 
 
 def problem_620(cinema: pd.DataFrame) -> pd.DataFrame:
