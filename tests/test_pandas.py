@@ -4,32 +4,7 @@ import pandas as pd
 import pytest
 from pandas.testing import assert_frame_equal
 
-from problems.pandas import (
-    problem_176,
-    problem_180,
-    problem_197,
-    problem_570,
-    problem_577,
-    problem_584,
-    problem_595,
-    problem_620,
-    problem_1068,
-    problem_1075,
-    problem_1148,
-    problem_1211,
-    problem_1251,
-    problem_1280,
-    problem_1321,
-    problem_1327,
-    problem_1378,
-    problem_1517,
-    problem_1581,
-    problem_1633,
-    problem_1661,
-    problem_1683,
-    problem_1757,
-    problem_1934,
-)
+from problems.pandas import *
 
 
 @pytest.mark.parametrize(
@@ -512,6 +487,78 @@ def test_problem_1148(input_data, expected_data):
     table = pd.DataFrame(input_data)
     expected_table = pd.DataFrame(expected_data)
     result = problem_1148(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "trans_date": [
+                    datetime(2023, 1, 1),
+                    datetime(2023, 1, 15),
+                    datetime(2023, 2, 1),
+                ],
+                "state": ["approved", "pending", "approved"],
+                "amount": [100, 200, 300],
+                "country": ["US", "US", "CA"],
+                "id": [1, 2, 3],
+            },
+            {
+                "month": ["2023-01", "2023-02"],
+                "country": ["US", "CA"],
+                "trans_count": [2, 1],
+                "approved_count": [1, 1],
+                "trans_total_amount": [300, 300],
+                "approved_total_amount": [100, 300],
+            },
+            id="happy_path_1",
+        ),
+        pytest.param(
+            {
+                "trans_date": [datetime(2023, 3, 1)],
+                "state": ["approved"],
+                "amount": [500],
+                "country": [None],
+                "id": [4],
+            },
+            {
+                "month": ["2023-03"],
+                "country": [float("nan")],
+                "trans_count": [1],
+                "approved_count": [1],
+                "trans_total_amount": [500],
+                "approved_total_amount": [500],
+            },
+            id="happy_path_null_country",
+        ),
+        pytest.param(
+            {
+                "trans_date": [datetime(2023, 4, 1), datetime(2023, 4, 2)],
+                "state": ["pending", "rejected"],
+                "amount": [150, 250],
+                "country": ["FR", "FR"],
+                "id": [5, 6],
+            },
+            {
+                "month": ["2023-04"],
+                "country": ["FR"],
+                "trans_count": [2],
+                "approved_count": [0],
+                "trans_total_amount": [400],
+                "approved_total_amount": [0],
+            },
+            id="edge_case_all_unapproved",
+        ),
+    ],
+)
+def test_problem_1193(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1193(table).reset_index(drop=True)
     assert_frame_equal(
         result, expected_table, check_dtype=False, check_index_type=False
     )

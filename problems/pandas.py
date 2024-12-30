@@ -230,6 +230,43 @@ def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
     return joined
 
 
+def problem_1193(transactions: pd.DataFrame) -> pd.DataFrame:
+    """Find monthly, country-wise transaction counts, totals, approved counts and sums.
+
+    Find for each month and country, the number of transactions and their total amount,
+    the number of approved transactions and their total amount.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    transactions : pd.DataFrame
+        The table has information about incoming transactions.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    transactions["month"] = transactions["trans_date"].dt.strftime("%Y-%m")
+    transactions["is_approved"] = transactions["state"] == "approved"
+    transactions["approved_amount"] = transactions["is_approved"].case_when(
+        [
+            (transactions["is_approved"] == True, transactions["amount"]),  # noqa E712
+            (transactions["is_approved"] == False, 0),  # noqa E712
+        ]
+    )
+
+    return transactions.groupby(
+        ["month", "country"], as_index=False, dropna=False
+    ).aggregate(
+        trans_count=pd.NamedAgg("id", "count"),
+        approved_count=pd.NamedAgg("is_approved", "sum"),
+        trans_total_amount=pd.NamedAgg("amount", "sum"),
+        approved_total_amount=pd.NamedAgg("approved_amount", "sum"),
+    )
+
+
 def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     """Find all the authors that viewed at least one of their own articles.
 

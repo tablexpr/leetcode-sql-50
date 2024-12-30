@@ -3,21 +3,7 @@ from datetime import datetime
 import pyarrow as pa
 import pytest
 
-from problems.datafusion import (
-    problem_176,
-    problem_180,
-    problem_584,
-    problem_595,
-    problem_620,
-    problem_1068,
-    problem_1148,
-    problem_1321,
-    problem_1378,
-    problem_1484,
-    problem_1517,
-    problem_1683,
-    problem_1757,
-)
+from problems.datafusion import *
 
 
 @pytest.mark.parametrize(
