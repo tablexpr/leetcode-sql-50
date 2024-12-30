@@ -1235,6 +1235,35 @@ def test_problem_1517(input_data, expected_data):
 
 
 @pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"conditions": ["DIAB1", "DIAB2", "DIAB3"]},
+            {"conditions": ["DIAB1"]},
+            id="starts_with_DIAB1",
+        ),
+        pytest.param(
+            {"conditions": ["X DIAB1", "Y DIAB2", "Z DIAB1X"]},
+            {"conditions": ["X DIAB1", "Z DIAB1X"]},
+            id="contains_DIAB1",
+        ),
+        pytest.param(
+            {"conditions": ["X DIAB1", "Y +DIAB1", "Z DIAB1X"]},
+            {"conditions": ["X DIAB1", "Z DIAB1X"]},
+            id="contains_DIAB1_and_not_prefixed_strangely",
+        ),
+    ],
+)
+def test_problem_1527(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1527(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(

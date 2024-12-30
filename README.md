@@ -67,7 +67,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 |   problem_id | title                                                                                                        | difficulty   | DataFusion   | pandas   | PyArrow   |
 |-------------:|:-------------------------------------------------------------------------------------------------------------|:-------------|:-------------|:---------|:----------|
 |         1667 | [Fix Names in a Table](https://leetcode.com/problems/fix-names-in-a-table)                                   | Easy         | ❌           | ❌       | ✅        |
-|         1527 | [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition)                         | Easy         | ❌           | ❌       | ✅        |
+|         1527 | [Patients With a Condition](https://leetcode.com/problems/patients-with-a-condition)                         | Easy         | ❌           | ✅       | ✅        |
 |          196 | [Delete Duplicate Emails](https://leetcode.com/problems/delete-duplicate-emails)                             | Easy         | ❌           | ❌       | ✅        |
 |          176 | [Second Highest Salary](https://leetcode.com/problems/second-highest-salary)                                 | Medium       | ✅           | ✅       | ✅        |
 |         1484 | [Group Sold Products By The Date](https://leetcode.com/problems/group-sold-products-by-the-date)             | Easy         | ✅           | ✅       | ❌        |

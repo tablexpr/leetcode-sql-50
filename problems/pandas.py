@@ -623,6 +623,31 @@ def problem_1517(users: pd.DataFrame) -> pd.DataFrame:
     ]
 
 
+def problem_1527(patients: pd.DataFrame) -> pd.DataFrame:
+    """Find the patients who have Type I Diabetes.
+
+    Return the patient_id, patient_name, and conditions. Type I Diabetes always starts
+    with DIAB1 prefix.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    patients : pd.DataFrame
+        A containing information of the patients in the hospital.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return patients.loc[
+        patients.conditions.str.split().apply(
+            lambda x: any(i.startswith("DIAB1") for i in x)
+        )
+    ]
+
+
 def problem_1581(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
     """Find users who visited without transactions and count their visit frequency.
 
