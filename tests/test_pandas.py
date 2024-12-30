@@ -1098,6 +1098,56 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
     [
         pytest.param(
             {
+                "sell_date": [
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                    datetime(2020, 5, 30),
+                ],
+                "product": [
+                    "Headphone",
+                    "Pencil",
+                    "Mask",
+                    "Basketball",
+                    "Bible",
+                    "Mask",
+                    "T-Shirt",
+                ],
+            },
+            {
+                "sell_date": [
+                    datetime(2020, 5, 30),
+                    datetime(2020, 6, 1),
+                    datetime(2020, 6, 2),
+                ],
+                "num_sold": [3, 2, 1],
+                "products": [
+                    "Basketball,Headphone,T-Shirt",
+                    "Bible,Pencil",
+                    "Mask",
+                ],
+            },
+            id="happy_path",
+        ),
+    ],
+)
+def test_problem_1484(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1484(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "user_id": [1, 2, 3, 4, 5, 6, 7],
                 "name": [
                     "Winston",

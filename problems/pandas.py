@@ -567,6 +567,36 @@ def problem_570(employee: pd.DataFrame) -> pd.DataFrame:
     return employee.merge(grouped, left_on="id", right_on="managerId")[["name"]]
 
 
+def problem_1484(activities: pd.DataFrame) -> pd.DataFrame:
+    """Find for each date the number of different products sold and their names.
+
+    The sold products names for each date should be sorted lexicographically.
+
+    Return the result table ordered by sell_date.
+
+    Parameters
+    ----------
+    activities : pd.DataFrame
+        The table containing the sales data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    grouped = (
+        activities.groupby(["sell_date", "product"]).size().reset_index(name="count")
+    )
+    return (
+        grouped.groupby("sell_date")
+        .agg(
+            num_sold=("product", "size"),
+            products=("product", lambda x: ",".join(sorted(x))),
+        )
+        .reset_index()
+    ).sort_values(by="sell_date")
+
+
 def problem_1517(users: pd.DataFrame) -> pd.DataFrame:
     """Find the users who have valid emails.
 
