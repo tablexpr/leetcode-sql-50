@@ -1399,3 +1399,32 @@ def test_problem_1934(input_data_1, input_data_2, expected_data):
     expected_table = pd.DataFrame(expected_data)
     result = problem_1934(table_1, table_2).reset_index(drop=True)
     assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {"teacher_id": [1, 1, 2, 2], "subject_id": [101, 102, 101, 103]},
+            {"teacher_id": [1, 2], "cnt": [2, 2]},
+            id="multiple_teachers_distinct_subjects",
+        ),
+        pytest.param(
+            {"teacher_id": [1], "subject_id": [101]},
+            {"teacher_id": [1], "cnt": [1]},
+            id="single_teacher_single_subject",
+        ),
+        pytest.param(
+            {"teacher_id": [1], "subject_id": [101]},
+            {"teacher_id": [1], "cnt": [1]},
+            id="single_teacher_repeated_subjects",
+        ),
+    ],
+)
+def test_problem_2356(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_2356(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )

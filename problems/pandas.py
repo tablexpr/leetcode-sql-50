@@ -774,3 +774,23 @@ def problem_1934(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataF
     return grouped.assign(
         confirmation_rate=(grouped["confirmed"] / grouped["total"]).round(2)
     )[["user_id", "confirmation_rate"]]
+
+
+def problem_2356(teacher: pd.DataFrame) -> pd.DataFrame:
+    """Calculate the number of unique subjects each teacher teaches in the university.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    teacher : pd.DataFrame
+        Table links teachers, subjects, and departments with unique subject-dept pairs.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return teacher.groupby("teacher_id", as_index=False).aggregate(
+        cnt=pd.NamedAgg("subject_id", "nunique")
+    )
