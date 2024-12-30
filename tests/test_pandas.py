@@ -497,6 +497,64 @@ def test_problem_1148(input_data, expected_data):
     [
         pytest.param(
             {
+                "delivery_id": [1, 2, 3, 4, 5, 6, 7],
+                "customer_id": [1, 2, 1, 3, 3, 2, 4],
+                "order_date": [
+                    datetime(2019, 8, 1),
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 11),
+                    datetime(2019, 8, 24),
+                    datetime(2019, 8, 21),
+                    datetime(2019, 8, 11),
+                    datetime(2019, 8, 9),
+                ],
+                "customer_pref_delivery_date": [
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 2),
+                    datetime(2019, 8, 12),
+                    datetime(2019, 8, 24),
+                    datetime(2019, 8, 22),
+                    datetime(2019, 8, 13),
+                    datetime(2019, 8, 9),
+                ],
+            },
+            {"immediate_percentage": [50.0]},
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "delivery_id": [1, 2, 3],
+                "customer_id": [1, 1, 2],
+                "order_date": [
+                    datetime(2020, 1, 1),
+                    datetime(2020, 1, 2),
+                    datetime(2020, 1, 3),
+                ],
+                "customer_pref_delivery_date": [
+                    datetime(2020, 1, 1),
+                    datetime(2020, 1, 2),
+                    datetime(2020, 1, 3),
+                ],
+            },
+            {"immediate_percentage": [100.0]},
+            id="all_immediate",
+        ),
+    ],
+)
+def test_problem_1174(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1174(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "trans_date": [
                     datetime(2023, 1, 1),
                     datetime(2023, 1, 15),

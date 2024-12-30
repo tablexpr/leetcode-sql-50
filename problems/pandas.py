@@ -230,6 +230,39 @@ def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
     return joined
 
 
+def problem_1174(delivery: pd.DataFrame) -> pd.DataFrame:
+    """Find the percentage of immediate orders in the first orders of all customers.
+
+    If the customer's preferred delivery date is the same as the order date, then the
+    order is called immediate; otherwise, it is called scheduled. The first order of a
+    customer is the order with the earliest order date that the customer made. It is
+    guaranteed that a customer has precisely one first order.
+
+    Round the result to 2 decimal places.
+
+    Parameters
+    ----------
+    delivery : pd.DataFrame
+        Table shows the order date, customer name, and preferred delivery date.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    delivery["is_immediate"] = (
+        delivery["order_date"] == delivery["customer_pref_delivery_date"]
+    ).astype(int)
+    min_delivery = delivery.groupby("customer_id", as_index=False).aggregate(
+        order_date=pd.NamedAgg("order_date", "min")
+    )
+    joined = delivery.merge(min_delivery)
+    return pd.DataFrame(
+        [(joined["is_immediate"].mean() * 100).round(2)],
+        columns=["immediate_percentage"],
+    )
+
+
 def problem_1193(transactions: pd.DataFrame) -> pd.DataFrame:
     """Find monthly, country-wise transaction counts, totals, approved counts and sums.
 
