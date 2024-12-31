@@ -283,6 +283,39 @@ def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
     return joined
 
 
+def problem_1141(activity: pd.DataFrame) -> pd.DataFrame:
+    """Find the daily active user count for a period of 30 days.
+
+    The period ends on 2019-07-27 inclusively. A user was active on someday if they
+    made at least one activity on that day.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    activity : pd.DataFrame
+        The table shows the user activities for a social media website.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return (
+        activity[
+            (
+                activity["activity_date"]
+                > pd.to_datetime("2019-07-27") - pd.DateOffset(days=30)
+            )
+            & (activity["activity_date"] <= pd.to_datetime("2019-07-27"))
+        ]
+        .groupby("activity_date")
+        .user_id.nunique()
+        .reset_index()
+        .rename(columns={"activity_date": "day", "user_id": "active_users"})
+    )
+
+
 def problem_1174(delivery: pd.DataFrame) -> pd.DataFrame:
     """Find the percentage of immediate orders in the first orders of all customers.
 

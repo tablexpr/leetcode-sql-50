@@ -554,6 +554,50 @@ def test_problem_1075(input_data_1, input_data_2, expected_data):
     [
         pytest.param(
             {
+                "user_id": [1, 1, 1, 2, 2, 2],
+                "session_id": [1, 1, 1, 4, 4, 4],
+                "activity_date": [
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                ],
+                "activity_type": [
+                    "open_session",
+                    "scroll_down",
+                    "end_session",
+                    "open_session",
+                    "send_message",
+                    "end_session",
+                ],
+            },
+            {
+                "day": [
+                    datetime(2019, 7, 20, 0, 0),
+                    datetime(2019, 7, 21, 0, 0),
+                ],
+                "active_users": [1, 1],
+            },
+            id="happy_path_1",
+        )
+    ],
+)
+def test_problem_1141(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1141(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "article_id": [1, 2, 3],
                 "author_id": [3, 7, 4],
                 "viewer_id": [3, 7, 4],
