@@ -63,6 +63,28 @@ def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_196(person: pd.DataFrame) -> pd.DataFrame:
+    """Delete duplicate emails, keeping one unique email with the smallest ID.
+
+    Write a solution to delete all duplicate emails, keeping only one unique email
+    with the smallest id.
+
+    The final order of the Person table does not matter.
+
+    Parameters
+    ----------
+    person : pd.DataFrame
+        A table containing email addresses.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    person = person.sort_values(["id", "email"], ascending=[True, True])
+    return person.drop_duplicates(subset=["email"], keep="first")
+
+
 def problem_197(weather: pd.DataFrame) -> pd.DataFrame:
     """Find IDs of dates with higher temperatures than the previous day.
 

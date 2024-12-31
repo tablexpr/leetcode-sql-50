@@ -99,6 +99,49 @@ def test_problem_180(input_data, expected_data):
     [
         pytest.param(
             {
+                "id": [1, 2, 3],
+                "email": ["a@example.com", "b@example.com", "c@example.com"],
+            },
+            {
+                "id": [1, 2, 3],
+                "email": ["a@example.com", "b@example.com", "c@example.com"],
+            },
+            id="unique_emails",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4],
+                "email": [
+                    "a@example.com",
+                    "b@example.com",
+                    "a@example.com",
+                    "b@example.com",
+                ],
+            },
+            {"id": [1, 2], "email": ["a@example.com", "b@example.com"]},
+            id="duplicate_emails",
+        ),
+        pytest.param(
+            {"id": [1], "email": ["a@example.com"]},
+            {"id": [1], "email": ["a@example.com"]},
+            id="single_row",
+        ),
+    ],
+)
+def test_problem_196(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_196(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
                 "temperature": [20, 25],
                 "id": [1, 2],
