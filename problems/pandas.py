@@ -236,6 +236,28 @@ def problem_595(world: pd.DataFrame) -> pd.DataFrame:
     return world[columns]
 
 
+def problem_596(courses: pd.DataFrame) -> pd.DataFrame:
+    """Find all the classes that have at least five students.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    courses : pd.DataFrame
+        Table indicates the name of a student and the class in which they are enrolled.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return (
+        courses.groupby("class", as_index=False)
+        .aggregate(count=pd.NamedAgg("student", "count"))
+        .query("count >= 5")[["class"]]
+    )
+
+
 def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     """Report the product_name, year, and price for each sale_id in the Sales table.
 

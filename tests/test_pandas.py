@@ -438,6 +438,72 @@ def test_problem_595(input_data, expected_data):
     [
         pytest.param(
             {
+                "student": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I",
+                    "J",
+                    "K",
+                    "L",
+                ],
+                "class": [
+                    "Math",
+                    "Math",
+                    "Biology",
+                    "Math",
+                    "Computer",
+                    "Math",
+                    "Math",
+                    "Math",
+                    "Computer",
+                    "Computer",
+                    "Computer",
+                    "Computer",
+                ],
+            },
+            {"class": ["Math", "Computer"]},
+            id="happy_path_multiple_classes",
+        ),
+        pytest.param(
+            {
+                "class": ["History", "History", "History", "History", "History"],
+                "student": ["Alice", "Bob", "Charlie", "David", "Eve"],
+            },
+            {"class": ["History"]},
+            id="edge_case_exactly_5_students",
+        ),
+        pytest.param(
+            {
+                "class": ["Art", "Art", "Art", "Art"],
+                "student": ["Alice", "Bob", "Charlie", "David"],
+            },
+            {"class": []},
+            id="edge_case_less_than_5_students",
+        ),
+    ],
+)
+def test_problem_596(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = (
+        pd.DataFrame(expected_data).sort_values("class").reset_index(drop=True)
+    )
+    result = problem_596(table).sort_values("class").reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "id": [1, 2, 3, 4],
                 "description": ["interesting", "boring", "exciting", "boring"],
                 "rating": [3, 1, 1, 1],

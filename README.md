@@ -39,7 +39,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 |         2356 | [Number of Unique Subjects Taught by Each Teacher](https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher) | Easy         | ❌           | ✅       | ✅        |
 |         1141 | [User Activity for the Past 30 Days I](https://leetcode.com/problems/user-activity-for-the-past-30-days-i)                         | Easy         | ❌           | ✅       | ✅        |
 |         1070 | [Product Sales Analysis III](https://leetcode.com/problems/product-sales-analysis-iii)                                             | Medium       | ❌           | ✅       | ✅        |
-|          596 | [Classes More Than 5 Students](https://leetcode.com/problems/classes-more-than-5-students)                                         | Easy         | ❌           | ❌       | ✅        |
+|          596 | [Classes More Than 5 Students](https://leetcode.com/problems/classes-more-than-5-students)                                         | Easy         | ❌           | ✅       | ✅        |
 |         1729 | [Find Followers Count](https://leetcode.com/problems/find-followers-count)                                                         | Easy         | ❌           | ❌       | ✅        |
 |          619 | [Biggest Single Number](https://leetcode.com/problems/biggest-single-number)                                                       | Easy         | ❌           | ❌       | ✅        |
 |         1045 | [Customers Who Bought All Products](https://leetcode.com/problems/customers-who-bought-all-products)                               | Medium       | ❌           | ❌       | ✅        |
