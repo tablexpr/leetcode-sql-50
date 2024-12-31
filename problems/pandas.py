@@ -256,6 +256,37 @@ def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     return sales.merge(product, on="product_id")[["product_name", "year", "price"]]
 
 
+def problem_1070(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
+    """Return details for the first year of every product sold.
+
+    Select the product id, year, quantity, and price
+
+    Return the resulting table in any order.
+
+    Parameters
+    ----------
+    sales : pd.DataFrame
+        This table shows a sale on the product product_id in a certain year.
+
+    product : pd.DataFrame
+        This table indicates the product name of each product.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    min_product_year = sales.groupby("product_id", as_index=False).aggregate(
+        first_year=pd.NamedAgg("year", "min")
+    )
+    joined = sales.merge(
+        min_product_year,
+        left_on=["product_id", "year"],
+        right_on=["product_id", "first_year"],
+    )
+    return joined[["product_id", "first_year", "quantity", "price"]]
+
+
 def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
     """Report each project's average employee experience, rounded to 2 digits.
 

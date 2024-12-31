@@ -515,6 +515,52 @@ def test_problem_1068(input_data_1, input_data_2, expected_data):
 
 
 @pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "sale_id": [1, 2, 7],
+                "product_id": [100, 100, 200],
+                "year": [2008, 2009, 2011],
+                "quantity": [10, 12, 15],
+                "price": [5000, 5000, 9000],
+            },
+            {
+                "product_id": [100, 200],
+                "first_year": [2008, 2011],
+                "quantity": [10, 15],
+                "price": [5000, 9000],
+            },
+            id="basic_case_with_distinct_products",
+        ),
+        pytest.param(
+            {
+                "sale_id": [1, 2, 3, 4, 5],
+                "product_id": [100, 100, 200, 200, 200],
+                "year": [2008, 2009, 2011, 2012, 2013],
+                "quantity": [10, 20, 15, 5, 10],
+                "price": [5000, 5000, 9000, 9000, 9000],
+            },
+            {
+                "product_id": [100, 200],
+                "first_year": [2008, 2011],
+                "quantity": [10, 15],
+                "price": [5000, 9000],
+            },
+            id="duplicates_with_minimum_year_aggregation",
+        ),
+    ],
+)
+def test_problem_1070(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1070(table, None).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
