@@ -884,6 +884,28 @@ def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
     return tweets[tweets["content"].str.len() > 15][["tweet_id"]]
 
 
+def problem_1729(followers: pd.DataFrame) -> pd.DataFrame:
+    """Return the number of followers for each user.
+
+    Return the result table ordered by user_id in ascending order.
+
+    Parameters
+    ----------
+    followers : pd.DataFrame
+        Table records user-follower relationships in a social media app.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return (
+        followers.groupby("user_id", as_index=False)
+        .aggregate(followers_count=pd.NamedAgg("follower_id", "count"))
+        .sort_values("user_id")
+    )
+
+
 def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
     """Find the ids of products that are both low fat and recyclable.
 
