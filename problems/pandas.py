@@ -258,6 +258,30 @@ def problem_596(courses: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_610(triangle: pd.DataFrame) -> pd.DataFrame:
+    """Report for every three line segments whether they can form a triangle.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    triangle : pd.DataFrame
+        Table contains the lengths of three line segments (x, y, z).
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    triangle["triangle"] = (
+        (triangle["x"] + triangle["y"] > triangle["z"])
+        & (triangle["x"] + triangle["z"] > triangle["y"])
+        & (triangle["y"] + triangle["z"] > triangle["x"])
+    )
+    triangle["triangle"] = triangle["triangle"].map({True: "Yes", False: "No"})
+    return triangle
+
+
 def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     """Report the product_name, year, and price for each sale_id in the Sales table.
 

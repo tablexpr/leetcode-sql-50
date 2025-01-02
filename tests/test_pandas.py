@@ -503,6 +503,50 @@ def test_problem_596(input_data, expected_data):
     "input_data, expected_data",
     [
         pytest.param(
+            {"x": [3], "y": [4], "z": [5]},
+            {"x": [3], "y": [4], "z": [5], "triangle": ["Yes"]},
+            id="valid_triangle",
+        ),
+        pytest.param(
+            {"x": [5], "y": [5], "z": [5]},
+            {"x": [5], "y": [5], "z": [5], "triangle": ["Yes"]},
+            id="equilateral_triangle",
+        ),
+        pytest.param(
+            {"x": [2], "y": [2], "z": [3]},
+            {"x": [2], "y": [2], "z": [3], "triangle": ["Yes"]},
+            id="isosceles_triangle",
+        ),
+        pytest.param(
+            {"x": [1], "y": [1], "z": [2]},
+            {"x": [1], "y": [1], "z": [2], "triangle": ["No"]},
+            id="degenerate_triangle",
+        ),
+        pytest.param(
+            {"x": [0], "y": [0], "z": [0]},
+            {"x": [0], "y": [0], "z": [0], "triangle": ["No"]},
+            id="zero_length_sides",
+        ),
+        pytest.param(
+            {"x": [1], "y": [2], "z": [3]},
+            {"x": [1], "y": [2], "z": [3], "triangle": ["No"]},
+            id="non_triangle",
+        ),
+    ],
+)
+def test_problem_610(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_610(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
             {
                 "id": [1, 2, 3, 4],
                 "description": ["interesting", "boring", "exciting", "boring"],
