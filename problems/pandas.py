@@ -282,6 +282,25 @@ def problem_610(triangle: pd.DataFrame) -> pd.DataFrame:
     return triangle
 
 
+def problem_619(my_numbers: pd.DataFrame) -> pd.DataFrame:
+    """Find the largest single number.
+
+    A single number is a number that appeared only once in the MyNumbers table. If
+    there is no single number, report null.
+
+    Parameters
+    ----------
+    my_numbers : pd.DataFrame
+        Table containing numbers.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return my_numbers.drop_duplicates(keep=False).max().to_frame(name="num")
+
+
 def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     """Report the product_name, year, and price for each sale_id in the Sales table.
 

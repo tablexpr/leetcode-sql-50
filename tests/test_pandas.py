@@ -548,6 +548,45 @@ def test_problem_610(input_data, expected_data):
     [
         pytest.param(
             {
+                "num": [1, 2, 3, 4],
+            },
+            {"num": [4]},
+            id="all_single_numbers",
+        ),
+        pytest.param(
+            {
+                "num": [1, 2, 2, 3, 3, 4],
+            },
+            {
+                "num": [4],
+            },
+            id="mixed_single_and_duplicate_numbers",
+        ),
+        pytest.param(
+            {
+                "num": [2, 2, 3, 3],
+            },
+            {
+                "num": [float("nan")],
+            },
+            id="all_duplicates",
+        ),
+    ],
+)
+def test_problem_619(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_619(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "id": [1, 2, 3, 4],
                 "description": ["interesting", "boring", "exciting", "boring"],
                 "rating": [3, 1, 1, 1],
