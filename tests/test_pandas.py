@@ -637,6 +637,51 @@ def test_problem_620(input_data, expected_data):
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 2]},
+            {"product_key": [1, 2]},
+            {"customer_id": [1, 2]},
+            id="happy_path_all_bought_all",
+        ),
+        pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 3]},
+            {"product_key": [1]},
+            {"customer_id": []},
+            id="happy_path_no_matching_distinct_count",
+        ),
+        pytest.param(
+            {"customer_id": [], "product_key": []},
+            {"product_key": [1]},
+            {"customer_id": []},
+            id="edge_case_empty_table_1",
+        ),
+        pytest.param(
+            {"customer_id": [1, 1, 2, 2], "product_key": [1, 2, 1, 3]},
+            {"product_key": []},
+            {"customer_id": []},
+            id="edge_case_empty_table_2",
+        ),
+        pytest.param(
+            {"customer_id": [], "product_key": []},
+            {"product_key": []},
+            {"customer_id": []},
+            id="edge_case_both_tables_empty",
+        ),
+    ],
+)
+def test_problem_1045(input_data_1, input_data_2, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1045(table_1, table_2).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data_1, input_data_2, expected_data",
+    [
+        pytest.param(
             {
                 "product_id": [1, 2, 3],
                 "product_name": ["Nokia", "Nokia", "Apple"],

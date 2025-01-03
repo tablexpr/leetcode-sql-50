@@ -301,6 +301,33 @@ def problem_619(my_numbers: pd.DataFrame) -> pd.DataFrame:
     return my_numbers.drop_duplicates(keep=False).max().to_frame(name="num")
 
 
+def problem_1045(customer: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
+    """Report the customer ids that bought all the products in the Product table.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    customer : pd.DataFrame
+        Table of customer product purchases.
+    product : pd.DataFrame
+        Defines unique products with product_key as the primary key.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    grouped = (
+        customer.drop_duplicates()
+        .groupby("customer_id", as_index=False)
+        .aggregate(products_purchased=pd.NamedAgg("product_key", "count"))
+    )
+    return grouped.loc[
+        grouped["products_purchased"] == len(product.index), ["customer_id"]
+    ]
+
+
 def problem_1068(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     """Report the product_name, year, and price for each sale_id in the Sales table.
 
