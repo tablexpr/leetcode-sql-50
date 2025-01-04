@@ -1,6 +1,6 @@
 # LeetCode SQL 50
 
-Fiddling around with DataFusion, pandas, Polars, and PyArrow.
+Fiddling around with [DataFusion](https://github.com/apache/datafusion), [pandas](https://github.com/pandas-dev/pandas), [Polars](https://github.com/pola-rs/polars), and [PyArrow](https://github.com/apache/arrow).
 
 ## Select
 |   problem_id | title                                                                                            | difficulty   | DataFusion   | pandas   | Polars   | PyArrow   |
