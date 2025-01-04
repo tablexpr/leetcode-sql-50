@@ -61,7 +61,7 @@ Fiddling around with DataFusion, pandas, and PyArrow.
 |         1341 | [Movie Rating](https://leetcode.com/problems/movie-rating)                                                                | Medium       | ❌           | ✅       | ✅        |
 |         1321 | [Restaurant Growth](https://leetcode.com/problems/restaurant-growth)                                                      | Medium       | ✅           | ✅       | ❌        |
 |          602 | [Friend Requests II: Who Has the Most Friends](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends) | Medium       | ❌           | ✅       | ✅        |
-|          585 | [Investments in 2016](https://leetcode.com/problems/investments-in-2016)                                                  | Medium       | ❌           | ❌       | ✅        |
+|          585 | [Investments in 2016](https://leetcode.com/problems/investments-in-2016)                                                  | Medium       | ❌           | ✅       | ✅        |
 |          185 | [Department Top Three Salaries](https://leetcode.com/problems/department-top-three-salaries)                              | Hard         | ❌           | ❌       | ✅        |
 ## Advanced String Functions / Regex / Clause
 |   problem_id | title                                                                                                        | difficulty   | DataFusion   | pandas   | PyArrow   |

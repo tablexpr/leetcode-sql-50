@@ -211,6 +211,35 @@ def problem_584(customer: pd.DataFrame) -> pd.DataFrame:
     return mask[["name"]]
 
 
+def problem_585(insurance: pd.DataFrame) -> pd.DataFrame:
+    """Report the sum of all total investment values in 2016 given conditions.
+
+    Policyholder must have the same tiv_2015 value as one or more other policyholders,
+    and are not located in the same city as any other policyholder.
+    (i.e., the (lat, lon) attribute pairs must be unique).
+
+    Round tiv_2016 to two decimal places.
+
+    Parameters
+    ----------
+    insurance : pd.DataFrame
+        Table contains information about policy investments.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    dropped_duplicates = insurance.drop_duplicates(subset=["lat", "lon"], keep=False)
+    grouped = insurance.groupby("tiv_2015", as_index=False).aggregate(
+        count=pd.NamedAgg("pid", "count")
+    )
+    joined = dropped_duplicates.merge(grouped, on="tiv_2015")
+    return pd.DataFrame(
+        [joined.loc[joined["count"] > 1, "tiv_2016"].sum()], columns=["tiv_2016"]
+    )
+
+
 def problem_595(world: pd.DataFrame) -> pd.DataFrame:
     """Find the name, population, and area of the big countries.
 
