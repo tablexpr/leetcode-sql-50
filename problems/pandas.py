@@ -513,6 +513,18 @@ def problem_1075(project: pd.DataFrame, employee: pd.DataFrame) -> pd.DataFrame:
     -------
     pd.DataFrame
 
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from problems.pandas import problem_1075
+    >>> from problems.datasets import load_problem_1075
+    >>> project = load_problem_1075()[0]
+    >>> employee = load_problem_1075()[1]
+    >>> problem_1075(project, employee)
+    project_id  average_years
+    0           1            2.0
+    1           2            2.5
+
     """
     joined = (
         project.merge(employee)
