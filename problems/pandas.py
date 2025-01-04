@@ -650,6 +650,29 @@ def problem_1148(views: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1204(queue: pd.DataFrame) -> pd.DataFrame:
+    """Find the last person who can board the bus without exceeding the weight limit.
+
+    There is a queue of people waiting to board a bus. However, the bus has a weight
+    limit of 1000 kilograms, so there may be some people who cannot board.
+
+    Note that only one person can board the bus at any given turn.
+
+    Parameters
+    ----------
+    queue : pd.DataFrame
+        This table has the information about all people waiting for a bus.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    queue = queue.sort_values(by="turn")
+    queue["weight_cumsum"] = queue["weight"].cumsum()
+    return queue.loc[queue["weight_cumsum"] <= 1000, ["person_name"]].tail(1)
+
+
 def problem_1211(queries: pd.DataFrame) -> pd.DataFrame:
     """Find each query_name, the quality and poor_query_percentage.
 

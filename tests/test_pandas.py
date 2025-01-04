@@ -1321,6 +1321,47 @@ def test_problem_1193(input_data, expected_data):
     [
         pytest.param(
             {
+                "turn": [1, 2, 3, 4, 5],
+                "person_name": ["Abe", "Bob", "Chloe", "Dylan", "Eve"],
+                "weight": [200, 200, 200, 200, 200],
+            },
+            {"person_name": ["Eve"]},
+            id="happy_path",
+        ),
+        pytest.param(
+            {
+                "turn": [1, 5, 4, 3, 2],
+                "person_name": ["Abe", "Bob", "Chloe", "Dylan", "Eve"],
+                "weight": [200, 200, 300, 300, 200],
+            },
+            {"person_name": ["Chloe"]},
+            id="out_of_order",
+        ),
+        pytest.param(
+            {
+                "turn": [1, 2],
+                "person_name": ["Abe", "Bob"],
+                "weight": [900, 200],
+            },
+            {"person_name": ["Abe"]},
+            id="not_equal_1k",
+        ),
+    ],
+)
+def test_problem_1204(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1204(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
                 "query_name": ["query1", "query1", "query2"],
                 "rating": [4, 5, 2],
                 "position": [2, 1, 1],
