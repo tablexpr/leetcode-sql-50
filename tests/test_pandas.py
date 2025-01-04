@@ -1882,6 +1882,92 @@ def test_problem_1934(input_data_1, input_data_2, expected_data):
     "input_data, expected_data",
     [
         pytest.param(
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [9.0, None, None, 11.0, None, 6.0, None],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": [11]},
+            id="basic_filtering",
+        ),
+        pytest.param(
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [9.0, None, None, 11.0, None, 6.0, None],
+                "salary": [60301, 31000, 67084, 31241, 50937, 38485, 41230],
+            },
+            {"employee_id": []},
+            id="no_low_salary",
+        ),
+        pytest.param(
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [3, 12, 13, 1, 9, 11, 14],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": []},
+            id="all_managers_are_employees",
+        ),
+        pytest.param(
+            {
+                "employee_id": [3, 12, 13, 1, 9, 11, 14],
+                "name": [
+                    "Mila",
+                    "Antonella",
+                    "Emery",
+                    "Kalel",
+                    "Mikaela",
+                    "Joziah",
+                    "Hayden",
+                ],
+                "manager_id": [None, None, None, None, None, None, None],
+                "salary": [60301, 31000, 67084, 21241, 50937, 28485, 4123],
+            },
+            {"employee_id": []},
+            id="all_manager_ids_null",
+        ),
+    ],
+)
+def test_problem_1978(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1978(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
             {"teacher_id": [1, 1, 2, 2], "subject_id": [101, 102, 101, 103]},
             {"teacher_id": [1, 2], "cnt": [2, 2]},
             id="multiple_teachers_distinct_subjects",

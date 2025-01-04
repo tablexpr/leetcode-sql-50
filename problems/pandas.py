@@ -1052,6 +1052,31 @@ def problem_1934(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataF
     )[["user_id", "confirmation_rate"]]
 
 
+def problem_1978(employees: pd.DataFrame) -> pd.DataFrame:
+    """Find employees whose salary is less than $30000 and whose manager left.
+
+    When a manager leaves the company, their information is deleted from the Employees
+    table, but the reports still have their manager_id set to the manager that left.
+
+    Return the result table ordered by employee_id.
+
+    Parameters
+    ----------
+    employees : pd.DataFrame
+        The table containing employee data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return employees[
+        (employees["salary"] < 30_000)
+        & (~employees["manager_id"].isnull())
+        & (~employees["manager_id"].isin(employees["employee_id"]))
+    ][["employee_id"]].sort_values("employee_id")
+
+
 def problem_2356(teacher: pd.DataFrame) -> pd.DataFrame:
     """Calculate the number of unique subjects each teacher teaches in the university.
 
