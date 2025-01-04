@@ -6,6 +6,7 @@ import pandas as pd
 
 import problems.datafusion
 import problems.pandas
+import problems.polars
 import problems.pyarrow
 
 
@@ -85,6 +86,17 @@ def gen_readme() -> str:
             ]
         )
     )
+    df["Polars"] = (
+        df["problem_id"]
+        .astype(str)
+        .isin(
+            [
+                func[0].split("_")[-1]
+                for func in inspect.getmembers(problems.polars, inspect.isfunction)
+                if func[0].startswith("problem")
+            ]
+        )
+    )
     df["PyArrow"] = (
         df["problem_id"]
         .astype(str)
@@ -98,8 +110,8 @@ def gen_readme() -> str:
     )
 
     mapping = {True: "✅", False: "❌"}
-    df[["DataFusion", "pandas", "PyArrow"]] = df[
-        ["DataFusion", "pandas", "PyArrow"]
+    df[["DataFusion", "pandas", "Polars", "PyArrow"]] = df[
+        ["DataFusion", "pandas", "Polars", "PyArrow"]
     ].map(mapping.get)
 
     s = io.BytesIO()
@@ -107,7 +119,7 @@ def gen_readme() -> str:
         dedent("""\
         # LeetCode SQL 50
 
-        Fiddling around with DataFusion, pandas, and PyArrow.
+        Fiddling around with DataFusion, pandas, Polars, and PyArrow.
 
         """).encode()
     )
