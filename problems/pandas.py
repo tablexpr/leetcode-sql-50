@@ -1258,6 +1258,53 @@ def problem_1789(employee: pd.DataFrame) -> pd.DataFrame:
     ]
 
 
+def problem_1907(accounts: pd.DataFrame) -> pd.DataFrame:
+    """Calculate the number of bank accounts for each salary category.
+
+    The salary categories are:
+
+    - "Low Salary": All the salaries strictly less than $20000.
+    - "Average Salary": All the salaries in the inclusive range [$20000, $50000].
+    - "High Salary": All the salaries strictly greater than $50000.
+
+    The result table must contain all three categories. If there are no accounts in a category, return 0.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    accounts : pd.DataFrame
+        A table containing the account data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    accounts["category"] = accounts["income"].case_when(
+        [
+            (accounts["income"] < 20_000, "Low Salary"),
+            (
+                (accounts["income"] >= 20_000) & (accounts["income"] <= 50_000),
+                "Average Salary",
+            ),
+            (accounts["income"] > 50_000, "High Salary"),
+        ]
+    )
+    return (
+        pd.DataFrame(
+            ["Low Salary", "Average Salary", "High Salary"], columns=["category"]
+        )
+        .merge(
+            accounts.groupby("category", as_index=False).aggregate(
+                accounts_count=pd.NamedAgg("account_id", "count")
+            ),
+            how="left",
+        )
+        .fillna(0)
+    )
+
+
 def problem_1934(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataFrame:
     """Find the confirmation rate of each user.
 
