@@ -258,6 +258,31 @@ def problem_596(courses: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_602(request_accepted: pd.DataFrame) -> pd.DataFrame:
+    """Find who has the most number of friends, report who and how many.
+
+    There can be no ties.
+
+    Parameters
+    ----------
+    request_accepted : pd.DataFrame
+        Table shows the friend requests that have been accepted.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    return (
+        pd.concat([request_accepted.requester_id, request_accepted.accepter_id])
+        .to_frame(name="id")
+        .groupby("id", as_index=False)
+        .aggregate(num=pd.NamedAgg("id", "count"))
+        .sort_values("num", ascending=False)
+        .head(1)
+    )
+
+
 def problem_610(triangle: pd.DataFrame) -> pd.DataFrame:
     """Report for every three line segments whether they can form a triangle.
 

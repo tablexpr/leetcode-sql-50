@@ -503,6 +503,35 @@ def test_problem_596(input_data, expected_data):
     "input_data, expected_data",
     [
         pytest.param(
+            {"requester_id": [1, 1, 2, 3], "accepter_id": [2, 3, 3, 4]},
+            {"id": [3], "num": [3]},
+            id="balanced",
+        ),
+        pytest.param(
+            {"requester_id": [1, 1, 1, 1], "accepter_id": [2, 3, 4, 5]},
+            {"id": [1], "num": [4]},
+            id="three_ids_1_requester",
+        ),
+        pytest.param(
+            {"requester_id": [2, 3, 4, 5], "accepter_id": [1, 1, 1, 1]},
+            {"id": [1], "num": [4]},
+            id="three_ids_1_accepter",
+        ),
+    ],
+)
+def test_problem_602(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_602(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
             {"x": [3], "y": [4], "z": [5]},
             {"x": [3], "y": [4], "z": [5], "triangle": ["Yes"]},
             id="valid_triangle",
