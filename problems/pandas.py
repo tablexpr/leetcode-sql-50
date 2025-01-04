@@ -541,6 +541,17 @@ def problem_1141(activity: pd.DataFrame) -> pd.DataFrame:
     -------
     pd.DataFrame
 
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from problems.pandas import problem_1141
+    >>> from problems.datasets import load_problem_1141
+    >>> activity = load_problem_1141()
+    >>> problem_1141(activity)
+            day  active_users
+    0 2019-07-20             2
+    1 2019-07-21             2
+
     """
     return (
         activity[
