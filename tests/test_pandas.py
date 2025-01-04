@@ -634,6 +634,42 @@ def test_problem_620(input_data, expected_data):
 
 
 @pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
+        pytest.param(
+            {
+                "id": [1, 2, 3, 4, 5],
+                "student": ["Abbot", "Doris", "Emerson", "Green", "Jeames"],
+            },
+            {
+                "id": [1, 2, 3, 4, 5],
+                "student": ["Doris", "Abbot", "Green", "Emerson", "Jeames"],
+            },
+            id="swap_students_odd_row_count",
+        ),
+        pytest.param(
+            {
+                "id": [1, 2],
+                "student": ["Abbot", "Doris"],
+            },
+            {
+                "id": [1, 2],
+                "student": ["Doris", "Abbot"],
+            },
+            id="swap_students_even_row_count",
+        ),
+    ],
+)
+def test_problem_626(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_626(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(

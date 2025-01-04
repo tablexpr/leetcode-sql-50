@@ -301,6 +301,34 @@ def problem_619(my_numbers: pd.DataFrame) -> pd.DataFrame:
     return my_numbers.drop_duplicates(keep=False).max().to_frame(name="num")
 
 
+def problem_626(seat: pd.DataFrame) -> pd.DataFrame:
+    """Swap seat IDs of consecutive students; leave last ID unchanged if count is odd.
+
+    Write a solution to swap the seat id of every two consecutive students. If the
+    number of students is odd, the id of the last student is not swapped.
+
+    Return the result table ordered by id in ascending order.
+
+    Parameters
+    ----------
+    seat : pd.DataFrame
+        Table indicates the name and the ID of a student.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    combined = seat.assign(exchange_id=seat.id % 2 + seat.id)
+    joined = combined.merge(combined, how="inner", on="exchange_id")
+    swapped = joined.loc[
+        joined["id_x"] != joined["id_y"], ["id_x", "student_y"]
+    ].rename(columns={"id_x": "id", "student_y": "student"})
+    if len(seat.index) != len(swapped.index):
+        return pd.concat([swapped, seat.tail(1)])
+    return swapped
+
+
 def problem_1045(customer: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     """Report the customer ids that bought all the products in the Product table.
 
