@@ -557,6 +557,43 @@ def problem_1141(activity: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1164(products: pd.DataFrame) -> pd.DataFrame:
+    """Find the prices of all products on 2019-08-16.
+
+    Assume the price of all products before any change is 10.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    products : pd.DataFrame
+        Table tracks product price changes with new prices and corresponding dates.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    products_filtered = products.loc[products["change_date"] <= "2019-08-16"]
+    products_max_dates = products_filtered.groupby(["product_id"], as_index=False)[
+        "change_date"
+    ].max()
+    joined = (
+        products_filtered.merge(products_max_dates, on=["product_id", "change_date"])
+        .drop(columns=["change_date"])
+        .rename(columns={"new_price": "price"})
+    )
+    missing_products = products.assign(
+        is_present=products["product_id"].isin(joined["product_id"])
+    )
+    missing_products = (
+        missing_products.loc[~missing_products["is_present"], ["product_id"]]
+        .assign(price=10)
+        .drop_duplicates()
+    )
+    return pd.concat([joined, missing_products])
+
+
 def problem_1174(delivery: pd.DataFrame) -> pd.DataFrame:
     """Find the percentage of immediate orders in the first orders of all customers.
 
