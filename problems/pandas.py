@@ -933,6 +933,27 @@ def problem_1661(activity: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def problem_1667(users: pd.DataFrame) -> pd.DataFrame:
+    """Fix the names so that only the first character is uppercase.
+
+    The remaining characters should be lowercase.
+
+    Return the result table ordered by user_id.
+
+    Parameters
+    ----------
+    users : pd.DataFrame
+        This table contains the ID and the name of the user.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    users["name"] = users.name.str.capitalize()
+    return users.sort_values("user_id")
+
+
 def problem_1683(tweets: pd.DataFrame) -> pd.DataFrame:
     """Find the IDs of the invalid tweets.
 

@@ -1707,6 +1707,48 @@ def test_problem_1661(input_data, expected_data):
 @pytest.mark.parametrize(
     "input_data, expected_data",
     [
+        pytest.param(
+            {"user_id": [1, 2], "name": ["alice", "bob"]},
+            {"user_id": [1, 2], "name": ["Alice", "Bob"]},
+            id="happy_path_simple",
+        ),
+        pytest.param(
+            {"user_id": [2, 1], "name": ["bob", "alice"]},
+            {"user_id": [1, 2], "name": ["Alice", "Bob"]},
+            id="happy_path_unsorted_user_id",
+        ),
+        pytest.param(
+            {"user_id": [3, 4], "name": ["tyler", "MaRy KaThRyN"]},
+            {"user_id": [3, 4], "name": ["Tyler", "Mary kathryn"]},
+            id="edge_case_two_part_name_table",
+        ),
+        pytest.param(
+            {"user_id": [1], "name": [""]},
+            {"user_id": [1], "name": [""]},
+            id="edge_case_empty_name",
+        ),
+        pytest.param(
+            {"user_id": [1], "name": ["ALICE"]},
+            {"user_id": [1], "name": ["Alice"]},
+            id="edge_case_all_caps",
+        ),
+        pytest.param(
+            {"user_id": [1, 2], "name": [None, "bob"]},
+            {"user_id": [1, 2], "name": [None, "Bob"]},
+            id="error_case_none_name",
+        ),
+    ],
+)
+def test_problem_1667(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1667(table).reset_index(drop=True)
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
         (
             {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
             {"tweet_id": [2]},
