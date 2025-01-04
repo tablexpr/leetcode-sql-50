@@ -109,6 +109,71 @@ def gen_readme() -> str:
         )
     )
 
+    result = (
+        df.groupby("group", as_index=False)
+        .aggregate(
+            DataFusion=pd.NamedAgg(column="DataFusion", aggfunc="sum"),
+            pandas=pd.NamedAgg(column="pandas", aggfunc="sum"),
+            Polars=pd.NamedAgg(column="Polars", aggfunc="sum"),
+            PyArrow=pd.NamedAgg(column="PyArrow", aggfunc="sum"),
+            Total=pd.NamedAgg(column="group", aggfunc="count"),
+        )
+        .assign(
+            **{
+                col: lambda x, col=col: (
+                    x[col].astype("float") / x["Total"].astype("float") * 100
+                )
+                .round(2)
+                .astype(str)
+                .add("%")
+                for col in ["DataFusion", "pandas", "Polars", "PyArrow"]
+            },
+            group=lambda x: pd.Categorical(
+                x["group"],
+                categories=[
+                    "Select",
+                    "Basic Joins",
+                    "Basic Aggregate Functions",
+                    "Sorting and Grouping",
+                    "Advanced Select and Joins",
+                    "Subqueries",
+                    "Advanced String Functions / Regex / Clause",
+                ],
+                ordered=True,
+            ),
+        )
+        .assign(
+            TotalCompletion=lambda x: (
+                (
+                    x[["DataFusion", "pandas", "Polars", "PyArrow"]]
+                    .replace("%", "", regex=True)
+                    .astype(float)
+                    .mean(axis=1)
+                )
+                .round(2)
+                .astype(str)
+                + "%"
+            )
+        )
+        .sort_values("group")
+        .drop(columns="Total")
+    )
+
+    df = df.assign(
+        TotalCompletion=lambda x: (
+            (
+                x[["DataFusion", "pandas", "Polars", "PyArrow"]]
+                .replace("%", "", regex=True)
+                .astype(float)
+                .mean(axis=1)
+                * 100
+            )
+            .round(2)
+            .astype(str)
+            + "%"
+        )
+    )
+
     mapping = {True: "✅", False: "❌"}
     df[["DataFusion", "pandas", "Polars", "PyArrow"]] = df[
         ["DataFusion", "pandas", "Polars", "PyArrow"]
@@ -141,4 +206,7 @@ def gen_readme() -> str:
             .encode()
         )
         s.write("\n".encode())
+    s.write("## Section Progress\n".encode())
+    s.write(result.to_markdown(index=False).encode())
+    s.write("\n".encode())
     return s.getvalue()
