@@ -573,6 +573,19 @@ def problem_1164(products: pd.DataFrame) -> pd.DataFrame:
     -------
     pd.DataFrame
 
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from problems.pandas import problem_1164
+    >>> from problems.datasets import load_problem_1164
+    >>> data = load_problem_1164()
+    >>> products = data[0]
+    >>> problem_1164(products)
+        product_id  price
+    0           2     50
+    1           1     35
+    5           3     10
+
     """
     products_filtered = products.loc[products["change_date"] <= "2019-08-16"]
     products_max_dates = products_filtered.groupby(["product_id"], as_index=False)[
