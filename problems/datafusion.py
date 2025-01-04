@@ -86,11 +86,19 @@ def problem_180(logs: pa.Table) -> datafusion.dataframe.DataFrame:
     )
     ctx.from_arrow(filtered.to_arrow_table(), "filtered")
     result = ctx.sql("""SELECT DISTINCT "ConsecutiveNums" FROM filtered""")
-    if result.to_arrow_table().num_rows == 0:
+    if logs.count() == 0:
         return ctx.from_arrow(
             pa.table(
-                {"ConsecutiveNums": [pa.scalar(None, type=pa.int64())]},
-                schema=pa.schema({"ConsecutiveNums": pa.int64()}),
+                {"ConsecutiveNums": [None]},
+                schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())]),
+            )
+        )
+
+    if result.count() == 0:
+        return ctx.from_arrow(
+            pa.table(
+                {"ConsecutiveNums": []},
+                schema=pa.schema([pa.field("ConsecutiveNums", pa.int64())]),
             )
         )
     return result
