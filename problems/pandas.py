@@ -485,6 +485,19 @@ def problem_1070(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     -------
     pd.DataFrame
 
+    Examples
+    --------
+    >>> import pandas as pd
+    >>> from problems.pandas import problem_1070
+    >>> from problems.datasets import load_problem_1070
+    >>> data = load_problem_1070()
+    >>> sales = data[0]
+    >>> product = data[1]
+    >>> problem_1070(sales, product)
+      product_id  first_year  quantity  price
+    0         100        2008        10   5000
+    1         200        2011        15   9000
+
     """
     min_product_year = sales.groupby("product_id", as_index=False).aggregate(
         first_year=pd.NamedAgg("year", "min")
