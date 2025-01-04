@@ -729,6 +729,54 @@ def problem_1327(products: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFrame:
     return joined.loc[joined["unit"] >= 100][["product_name", "unit"]]
 
 
+def problem_1341(
+    movies: pd.DataFrame, users: pd.DataFrame, movie_rating: pd.DataFrame
+) -> pd.DataFrame:
+    """Find the top user by ratings and the highest-rated movie in February 2020.
+
+    Identify the user who has rated the most movies. In case of a tie, return the
+    lexicographically smaller user name.
+
+    Identify the movie with the highest average rating in February 2020. In case of a
+    tie, return the lexicographically smaller movie name.
+
+    Parameters
+    ----------
+    movies : pd.DataFrame
+        The table containing movie data.
+    users : pd.DataFrame
+        The table containing user data.
+    movie_rating : pd.DataFrame
+        The table containing movie rating data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    user_most_ratings = (
+        (
+            movie_rating.merge(users)
+            .groupby(["user_id", "name"], as_index=False)
+            .aggregate(total_ratings=pd.NamedAgg("movie_id", "count"))
+        )
+        .sort_values(by=["total_ratings", "name"], ascending=[False, True])[["name"]]
+        .head(1)
+        .rename(columns={"name": "results"})
+    )
+
+    movie_highest_rating = (
+        movie_rating.loc[movie_rating["created_at"].dt.strftime("%Y-%m") == "2020-02"]
+        .merge(movies)
+        .groupby(["movie_id", "title"], as_index=False)
+        .aggregate(avg_rating=pd.NamedAgg("rating", "mean"))
+        .sort_values(by=["avg_rating", "title"], ascending=[False, True])[["title"]]
+        .head(1)
+        .rename(columns={"title": "results"})
+    )
+    return pd.concat([user_most_ratings, movie_highest_rating])
+
+
 def problem_1378(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.DataFrame:
     """Find the unique ID of each user.
 

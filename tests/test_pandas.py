@@ -1430,6 +1430,58 @@ def test_problem_1327(input_data_1, input_data_2, expected_data):
 
 
 @pytest.mark.parametrize(
+    "input_data_1, input_data_2, input_data_3, expected_data",
+    [
+        pytest.param(
+            {"movie_id": [1, 2, 3], "title": ["Avengers", "Frozen 2", "Joker"]},
+            {"user_id": [1, 2, 3, 4], "name": ["Daniel", "Monica", "Maria", "James"]},
+            {
+                "movie_id": [1, 1, 1, 1, 2, 2, 2, 3, 3],
+                "user_id": [1, 2, 3, 4, 1, 2, 3, 1, 2],
+                "rating": [3, 4, 2, 1, 5, 2, 2, 3, 4],
+                "created_at": [
+                    datetime(2020, 1, 12),
+                    datetime(2020, 2, 11),
+                    datetime(2020, 2, 12),
+                    datetime(2020, 1, 1),
+                    datetime(2020, 2, 17),
+                    datetime(2020, 2, 1),
+                    datetime(2020, 3, 1),
+                    datetime(2020, 2, 22),
+                    datetime(2020, 2, 25),
+                ],
+            },
+            {"results": ["Daniel", "Frozen 2"]},
+            id="tied_length_name",
+        ),
+        pytest.param(
+            {"movie_id": [1], "title": ["The Matrix"]},
+            {"user_id": [1, 2, 3], "name": ["Neo", "Trinity", "Morpheus"]},
+            {
+                "movie_id": [1, 1, 1],
+                "user_id": [1, 2, 3],
+                "rating": [5, 5, 5],
+                "created_at": [
+                    datetime(2020, 2, 1),
+                    datetime(2022, 1, 2),
+                    datetime(2022, 1, 3),
+                ],
+            },
+            {"results": ["Morpheus", "The Matrix"]},
+            id="single_movie_all_high_ratings",
+        ),
+    ],
+)
+def test_problem_1341(input_data_1, input_data_2, input_data_3, expected_data):
+    table_1 = pd.DataFrame(input_data_1)
+    table_2 = pd.DataFrame(input_data_2)
+    table_3 = pd.DataFrame(input_data_3)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1341(table_1, table_2, table_3).reset_index(drop=True)
+    assert_frame_equal(result, expected_table, check_dtype=False, check_index_type=True)
+
+
+@pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
     [
         pytest.param(
