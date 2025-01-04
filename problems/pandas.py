@@ -63,6 +63,42 @@ def problem_180(logs: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_185(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
+    """Find the employees who are high earners in each of the departments.
+
+    A company's executives are interested in seeing who earns the most money in each
+    of the company's departments. A high earner in a department is an employee who has
+    a salary in the top three unique salaries for that department.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pd.DataFrame
+        Table containing employee salary data.
+    department : pd.DataFrame
+        Table containing department data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    employee["rank"] = employee.groupby("departmentId")["salary"].rank(
+        "dense", ascending=False
+    )
+    employee = employee.loc[employee["rank"] <= 3.0, ["departmentId", "name", "salary"]]
+    return employee.merge(
+        department, left_on="departmentId", right_on="id", how="inner"
+    ).rename(
+        columns={
+            "name_x": "Employee",
+            "name_y": "Department",
+            "salary": "Salary",
+        }
+    )[["Department", "Employee", "Salary"]]
+
+
 def problem_196(person: pd.DataFrame) -> pd.DataFrame:
     """Delete duplicate emails, keeping one unique email with the smallest ID.
 
