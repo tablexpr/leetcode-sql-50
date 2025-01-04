@@ -1228,6 +1228,36 @@ def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1789(employee: pd.DataFrame) -> pd.DataFrame:
+    """Report all the employees with their primary department.
+
+    Employees can belong to multiple departments. When the employee joins other
+    departments, they need to decide which department is their primary department. Note
+    that when an employee belongs to only one department, their primary column is 'N'.
+
+    For employees who belong to one department, report their only department.
+
+    Return the result table in any order.
+
+    Parameters
+    ----------
+    employee : pd.DataFrame
+        A table containing employee and department data.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    counted = employee.groupby("employee_id", as_index=False).aggregate(
+        count=pd.NamedAgg("employee_id", "count")
+    )
+    joined = employee.merge(counted, on="employee_id", how="inner")
+    return joined.loc[(joined["primary_flag"] == "Y") | (joined["count"] == 1)][
+        ["employee_id", "department_id"]
+    ]
+
+
 def problem_1934(signups: pd.DataFrame, confirmations: pd.DataFrame) -> pd.DataFrame:
     """Find the confirmation rate of each user.
 
