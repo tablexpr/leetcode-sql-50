@@ -2170,6 +2170,59 @@ def test_problem_1729(input_data, expected_data):
 @pytest.mark.parametrize(
     "input_data, expected_data",
     [
+        pytest.param(
+            {
+                "employee_id": [9, 6, 4, 2],
+                "name": ["Hercy", "Alice", "Bob", "Winston"],
+                "reports_to": [None, 9, 9, None],
+                "age": [43, 41, 36, 37],
+            },
+            {
+                "employee_id": [9],
+                "name": ["Hercy"],
+                "reports_count": [2],
+                "average_age": [39.0],
+            },
+            id="one_manager",
+        ),
+        pytest.param(
+            {
+                "employee_id": [1, 2, 3, 4, 5, 6, 7, 8],
+                "name": [
+                    "Michael",
+                    "Alice",
+                    "Bob",
+                    "Charlie",
+                    "David",
+                    "Eve",
+                    "Frank",
+                    "Grace",
+                ],
+                "reports_to": [None, 1, 1, 2, 2, 3, None, None],
+                "age": [45, 38, 42, 34, 40, 37, 50, 48],
+            },
+            {
+                "employee_id": [1, 2, 3],
+                "name": ["Michael", "Alice", "Bob"],
+                "reports_count": [2, 2, 1],
+                "average_age": [40.0, 37.0, 37.0],
+            },
+            id="three_managers",
+        ),
+    ],
+)
+def test_problem_1731(input_data, expected_data):
+    table = pd.DataFrame(input_data)
+    expected_table = pd.DataFrame(expected_data)
+    result = problem_1731(table).reset_index(drop=True)
+    assert_frame_equal(
+        result, expected_table, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
+    "input_data, expected_data",
+    [
         (
             {
                 "product_id": [0, 1, 2, 3, 4],

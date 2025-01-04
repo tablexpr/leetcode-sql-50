@@ -1163,6 +1163,49 @@ def problem_1729(followers: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def problem_1731(employees: pd.DataFrame) -> pd.DataFrame:
+    """Report manager IDs, names, count of direct reports, and mean age of reports.
+
+    For this problem, we will consider a manager an employee who has at least 1 other
+    employee reporting to them.
+
+    Write a solution to report the ids and the names of all managers, the number of
+    employees who report directly to them, and the average age of the reports rounded
+    to the nearest integer.
+
+    Return the result table ordered by employee_id.
+
+    Parameters
+    ----------
+    employees : pd.DataFrame
+        Table contains information about employees and managers.
+
+    Returns
+    -------
+    pd.DataFrame
+
+    """
+    joined = (
+        employees.merge(employees, left_on="employee_id", right_on="reports_to")
+        .groupby(["employee_id_x", "name_x"])
+        .aggregate({"employee_id_x": "count", "age_y": "mean"})
+        .rename(columns={"employee_id_x": "count"})
+        .reset_index()
+        .rename(
+            columns={
+                "employee_id_x": "employee_id",
+                "name_x": "name",
+                "count": "reports_count",
+                "age_y": "average_age",
+            }
+        )
+    )
+    joined["average_age"] = joined["average_age"].apply(
+        lambda x: float(Decimal(x).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    )
+    return joined
+
+
 def problem_1757(products: pd.DataFrame) -> pd.DataFrame:
     """Find the ids of products that are both low fat and recyclable.
 
