@@ -113,3 +113,36 @@ PARAMS_PROBLEM_185 = [
         id="duplicate_employees_different_salaries",
     ),
 ]
+
+
+PARAMS_PROBLEM_196 = [
+    pytest.param(
+        {
+            "id": [1, 2, 3],
+            "email": ["a@example.com", "b@example.com", "c@example.com"],
+        },
+        {
+            "id": [1, 2, 3],
+            "email": ["a@example.com", "b@example.com", "c@example.com"],
+        },
+        id="unique_emails",
+    ),
+    pytest.param(
+        {
+            "id": [1, 2, 3, 4],
+            "email": [
+                "a@example.com",
+                "b@example.com",
+                "a@example.com",
+                "b@example.com",
+            ],
+        },
+        {"id": [1, 2], "email": ["a@example.com", "b@example.com"]},
+        id="duplicate_emails",
+    ),
+    pytest.param(
+        {"id": [1], "email": ["a@example.com"]},
+        {"id": [1], "email": ["a@example.com"]},
+        id="single_row",
+    ),
+]

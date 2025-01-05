@@ -47,37 +47,7 @@ def test_problem_185(input_data_1, input_data_2, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 3],
-                "email": ["a@example.com", "b@example.com", "c@example.com"],
-            },
-            {
-                "id": [1, 2, 3],
-                "email": ["a@example.com", "b@example.com", "c@example.com"],
-            },
-            id="unique_emails",
-        ),
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4],
-                "email": [
-                    "a@example.com",
-                    "b@example.com",
-                    "a@example.com",
-                    "b@example.com",
-                ],
-            },
-            {"id": [1, 2], "email": ["a@example.com", "b@example.com"]},
-            id="duplicate_emails",
-        ),
-        pytest.param(
-            {"id": [1], "email": ["a@example.com"]},
-            {"id": [1], "email": ["a@example.com"]},
-            id="single_row",
-        ),
-    ],
+    PARAMS_PROBLEM_196,
 )
 def test_problem_196(input_data, expected_data):
     table = pd.DataFrame(input_data)
