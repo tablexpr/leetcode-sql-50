@@ -73,50 +73,7 @@ def test_problem_197(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "player_id": [1, 1, 2, 3, 3],
-                "device_id": [2, 2, 3, 1, 4],
-                "event_date": [
-                    datetime(2016, 3, 1),
-                    datetime(2016, 3, 2),
-                    datetime(2017, 6, 25),
-                    datetime(2016, 3, 2),
-                    datetime(2018, 7, 3),
-                ],
-                "games_played": [5, 6, 1, 0, 5],
-            },
-            {"fraction": [0.33]},
-            id="happy_path_basic",
-        ),
-        pytest.param(
-            {
-                "player_id": [1, 1, 1, 2, 2],
-                "device_id": [2, 2, 3, 1, 4],
-                "event_date": [
-                    datetime(2023, 1, 1),
-                    datetime(2023, 1, 2),
-                    datetime(2023, 1, 3),
-                    datetime(2023, 1, 1),
-                    datetime(2023, 1, 2),
-                ],
-                "games_played": [1, 2, 3, 4, 5],
-            },
-            {"fraction": [1.0]},
-            id="happy_path_multiple_dates",
-        ),
-        pytest.param(
-            {
-                "player_id": [1],
-                "device_id": [1],
-                "event_date": [datetime(2023, 1, 1)],
-                "games_played": [1],
-            },
-            {"fraction": [0.0]},
-            id="edge_case_single_entry",
-        ),
-    ],
+    PARAMS_PROBLEM_550,
 )
 def test_problem_550(input_data, expected_data):
     table = pd.DataFrame(input_data)
