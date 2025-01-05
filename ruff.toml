@@ -50,6 +50,7 @@ unfixable = []
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [lint.per-file-ignores]
+"problems/*.py" = ["F405"]
 "problems/datasets.py" = ["D103"]
 "problems/utils.py" = ["D"]
 "tests/*" = ["D", "F403", "F405"]

@@ -33,53 +33,7 @@ def test_problem_180(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4, 5, 6, 7],
-                "name": ["Joe", "Henry", "Sam", "Max", "Janet", "Randy", "Will"],
-                "salary": [85000, 80000, 60000, 90000, 69000, 85000, 70000],
-                "departmentId": [1, 2, 2, 1, 1, 1, 1],
-            },
-            {"id": [1, 2], "name": ["IT", "Sales"]},
-            {
-                "Department": ["IT", "Sales", "Sales", "IT", "IT", "IT"],
-                "Employee": ["Joe", "Henry", "Sam", "Max", "Randy", "Will"],
-                "Salary": [85000, 80000, 60000, 90000, 85000, 70000],
-            },
-            id="happy_path_basic",
-        ),
-        pytest.param(
-            {
-                "id": [1, 2, 3],
-                "name": ["Alice", "Bob", "Charlie"],
-                "salary": [60000, 75000, 80000],
-                "departmentId": [1, 2, 1],
-            },
-            {"id": [1, 2], "name": ["HR", "Finance"]},
-            {
-                "Department": ["HR", "Finance", "HR"],
-                "Employee": ["Alice", "Bob", "Charlie"],
-                "Salary": [60000, 75000, 80000],
-            },
-            id="single_employee_multiple_departments",
-        ),
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4],
-                "name": ["Alice", "Alice", "Bob", "Charlie"],
-                "salary": [70000, 80000, 75000, 90000],
-                "departmentId": [1, 1, 2, 2],
-            },
-            {"id": [1, 2], "name": ["IT", "Sales"]},
-            {
-                "Department": ["IT", "IT", "Sales", "Sales"],
-                "Employee": ["Alice", "Alice", "Bob", "Charlie"],
-                "Salary": [70000, 80000, 75000, 90000],
-            },
-            id="duplicate_employees_different_salaries",
-        ),
-    ],
+    PARAMS_PROBLEM_185,
 )
 def test_problem_185(input_data_1, input_data_2, expected_data):
     table_1 = pd.DataFrame(input_data_1)
