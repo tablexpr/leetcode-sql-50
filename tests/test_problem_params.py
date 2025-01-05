@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pytest
 
 PARAMS_PROBLEM_176 = [
@@ -144,5 +146,54 @@ PARAMS_PROBLEM_196 = [
         {"id": [1], "email": ["a@example.com"]},
         {"id": [1], "email": ["a@example.com"]},
         id="single_row",
+    ),
+]
+
+
+PARAMS_PROBLEM_197 = [
+    pytest.param(
+        {
+            "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+            "temperature": [20, 25],
+            "id": [1, 2],
+        },
+        {"id": [2]},
+        id="happy_path_basic",
+    ),
+    pytest.param(
+        {
+            "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+            "temperature": [25, 25],
+            "id": [1, 2],
+        },
+        {"id": []},
+        id="no_temperature_increase",
+    ),
+    pytest.param(
+        {
+            "recordDate": [datetime(2023, 1, 1)],
+            "temperature": [20],
+            "id": [1],
+        },
+        {"id": []},
+        id="single_record",
+    ),
+    pytest.param(
+        {
+            "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
+            "temperature": [25, 20],
+            "id": [1, 2],
+        },
+        {"id": []},
+        id="temperature_decrease",
+    ),
+    pytest.param(
+        {
+            "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 3)],
+            "temperature": [20, 25],
+            "id": [1, 2],
+        },
+        {"id": []},
+        id="skip_a_day",
     ),
 ]

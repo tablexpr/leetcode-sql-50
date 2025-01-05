@@ -58,53 +58,7 @@ def test_problem_196(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
-                "temperature": [20, 25],
-                "id": [1, 2],
-            },
-            {"id": [2]},
-            id="happy_path_basic",
-        ),
-        pytest.param(
-            {
-                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
-                "temperature": [25, 25],
-                "id": [1, 2],
-            },
-            {"id": []},
-            id="no_temperature_increase",
-        ),
-        pytest.param(
-            {
-                "recordDate": [datetime(2023, 1, 1)],
-                "temperature": [20],
-                "id": [1],
-            },
-            {"id": []},
-            id="single_record",
-        ),
-        pytest.param(
-            {
-                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 2)],
-                "temperature": [25, 20],
-                "id": [1, 2],
-            },
-            {"id": []},
-            id="temperature_decrease",
-        ),
-        pytest.param(
-            {
-                "recordDate": [datetime(2023, 1, 1), datetime(2023, 1, 3)],
-                "temperature": [20, 25],
-                "id": [1, 2],
-            },
-            {"id": []},
-            id="skip_a_day",
-        ),
-    ],
+    PARAMS_PROBLEM_197,
 )
 def test_problem_197(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
