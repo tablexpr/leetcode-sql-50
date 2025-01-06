@@ -243,3 +243,45 @@ PARAMS_PROBLEM_550 = [
         id="edge_case_single_entry",
     ),
 ]
+
+PARAMS_PROBLEM_570 = [
+    pytest.param(
+        {
+            "id": [101, 102, 103, 104, 105, 106],
+            "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+            "managerId": [None, 101, 101, 101, 101, 101],
+        },
+        {"name": ["John"]},
+        id="happy_path_one_with_five",
+    ),
+    pytest.param(
+        {
+            "id": [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111],
+            "name": [
+                "John",
+                "Dan",
+                "James",
+                "Amy",
+                "Anne",
+                "Ron",
+                "Alex",
+                "Bob",
+                "Charles",
+                "David",
+                "Edward",
+            ],
+            "managerId": [None, 101, 101, 101, 101, 101, 110, 110, 110, 110, 110],
+        },
+        {"name": ["John", "David"]},
+        id="happy_path_two_with_five",
+    ),
+    pytest.param(
+        {
+            "id": [101, 102, 103, 104, 105, 106],
+            "name": ["John", "Dan", "James", "Amy", "Anne", "Ron"],
+            "managerId": [None, 101, 101, 101, 101, 102],
+        },
+        {"name": []},
+        id="none_with_five",
+    ),
+]
