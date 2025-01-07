@@ -99,30 +99,7 @@ def test_problem_570(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {
-                "empId": [3, 1, 2, 4],
-                "name": ["Brad", "John", "Dan", "Thomas"],
-                "supervisor": [None, 3, 3, 3],
-                "salary": [4000, 1000, 2000, 4000],
-            },
-            {"empId": [2, 4], "bonus": [500, 2000]},
-            {"name": ["Brad", "John", "Dan"], "bonus": [None, None, 500]},
-            id="happy_path_basic",
-        ),
-        pytest.param(
-            {
-                "empId": [1, 2],
-                "name": ["John", "Dan"],
-                "supervisor": [None, 1],
-                "salary": [3000, 2000],
-            },
-            {"empId": [1, 2], "bonus": [500, 1000]},
-            {"name": ["John"], "bonus": [500]},
-            id="bonus_filtering_with_matching_empIds",
-        ),
-    ],
+    PARAMS_PROBLEM_577,
 )
 def test_problem_577(input_data_1, input_data_2, expected_data):
     table_1 = pd.DataFrame(input_data_1)

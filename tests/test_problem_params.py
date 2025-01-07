@@ -285,3 +285,29 @@ PARAMS_PROBLEM_570 = [
         id="none_with_five",
     ),
 ]
+
+
+PARAMS_PROBLEM_577 = [
+    pytest.param(
+        {
+            "empId": [3, 1, 2, 4],
+            "name": ["Brad", "John", "Dan", "Thomas"],
+            "supervisor": [None, 3, 3, 3],
+            "salary": [4000, 1000, 2000, 4000],
+        },
+        {"empId": [2, 4], "bonus": [500, 2000]},
+        {"name": ["Brad", "John", "Dan"], "bonus": [None, None, 500]},
+        id="happy_path_basic",
+    ),
+    pytest.param(
+        {
+            "empId": [1, 2],
+            "name": ["John", "Dan"],
+            "supervisor": [None, 1],
+            "salary": [3000, 2000],
+        },
+        {"empId": [1, 2], "bonus": [500, 1000]},
+        {"name": ["John"], "bonus": [500]},
+        id="bonus_filtering_with_matching_empIds",
+    ),
+]
