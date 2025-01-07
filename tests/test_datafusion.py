@@ -33,35 +33,7 @@ def test_problem_180(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 4, 5],
-                "name": ["Will", "Jane", "Bill", "Zack"],
-                "referee_id": [None, None, None, 1],
-            },
-            {"name": ["Will", "Jane", "Bill", "Zack"]},
-            id="happy_path_all_valid",
-        ),
-        pytest.param(
-            {
-                "id": [3, 6],
-                "name": ["Alex", "Mark"],
-                "referee_id": [2, 2],
-            },
-            {"name": []},
-            id="edge_case_all_referee_id_2",
-        ),
-        pytest.param(
-            {
-                "id": [1, 3, 5, 6],
-                "name": ["Will", "Alex", "Zack", "Mark"],
-                "referee_id": [None, 2, 1, 2],
-            },
-            {"name": ["Will", "Zack"]},
-            id="mixed_case_some_valid",
-        ),
-    ],
+    PARAMS_PROBLEM_584,
 )
 def test_problem_584(input_data, expected_data):
     input_table = pa.Table.from_pydict(input_data)
