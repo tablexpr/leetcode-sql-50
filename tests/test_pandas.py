@@ -139,44 +139,7 @@ def test_problem_585(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "name": ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola"],
-                "continent": ["Asia", "Europe", "Africa", "Europe", "Africa"],
-                "area": [652_230, 28_748, 2_381_741, 468, 1_246_700],
-                "population": [25_500_100, 2_831_741, 37_100_000, 78_115, 20_609_294],
-                "gdp": [
-                    20_343_000_000,
-                    12_960_000_000,
-                    188_681_000_000,
-                    3_712_000_000,
-                    100_990_000_000,
-                ],
-            },
-            {
-                "name": ["Afghanistan", "Algeria"],
-                "population": [25_500_100, 37_100_000],
-                "area": [652_230, 2_381_741],
-            },
-            id="happy_path_various_countries",
-        ),
-        pytest.param(
-            {
-                "name": ["CountryA", "CountryB"],
-                "continent": ["ContinentA", "ContinentB"],
-                "area": [3_000_000, 4_000_000],
-                "population": [30_000_000, 40_000_000],
-                "gdp": [1_000_000_000, 2_000_000_000],
-            },
-            {
-                "name": ["CountryA", "CountryB"],
-                "population": [30_000_000, 40_000_000],
-                "area": [3_000_000, 4_000_000],
-            },
-            id="edge_case_all_countries_meeting_criteria",
-        ),
-    ],
+    PARAMS_PROBLEM_595,
 )
 def test_problem_595(input_data, expected_data):
     table = pd.DataFrame(input_data)
@@ -189,58 +152,7 @@ def test_problem_595(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "student": [
-                    "A",
-                    "B",
-                    "C",
-                    "D",
-                    "E",
-                    "F",
-                    "G",
-                    "H",
-                    "I",
-                    "J",
-                    "K",
-                    "L",
-                ],
-                "class": [
-                    "Math",
-                    "Math",
-                    "Biology",
-                    "Math",
-                    "Computer",
-                    "Math",
-                    "Math",
-                    "Math",
-                    "Computer",
-                    "Computer",
-                    "Computer",
-                    "Computer",
-                ],
-            },
-            {"class": ["Math", "Computer"]},
-            id="happy_path_multiple_classes",
-        ),
-        pytest.param(
-            {
-                "class": ["History", "History", "History", "History", "History"],
-                "student": ["Alice", "Bob", "Charlie", "David", "Eve"],
-            },
-            {"class": ["History"]},
-            id="edge_case_exactly_5_students",
-        ),
-        pytest.param(
-            {
-                "class": ["Art", "Art", "Art", "Art"],
-                "student": ["Alice", "Bob", "Charlie", "David"],
-            },
-            {"class": []},
-            id="edge_case_less_than_5_students",
-        ),
-    ],
+    PARAMS_PROBLEM_596,
 )
 def test_problem_596(input_data, expected_data):
     table = pd.DataFrame(input_data)
