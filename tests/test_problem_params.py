@@ -611,3 +611,56 @@ PARAMS_PROBLEM_596 = [
         id="edge_case_less_than_5_students",
     ),
 ]
+
+
+PARAMS_PROBLEM_602 = [
+    pytest.param(
+        {"requester_id": [1, 1, 2, 3], "accepter_id": [2, 3, 3, 4]},
+        {"id": [3], "num": [3]},
+        id="balanced",
+    ),
+    pytest.param(
+        {"requester_id": [1, 1, 1, 1], "accepter_id": [2, 3, 4, 5]},
+        {"id": [1], "num": [4]},
+        id="three_ids_1_requester",
+    ),
+    pytest.param(
+        {"requester_id": [2, 3, 4, 5], "accepter_id": [1, 1, 1, 1]},
+        {"id": [1], "num": [4]},
+        id="three_ids_1_accepter",
+    ),
+]
+
+
+PARAMS_PROBLEM_610 = [
+    pytest.param(
+        {"x": [3], "y": [4], "z": [5]},
+        {"x": [3], "y": [4], "z": [5], "triangle": ["Yes"]},
+        id="valid_triangle",
+    ),
+    pytest.param(
+        {"x": [5], "y": [5], "z": [5]},
+        {"x": [5], "y": [5], "z": [5], "triangle": ["Yes"]},
+        id="equilateral_triangle",
+    ),
+    pytest.param(
+        {"x": [2], "y": [2], "z": [3]},
+        {"x": [2], "y": [2], "z": [3], "triangle": ["Yes"]},
+        id="isosceles_triangle",
+    ),
+    pytest.param(
+        {"x": [1], "y": [1], "z": [2]},
+        {"x": [1], "y": [1], "z": [2], "triangle": ["No"]},
+        id="degenerate_triangle",
+    ),
+    pytest.param(
+        {"x": [0], "y": [0], "z": [0]},
+        {"x": [0], "y": [0], "z": [0], "triangle": ["No"]},
+        id="zero_length_sides",
+    ),
+    pytest.param(
+        {"x": [1], "y": [2], "z": [3]},
+        {"x": [1], "y": [2], "z": [3], "triangle": ["No"]},
+        id="non_triangle",
+    ),
+]
