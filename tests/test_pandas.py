@@ -206,50 +206,14 @@ def test_problem_619(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4],
-                "description": ["interesting", "boring", "exciting", "boring"],
-                "rating": [3, 1, 1, 1],
-            },
-            {
-                "id": [1, 3],
-                "description": ["interesting", "exciting"],
-                "rating": [3, 1],
-            },
-            id="happy_path_mixed_ids_and_descriptions",
-        ),
-        pytest.param(
-            {"id": [1, 3], "description": ["boring", "boring"], "rating": [1, 1]},
-            {"id": [], "description": [], "rating": []},
-            id="edge_case_all_boring",
-        ),
-        pytest.param(
-            {
-                "id": [2, 4],
-                "description": ["interesting", "exciting"],
-                "rating": [1, 1],
-            },
-            {"id": [], "description": [], "rating": []},
-            id="edge_case_no_odd_ids",
-        ),
-        pytest.param(
-            {"id": [1], "description": ["interesting"], "rating": [1]},
-            {"id": [1], "description": ["interesting"], "rating": [1]},
-            id="edge_case_single_row_matching",
-        ),
-        pytest.param(
-            {"id": [2], "description": ["boring"], "rating": [1]},
-            {"id": [], "description": [], "rating": []},
-            id="edge_case_single_row_not_matching",
-        ),
-    ],
+    PARAMS_PROBLEM_620,
 )
 def test_problem_620(input_data, expected_data):
     table = pd.DataFrame(input_data)
-    expected_table = pd.DataFrame(expected_data)
-    result = problem_620(table).reset_index(drop=True)
+    expected_table = (
+        pd.DataFrame(expected_data).sort_values("id").reset_index(drop=True)
+    )
+    result = problem_620(table).sort_values("id").reset_index(drop=True)
     assert_frame_equal(
         result, expected_table, check_dtype=False, check_index_type=False
     )

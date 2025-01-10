@@ -192,36 +192,7 @@ def test_problem_619(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4],
-                "description": ["interesting", "boring", "exciting", "boring"],
-            },
-            {"id": [3, 1], "description": ["exciting", "interesting"]},
-            id="happy_path_mixed_ids_and_descriptions",
-        ),
-        pytest.param(
-            {"id": [1, 3], "description": ["boring", "boring"]},
-            {"id": [], "description": []},
-            id="edge_case_all_boring",
-        ),
-        pytest.param(
-            {"id": [2, 4], "description": ["interesting", "exciting"]},
-            {"id": [], "description": []},
-            id="edge_case_no_odd_ids",
-        ),
-        pytest.param(
-            {"id": [1], "description": ["interesting"]},
-            {"id": [1], "description": ["interesting"]},
-            id="edge_case_single_row_matching",
-        ),
-        pytest.param(
-            {"id": [2], "description": ["boring"]},
-            {"id": [], "description": []},
-            id="edge_case_single_row_not_matching",
-        ),
-    ],
+    PARAMS_PROBLEM_620,
 )
 def test_problem_620(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
