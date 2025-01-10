@@ -181,39 +181,13 @@ def test_problem_610(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "num": [1, 2, 3, 4],
-            },
-            {"num": [4]},
-            id="all_single_numbers",
-        ),
-        pytest.param(
-            {
-                "num": [1, 2, 2, 3, 3, 4],
-            },
-            {
-                "num": [4],
-            },
-            id="mixed_single_and_duplicate_numbers",
-        ),
-        pytest.param(
-            {
-                "num": [2, 2, 3, 3],
-            },
-            {
-                "num": [None],
-            },
-            id="all_duplicates",
-        ),
-    ],
+    PARAMS_PROBLEM_619,
 )
 def test_problem_619(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
     expected_table = pa.Table.from_pydict(expected_data)
     result = problem_619(table)
-    assert result.equals(expected_table)
+    result.to_pydict() == expected_table.to_pydict()
 
 
 @pytest.mark.parametrize(

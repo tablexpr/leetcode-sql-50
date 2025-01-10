@@ -494,7 +494,7 @@ def problem_619(my_numbers: pa.Table) -> pa.Table:
     grouped = my_numbers.group_by("num").aggregate([("num", "count")])
     grouped = grouped.filter(pc.equal(grouped["num_count"], pa.scalar(1)))
     if grouped.num_rows == 0:
-        return pa.Table.from_pydict({"num": [None]})
+        return pa.Table.from_pydict({"num": [float("nan")]})
     else:
         return (
             grouped.group_by([])

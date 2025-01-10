@@ -664,3 +664,32 @@ PARAMS_PROBLEM_610 = [
         id="non_triangle",
     ),
 ]
+
+
+PARAMS_PROBLEM_619 = [
+    pytest.param(
+        {
+            "num": [1, 2, 3, 4],
+        },
+        {"num": [4]},
+        id="all_single_numbers",
+    ),
+    pytest.param(
+        {
+            "num": [1, 2, 2, 3, 3, 4],
+        },
+        {
+            "num": [4],
+        },
+        id="mixed_single_and_duplicate_numbers",
+    ),
+    pytest.param(
+        {
+            "num": [2, 2, 3, 3],
+        },
+        {
+            "num": [float("nan")],
+        },
+        id="all_duplicates",
+    ),
+]
