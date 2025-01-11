@@ -221,30 +221,7 @@ def test_problem_620(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "id": [1, 2, 3, 4, 5],
-                "student": ["Abbot", "Doris", "Emerson", "Green", "Jeames"],
-            },
-            {
-                "id": [1, 2, 3, 4, 5],
-                "student": ["Doris", "Abbot", "Green", "Emerson", "Jeames"],
-            },
-            id="swap_students_odd_row_count",
-        ),
-        pytest.param(
-            {
-                "id": [1, 2],
-                "student": ["Abbot", "Doris"],
-            },
-            {
-                "id": [1, 2],
-                "student": ["Doris", "Abbot"],
-            },
-            id="swap_students_even_row_count",
-        ),
-    ],
+    PARAMS_PROBLEM_626,
 )
 def test_problem_626(input_data, expected_data):
     table = pd.DataFrame(input_data)

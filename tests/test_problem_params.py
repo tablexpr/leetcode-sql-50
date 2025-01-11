@@ -724,3 +724,28 @@ PARAMS_PROBLEM_620 = [
         id="edge_case_single_row_not_matching",
     ),
 ]
+
+PARAMS_PROBLEM_626 = [
+    pytest.param(
+        {
+            "id": [1, 2, 3, 4, 5],
+            "student": ["Abbot", "Doris", "Emerson", "Green", "Jeames"],
+        },
+        {
+            "id": [1, 2, 3, 4, 5],
+            "student": ["Doris", "Abbot", "Green", "Emerson", "Jeames"],
+        },
+        id="swap_students_odd_row_count",
+    ),
+    pytest.param(
+        {
+            "id": [1, 2],
+            "student": ["Abbot", "Doris"],
+        },
+        {
+            "id": [1, 2],
+            "student": ["Doris", "Abbot"],
+        },
+        id="swap_students_even_row_count",
+    ),
+]
