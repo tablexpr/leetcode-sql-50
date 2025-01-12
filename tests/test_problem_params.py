@@ -782,3 +782,22 @@ PARAMS_PROBLEM_1045 = [
         id="edge_case_both_tables_empty",
     ),
 ]
+
+
+PARAMS_PROBLEM_1068 = [
+    pytest.param(
+        {
+            "product_id": [1, 2, 3],
+            "product_name": ["Nokia", "Nokia", "Apple"],
+            "year": [2008, 2009, 2011],
+            "price": [5000, 5000, 9000],
+        },
+        {"product_id": [1, 2, 3]},
+        {
+            "product_name": ["Nokia", "Nokia", "Apple"],
+            "year": [2008, 2009, 2011],
+            "price": [5000, 5000, 9000],
+        },
+        id="happy_path",
+    )
+]

@@ -73,23 +73,7 @@ def test_problem_620(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {
-                "product_id": [1, 2, 3],
-                "product_name": ["Nokia", "Nokia", "Apple"],
-                "year": [2008, 2009, 2011],
-                "price": [5000, 5000, 9000],
-            },
-            {"product_id": [1, 2, 3]},
-            {
-                "product_name": ["Nokia", "Nokia", "Apple"],
-                "year": [2008, 2009, 2011],
-                "price": [5000, 5000, 9000],
-            },
-            id="happy_path",
-        )
-    ],
+    PARAMS_PROBLEM_1068,
 )
 def test_problem_1068(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)
