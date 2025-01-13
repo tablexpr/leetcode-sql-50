@@ -662,34 +662,7 @@ def test_problem_1204(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "query_name": ["query1", "query1", "query2"],
-                "rating": [4, 5, 2],
-                "position": [2, 1, 1],
-            },
-            {
-                "query_name": ["query1", "query2"],
-                "quality": [3.5, 2.0],
-                "poor_query_percentage": [0.0, 100.0],
-            },
-            id="happy_path_1",
-        ),
-        pytest.param(
-            {
-                "query_name": ["query1", "query2", "query2"],
-                "rating": [3, 1, 5],
-                "position": [1, 1, 1],
-            },
-            {
-                "query_name": ["query1", "query2"],
-                "quality": [3.0, 3.0],
-                "poor_query_percentage": [0.0, 50.0],
-            },
-            id="happy_path_2",
-        ),
-    ],
+    PARAMS_PROBLEM_1211,
 )
 def test_problem_1211(input_data, expected_data):
     table = pd.DataFrame(input_data)
