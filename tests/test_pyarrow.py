@@ -674,70 +674,7 @@ def test_problem_1211(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {
-                "product_id": [1, 1, 2, 2],
-                "start_date": [
-                    datetime(2019, 2, 7),
-                    datetime(2019, 3, 1),
-                    datetime(2019, 2, 1),
-                    datetime(2019, 2, 21),
-                ],
-                "end_date": [
-                    datetime(2019, 2, 28),
-                    datetime(2019, 3, 22),
-                    datetime(2019, 2, 20),
-                    datetime(2019, 3, 31),
-                ],
-                "price": [5, 20, 15, 30],
-            },
-            {
-                "product_id": [1, 1, 2, 2],
-                "purchase_date": [
-                    datetime(2019, 2, 25),
-                    datetime(2019, 3, 1),
-                    datetime(2019, 2, 10),
-                    datetime(2019, 3, 22),
-                ],
-                "units": [100, 15, 200, 30],
-            },
-            {"product_id": [1, 2], "average_price": [6.96, 16.96]},
-            id="two_products_with_purchases",
-        ),
-        pytest.param(
-            {
-                "product_id": [1, 1, 2, 2, 3],
-                "start_date": [
-                    datetime(2019, 2, 7),
-                    datetime(2019, 3, 1),
-                    datetime(2019, 2, 1),
-                    datetime(2019, 2, 21),
-                    datetime(2019, 2, 21),
-                ],
-                "end_date": [
-                    datetime(2019, 2, 28),
-                    datetime(2019, 3, 22),
-                    datetime(2019, 2, 20),
-                    datetime(2019, 3, 31),
-                    datetime(2019, 3, 31),
-                ],
-                "price": [5, 20, 15, 30, 30],
-            },
-            {
-                "product_id": [1, 1, 2, 2],
-                "purchase_date": [
-                    datetime(2019, 2, 25),
-                    datetime(2019, 3, 1),
-                    datetime(2019, 2, 10),
-                    datetime(2019, 3, 22),
-                ],
-                "units": [100, 15, 200, 30],
-            },
-            {"product_id": [1, 2, 3], "average_price": [6.96, 16.96, 0]},
-            id="two_products_with_purchases_one_missing",
-        ),
-    ],
+    PARAMS_PROBLEM_1251,
 )
 def test_problem_1251(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)
