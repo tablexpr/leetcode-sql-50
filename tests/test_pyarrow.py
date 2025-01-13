@@ -749,120 +749,7 @@ def test_problem_1251(input_data_1, input_data_2, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, input_data_3, expected_data",
-    [
-        pytest.param(
-            {
-                "student_id": [1, 2, 13, 6],
-                "student_name": ["Alice", "Bob", "John", "Alex"],
-            },
-            {"subject_name": ["Math", "Physics", "Programming"]},
-            {
-                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
-                "subject_name": [
-                    "Math",
-                    "Physics",
-                    "Programming",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Math",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Math",
-                ],
-            },
-            {
-                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
-                "student_name": [
-                    "Alice",
-                    "Alice",
-                    "Alice",
-                    "Bob",
-                    "Bob",
-                    "Bob",
-                    "Alex",
-                    "Alex",
-                    "Alex",
-                    "John",
-                    "John",
-                    "John",
-                ],
-                "subject_name": [
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Programming",
-                    "Math",
-                    "Physics",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                ],
-                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            },
-            id="happy_path",
-        ),
-        pytest.param(
-            {
-                "student_id": [1, 2, 13, 6],
-                "student_name": ["Alice", "Bob", "John", None],
-            },
-            {"subject_name": ["Math", "Physics", "Programming"]},
-            {
-                "student_id": [1, 1, 1, 2, 1, 1, 13, 13, 13, 2, 1],
-                "subject_name": [
-                    "Math",
-                    "Physics",
-                    "Programming",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Math",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Math",
-                ],
-            },
-            {
-                "student_id": [1, 1, 1, 2, 2, 2, 6, 6, 6, 13, 13, 13],
-                "student_name": [
-                    "Alice",
-                    "Alice",
-                    "Alice",
-                    "Bob",
-                    "Bob",
-                    "Bob",
-                    None,
-                    None,
-                    None,
-                    "John",
-                    "John",
-                    "John",
-                ],
-                "subject_name": [
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Programming",
-                    "Math",
-                    "Physics",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                    "Programming",
-                    "Physics",
-                    "Math",
-                ],
-                "attended_exams": [1, 2, 3, 1, 1, 0, 0, 0, 0, 1, 1, 1],
-            },
-            id="happy_path_null_name",
-        ),
-    ],
+    PARAMS_PROBLEM_1280,
 )
 def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)
@@ -875,30 +762,7 @@ def test_problem_1280(input_data_1, input_data_2, input_data_3, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {"product_id": [1, 2], "product_name": ["Product A", "Product B"]},
-            {
-                "product_id": [1, 2],
-                "order_date": [datetime(2020, 2, 15), datetime(2020, 2, 20)],
-                "unit": [150, 50],
-            },
-            {"product_name": ["Product A"], "unit": [150]},
-            id="happy_path_single_match",
-        ),
-        pytest.param(
-            {"product_id": [1], "product_name": ["Product A"]},
-            {"product_id": [1], "order_date": [datetime(2020, 3, 1)], "unit": [150]},
-            {"product_name": [], "unit": []},
-            id="no_matching_year_month",
-        ),
-        pytest.param(
-            {"product_id": [1], "product_name": ["Product A"]},
-            {"product_id": [1], "order_date": [datetime(2020, 2, 15)], "unit": [50]},
-            {"product_name": [], "unit": []},
-            id="no_products_with_unit_sum_gte_100",
-        ),
-    ],
+    PARAMS_PROBLEM_1327,
 )
 def test_problem_1327(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)
