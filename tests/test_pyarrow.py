@@ -597,35 +597,7 @@ def test_problem_1193(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "turn": [1, 2, 3, 4, 5],
-                "person_name": ["Abe", "Bob", "Chloe", "Dylan", "Eve"],
-                "weight": [200, 200, 200, 200, 200],
-            },
-            {"person_name": ["Eve"]},
-            id="happy_path",
-        ),
-        pytest.param(
-            {
-                "turn": [1, 5, 4, 3, 2],
-                "person_name": ["Abe", "Bob", "Chloe", "Dylan", "Eve"],
-                "weight": [200, 200, 300, 300, 200],
-            },
-            {"person_name": ["Chloe"]},
-            id="out_of_order",
-        ),
-        pytest.param(
-            {
-                "turn": [1, 2],
-                "person_name": ["Abe", "Bob"],
-                "weight": [900, 200],
-            },
-            {"person_name": ["Abe"]},
-            id="not_equal_1k",
-        ),
-    ],
+    PARAMS_PROBLEM_1204,
 )
 def test_problem_1204(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
