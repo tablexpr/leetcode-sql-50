@@ -680,20 +680,7 @@ def test_problem_1341(input_data_1, input_data_2, input_data_3, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
-            {"id": [1, 2], "extra": ["x", "y"]},
-            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
-            id="happy_path_matching_ids",
-        ),
-        pytest.param(
-            {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
-            {"id": [3, 4], "extra": ["x", "y"]},
-            {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
-            id="happy_path_non_matching_ids",
-        ),
-    ],
+    PARAMS_PROBLEM_1378,
 )
 def test_problem_1378(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(input_data_1)

@@ -1194,3 +1194,18 @@ PARAMS_PROBLEM_1327 = [
         id="no_products_with_unit_sum_gte_100",
     ),
 ]
+
+PARAMS_PROBLEM_1378 = [
+    pytest.param(
+        {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+        {"id": [1, 2], "extra": ["x", "y"]},
+        {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+        id="happy_path_matching_ids",
+    ),
+    pytest.param(
+        {"id": [1, 2], "unique_id": [101, 102], "name": ["Alice", "Bob"]},
+        {"id": [3, 4], "extra": ["x", "y"]},
+        {"unique_id": [101, 102], "name": ["Alice", "Bob"]},
+        id="happy_path_non_matching_ids",
+    ),
+]
