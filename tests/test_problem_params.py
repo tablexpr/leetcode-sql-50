@@ -1209,3 +1209,21 @@ PARAMS_PROBLEM_1378 = [
         id="happy_path_non_matching_ids",
     ),
 ]
+
+PARAMS_PROBLEM_2356 = [
+    pytest.param(
+        {"teacher_id": [1, 1, 2, 2], "subject_id": [101, 102, 101, 103]},
+        {"teacher_id": [1, 2], "cnt": [2, 2]},
+        id="multiple_teachers_distinct_subjects",
+    ),
+    pytest.param(
+        {"teacher_id": [1], "subject_id": [101]},
+        {"teacher_id": [1], "cnt": [1]},
+        id="single_teacher_single_subject",
+    ),
+    pytest.param(
+        {"teacher_id": [1], "subject_id": [101]},
+        {"teacher_id": [1], "cnt": [1]},
+        id="single_teacher_repeated_subjects",
+    ),
+]
