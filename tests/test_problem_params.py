@@ -1210,6 +1210,39 @@ PARAMS_PROBLEM_1378 = [
     ),
 ]
 
+PARAMS_PROBLEM_1934 = [
+    pytest.param(
+        {"user_id": [1]},
+        {"user_id": [1], "action": ["confirmed"]},
+        {"user_id": [1], "confirmation_rate": [1.0]},
+        id="user_confirmed",
+    ),
+    pytest.param(
+        {"user_id": [1]},
+        {"user_id": [1, 1], "action": ["confirmed", "confirmed"]},
+        {"user_id": [1], "confirmation_rate": [1.0]},
+        id="same_user_twice_confirmed",
+    ),
+    pytest.param(
+        {"user_id": [1]},
+        {"user_id": [1], "action": ["pending"]},
+        {"user_id": [1], "confirmation_rate": [0.0]},
+        id="user_not_confirmed",
+    ),
+    pytest.param(
+        {"user_id": []},
+        {"user_id": [], "action": []},
+        {"user_id": [], "confirmation_rate": []},
+        id="empty_tables",
+    ),
+    pytest.param(
+        {"user_id": [1]},
+        {"user_id": [1, 1], "action": ["confirmed", "pending"]},
+        {"user_id": [1], "confirmation_rate": [0.5]},
+        id="mixed_actions",
+    ),
+]
+
 PARAMS_PROBLEM_1978 = [
     pytest.param(
         {

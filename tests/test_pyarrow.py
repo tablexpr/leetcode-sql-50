@@ -1163,38 +1163,7 @@ def test_problem_1907(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data_1, input_data_2, expected_data",
-    [
-        pytest.param(
-            {"user_id": [1]},
-            {"user_id": [1], "action": ["confirmed"]},
-            {"user_id": [1], "confirmation_rate": [1.0]},
-            id="user_confirmed",
-        ),
-        pytest.param(
-            {"user_id": [1]},
-            {"user_id": [1, 1], "action": ["confirmed", "confirmed"]},
-            {"user_id": [1], "confirmation_rate": [1.0]},
-            id="same_user_twice_confirmed",
-        ),
-        pytest.param(
-            {"user_id": [1]},
-            {"user_id": [1], "action": ["pending"]},
-            {"user_id": [1], "confirmation_rate": [0.0]},
-            id="user_not_confirmed",
-        ),
-        pytest.param(
-            {"user_id": []},
-            {"user_id": [], "action": []},
-            {"user_id": [], "confirmation_rate": []},
-            id="empty_tables",
-        ),
-        pytest.param(
-            {"user_id": [1]},
-            {"user_id": [1, 1], "action": ["confirmed", "pending"]},
-            {"user_id": [1], "confirmation_rate": [0.5]},
-            id="mixed_actions",
-        ),
-    ],
+    PARAMS_PROBLEM_1934,
 )
 def test_problem_1934(input_data_1, input_data_2, expected_data):
     table_1 = pa.Table.from_pydict(
