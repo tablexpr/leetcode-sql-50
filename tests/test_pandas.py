@@ -1253,24 +1253,7 @@ def test_problem_1789(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {"account_id": [1, 2, 3], "income": [10000, 25000, 100000]},
-            {
-                "category": ["Low Salary", "Average Salary", "High Salary"],
-                "accounts_count": [1, 1, 1],
-            },
-            id="all_three_salary_categories",
-        ),
-        pytest.param(
-            {"account_id": [1, 2], "income": [10000, 25000]},
-            {
-                "category": ["Low Salary", "Average Salary", "High Salary"],
-                "accounts_count": [1, 1, 0],
-            },
-            id="missing_one_salary_category",
-        ),
-    ],
+    PARAMS_PROBLEM_1907,
 )
 def test_problem_1907(input_data, expected_data):
     table = pd.DataFrame(input_data)
