@@ -1211,36 +1211,7 @@ def test_problem_1757(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {"employee_id": [1], "department_id": [101], "primary_flag": ["Y"]},
-            {"employee_id": [1], "department_id": [101]},
-            id="single_employee_primary_Y",
-        ),
-        pytest.param(
-            {
-                "employee_id": [1, 2, 2],
-                "department_id": [101, 102, 103],
-                "primary_flag": ["N", "Y", "N"],
-            },
-            {"employee_id": [1, 2], "department_id": [101, 102]},
-            id="multiple_employees_one_primary_Y",
-        ),
-        pytest.param(
-            {"employee_id": [1], "department_id": [101], "primary_flag": ["N"]},
-            {"employee_id": [1], "department_id": [101]},
-            id="single_employee_no_primary_Y",
-        ),
-        pytest.param(
-            {
-                "employee_id": [1, 1, 2, 2, 3, 3],
-                "department_id": [101, 102, 101, 102, 101, 102],
-                "primary_flag": ["Y", "N", "Y", "N", "Y", "N"],
-            },
-            {"employee_id": [1, 2, 3], "department_id": [101, 101, 101]},
-            id="all_employees_multiple_departments",
-        ),
-    ],
+    PARAMS_PROBLEM_1789,
 )
 def test_problem_1789(input_data, expected_data):
     table = pd.DataFrame(input_data)
