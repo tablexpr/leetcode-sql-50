@@ -1210,6 +1210,26 @@ PARAMS_PROBLEM_1378 = [
     ),
 ]
 
+
+PARAMS_PROBLEM_1757 = [
+    (
+        {
+            "product_id": [0, 1, 2, 3, 4],
+            "low_fats": ["Y", "Y", "N", "Y", "N"],
+            "recyclable": ["N", "Y", "Y", "Y", "N"],
+        },
+        {"product_id": [1, 3]},
+    ),
+    (
+        {
+            "product_id": [0, 1, 2, 3, 4],
+            "low_fats": ["Y", "Y", "Y", "Y", "Y"],
+            "recyclable": ["Y", "Y", "Y", "Y", "Y"],
+        },
+        {"product_id": [0, 1, 2, 3, 4]},
+    ),
+]
+
 PARAMS_PROBLEM_1789 = [
     pytest.param(
         {"employee_id": [1], "department_id": [101], "primary_flag": ["Y"]},
