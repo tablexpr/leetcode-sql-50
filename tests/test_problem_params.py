@@ -1227,6 +1227,24 @@ PARAMS_PROBLEM_1683 = [
     ),
 ]
 
+PARAMS_PROBLEM_1729 = [
+    pytest.param(
+        {"user_id": [1, 1, 2, 2, 3], "follower_id": [10, 11, 12, 13, 14]},
+        {"user_id": [1, 2, 3], "followers_count": [2, 2, 1]},
+        id="multiple_users",
+    ),
+    pytest.param(
+        {"user_id": [1], "follower_id": [10]},
+        {"user_id": [1], "followers_count": [1]},
+        id="single_user",
+    ),
+    pytest.param(
+        {"user_id": [1, 1, 1], "follower_id": [10, 11, 12]},
+        {"user_id": [1], "followers_count": [3]},
+        id="single_user_multiple_followers",
+    ),
+]
+
 PARAMS_PROBLEM_1757 = [
     (
         {
