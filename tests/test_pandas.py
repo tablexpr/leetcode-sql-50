@@ -1069,23 +1069,7 @@ def test_problem_1667(input_data, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        (
-            {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
-            {"tweet_id": [2]},
-        ),
-        (
-            {
-                "tweet_id": [1, 2],
-                "content": ["This is a long tweet", "Another long tweet"],
-            },
-            {"tweet_id": [1, 2]},
-        ),
-    ],
-    ids=[
-        "content_greater_than_15",
-        "all_content_greater_than_15",
-    ],
+    PARAMS_PROBLEM_1683,
 )
 def test_problem_1683(input_data, expected_data):
     table = pd.DataFrame(input_data)

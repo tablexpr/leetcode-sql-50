@@ -1211,6 +1211,22 @@ PARAMS_PROBLEM_1378 = [
 ]
 
 
+PARAMS_PROBLEM_1683 = [
+    pytest.param(
+        {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
+        {"tweet_id": [2]},
+        id="content_greater_than_15",
+    ),
+    pytest.param(
+        {
+            "tweet_id": [1, 2],
+            "content": ["This is a long tweet", "Another long tweet"],
+        },
+        {"tweet_id": [1, 2]},
+        id="all_content_greater_than_15",
+    ),
+]
+
 PARAMS_PROBLEM_1757 = [
     (
         {
