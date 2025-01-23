@@ -1292,6 +1292,29 @@ PARAMS_PROBLEM_1517 = [
 ]
 
 
+PARAMS_PROBLEM_1581 = [
+    pytest.param(
+        {
+            "visit_id": [1, 2, 5, 5, 5, 4, 6, 7, 8],
+            "customer_id": [23, 9, 54, 54, 54, 30, 96, 54, 54],
+        },
+        {
+            "visit_id": [1, 2, 5],
+            "transaction_id": [12, 13, 9],
+            "amount": [910, 970, 200],
+        },
+        {"customer_id": [30, 96, 54], "count_no_trans": [1, 1, 2]},
+        id="happy_path",
+    ),
+    pytest.param(
+        {"visit_id": [10, 11], "customer_id": [100, 101]},
+        {"visit_id": [1, 2], "transaction_id": [12, 13], "amount": [910, 970]},
+        {"customer_id": [100, 101], "count_no_trans": [1, 1]},
+        id="no_matching_visit_id",
+    ),
+]
+
+
 PARAMS_PROBLEM_1683 = [
     pytest.param(
         {"tweet_id": [1, 2], "content": ["Short", "This is a long tweet"]},
