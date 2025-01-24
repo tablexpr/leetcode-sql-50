@@ -838,6 +838,58 @@ PARAMS_PROBLEM_1070 = [
     ),
 ]
 
+
+PARAMS_PROBLEM_1164 = [
+    pytest.param(
+        {
+            "product_id": [1, 1, 2],
+            "change_date": [
+                datetime(2019, 8, 15),
+                datetime(2019, 8, 16),
+                datetime(2019, 8, 17),
+            ],
+            "new_price": [100, 110, 120],
+        },
+        {"product_id": [1, 2], "price": [110, 10]},
+        id="happy-path",
+    ),
+    pytest.param(
+        {
+            "product_id": [1, 2],
+            "change_date": [
+                datetime(2019, 8, 17),
+                datetime(2019, 8, 18),
+            ],
+            "new_price": [100, 110],
+        },
+        {"product_id": [1, 2], "price": [10, 10]},
+        id="no-products-before-cutoff",
+    ),
+    pytest.param(
+        {
+            "product_id": [1],
+            "change_date": [
+                datetime(2019, 8, 18),
+            ],
+            "new_price": [20],
+        },
+        {"product_id": [1], "price": [10]},
+        id="single-product-after-cutoff",
+    ),
+    pytest.param(
+        {
+            "product_id": [1, 2],
+            "new_price": [100, 100],
+            "change_date": [
+                datetime(2019, 8, 1),
+                datetime(2019, 8, 2),
+            ],
+        },
+        {"product_id": [1, 2], "price": [100, 100]},
+        id="all-products-before-cutoff",
+    ),
+]
+
 PARAMS_PROBLEM_1204 = [
     pytest.param(
         {
