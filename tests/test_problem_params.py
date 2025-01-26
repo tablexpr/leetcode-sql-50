@@ -839,6 +839,39 @@ PARAMS_PROBLEM_1070 = [
 ]
 
 
+PARAMS_PROBLEMS_1141 = [
+    pytest.param(
+        {
+            "user_id": [1, 1, 1, 2, 2, 2],
+            "session_id": [1, 1, 1, 4, 4, 4],
+            "activity_date": [
+                datetime(2019, 7, 20, 0, 0),
+                datetime(2019, 7, 20, 0, 0),
+                datetime(2019, 7, 20, 0, 0),
+                datetime(2019, 7, 21, 0, 0),
+                datetime(2019, 7, 21, 0, 0),
+                datetime(2019, 7, 21, 0, 0),
+            ],
+            "activity_type": [
+                "open_session",
+                "scroll_down",
+                "end_session",
+                "open_session",
+                "send_message",
+                "end_session",
+            ],
+        },
+        {
+            "day": [
+                datetime(2019, 7, 20, 0, 0),
+                datetime(2019, 7, 21, 0, 0),
+            ],
+            "active_users": [1, 1],
+        },
+        id="happy_path_1",
+    )
+]
+
 PARAMS_PROBLEM_1164 = [
     pytest.param(
         {
