@@ -839,6 +839,29 @@ PARAMS_PROBLEM_1070 = [
 ]
 
 
+PARAMS_PROBLEM_1075 = [
+    pytest.param(
+        {
+            "employee_id": [1, 2, 3],
+            "project_id": [101, 102, 103],
+            "experience_years": [5, 10, 15],
+        },
+        {"employee_id": [1, 2, 3], "department": ["HR", "IT", "Finance"]},
+        {"project_id": [101, 102, 103], "average_years": [5.0, 10.0, 15.0]},
+        id="happy_path",
+    ),
+    pytest.param(
+        {
+            "employee_id": [1, 2, 3],
+            "project_id": [101, 101, 101],
+            "experience_years": [33, 34, 34],
+        },
+        {"employee_id": [1, 2, 3], "department": ["HR", "IT", "IT"]},
+        {"project_id": [101], "average_years": [33.67]},
+        id="happy_path_rounding_2",
+    ),
+]
+
 PARAMS_PROBLEMS_1141 = [
     pytest.param(
         {
