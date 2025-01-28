@@ -642,44 +642,7 @@ def test_problem_1378(input_data_1, input_data_2, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "sell_date": [
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                    datetime(2020, 5, 30),
-                ],
-                "product": [
-                    "Headphone",
-                    "Pencil",
-                    "Mask",
-                    "Basketball",
-                    "Bible",
-                    "Mask",
-                    "T-Shirt",
-                ],
-            },
-            {
-                "sell_date": [
-                    datetime(2020, 5, 30),
-                    datetime(2020, 6, 1),
-                    datetime(2020, 6, 2),
-                ],
-                "num_sold": [3, 2, 1],
-                "products": [
-                    "Basketball,Headphone,T-Shirt",
-                    "Bible,Pencil",
-                    "Mask",
-                ],
-            },
-            id="happy_path",
-        ),
-    ],
+    PARAMS_PROBLEM_1484,
 )
 def test_problem_1484(input_data, expected_data):
     table = pd.DataFrame(input_data)
