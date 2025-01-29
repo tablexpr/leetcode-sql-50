@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pyarrow as pa
 import pytest
 
@@ -87,36 +85,7 @@ def test_problem_1068(input_data_1, input_data_2, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "article_id": [1, 2, 3],
-                "author_id": [3, 7, 4],
-                "viewer_id": [3, 7, 4],
-                "view_date": [
-                    datetime(2019, 8, 1),
-                    datetime(2019, 8, 1),
-                    datetime(2019, 7, 21),
-                ],
-            },
-            {
-                "id": [3, 4, 7],
-            },
-            id="happy_path",
-        ),
-        pytest.param(
-            {
-                "article_id": [1, 2],
-                "author_id": [3, 7],
-                "viewer_id": [3, 7],
-                "view_date": [datetime(2019, 8, 1), datetime(2019, 8, 1)],
-            },
-            {
-                "id": [3, 7],
-            },
-            id="all_match",
-        ),
-    ],
+    PARAMS_PROBLEM_1148,
 )
 def test_problem_1148(input_data, expected_data):
     table = pa.Table.from_pydict(input_data)
