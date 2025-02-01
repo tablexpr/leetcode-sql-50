@@ -680,38 +680,7 @@ def test_problem_1633(input_data_1, input_data_2, expected_data):
 
 @pytest.mark.parametrize(
     "input_data, expected_data",
-    [
-        pytest.param(
-            {
-                "machine_id": [0, 0, 0, 0],
-                "process_id": [0, 0, 1, 1],
-                "activity_type": ["start", "end", "start", "end"],
-                "timestamp": [0.712, 1.52, 3.14, 4.12],
-            },
-            {"machine_id": [0], "processing_time": [0.894]},
-            id="happy_path_single_machine",
-        ),
-        pytest.param(
-            {
-                "machine_id": [0, 0, 1, 1, 2, 2],
-                "process_id": [0, 0, 1, 1, 2, 2],
-                "activity_type": ["start", "end", "start", "end", "start", "end"],
-                "timestamp": [0.5, 1.5, 0.7, 1.2, 0.9, 2.0],
-            },
-            {"machine_id": [0, 1, 2], "processing_time": [1.0, 0.5, 1.1]},
-            id="multiple_machines",
-        ),
-        pytest.param(
-            {
-                "machine_id": [0, 0, 1],
-                "process_id": [0, 0, 1],
-                "activity_type": ["start", "end", "start"],
-                "timestamp": [0.5, 1.5, 0.7],
-            },
-            {"machine_id": [0, 1], "processing_time": [1.0, None]},
-            id="incomplete_process",
-        ),
-    ],
+    PARAMS_PROBLEM_1661,
 )
 def test_problem_1661(input_data, expected_data):
     table = pd.DataFrame(input_data)
