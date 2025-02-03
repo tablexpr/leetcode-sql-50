@@ -1572,6 +1572,24 @@ PARAMS_PROBLEM_1517 = [
     ),
 ]
 
+PARAMS_PROBLEM_1527 = [
+    pytest.param(
+        {"conditions": ["DIAB1", "DIAB2", "DIAB3"]},
+        {"conditions": ["DIAB1"]},
+        id="starts_with_DIAB1",
+    ),
+    pytest.param(
+        {"conditions": ["X DIAB1", "Y DIAB2", "Z DIAB1X"]},
+        {"conditions": ["X DIAB1", "Z DIAB1X"]},
+        id="contains_DIAB1",
+    ),
+    pytest.param(
+        {"conditions": ["X DIAB1", "Y +DIAB1", "Z DIAB1X"]},
+        {"conditions": ["X DIAB1", "Z DIAB1X"]},
+        id="contains_DIAB1_and_not_prefixed_strangely",
+    ),
+]
+
 
 PARAMS_PROBLEM_1581 = [
     pytest.param(
