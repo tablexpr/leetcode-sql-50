@@ -1,5 +1,5 @@
 [project]
-name = "pyarrow-exercises"
+name = "leetcode-sql-50"
 dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.10"

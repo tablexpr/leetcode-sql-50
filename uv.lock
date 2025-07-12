@@ -370,6 +370,41 @@ wheels = [
 ]
 
 [[package]]
+name = "leetcode-sql-50"
+source = { editable = "." }
+dependencies = [
+    { name = "datafusion" },
+    { name = "pandas" },
+    { name = "polars" },
+    { name = "pyarrow" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "ipykernel" },
+    { name = "ipython" },
+    { name = "pre-commit" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
+    { name = "typing-extensions" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "datafusion", specifier = ">=42.0.0" },
+    { name = "ipykernel", marker = "extra == 'dev'", specifier = "==6.29.5" },
+    { name = "ipython", marker = "extra == 'dev'", specifier = "==8.31.0" },
+    { name = "pandas", specifier = ">=2.2.3" },
+    { name = "polars", specifier = ">=1.19.0" },
+    { name = "pre-commit", marker = "extra == 'dev'", specifier = "==4.0.1" },
+    { name = "pyarrow", specifier = "==18.1.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = "==8.3.4" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = "==6.0.0" },
+    { name = "typing-extensions", marker = "extra == 'dev'", specifier = ">=4.0.0" },
+]
+provides-extras = ["dev"]
+
+[[package]]
 name = "matplotlib-inline"
 version = "0.1.7"
 source = { registry = "https://pypi.org/simple" }
@@ -673,41 +708,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/37/29/366bc7e588220d74ec00e497ac6710c2833c9176f0372fe0286929b2d64c/pyarrow-18.1.0-cp313-cp313t-manylinux_2_28_aarch64.whl", hash = "sha256:11b676cd410cf162d3f6a70b43fb9e1e40affbc542a1e9ed3681895f2962d3d9", size = 38548177, upload-time = "2024-11-26T02:01:07.371Z" },
     { url = "https://files.pythonhosted.org/packages/c8/11/fabf6ecabb1fe5b7d96889228ca2a9158c4c3bb732e3b8ee3f7f6d40b703/pyarrow-18.1.0-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:b76130d835261b38f14fc41fdfb39ad8d672afb84c447126b84d5472244cfaba", size = 40043567, upload-time = "2024-11-26T02:01:12.931Z" },
 ]
-
-[[package]]
-name = "pyarrow-exercises"
-source = { editable = "." }
-dependencies = [
-    { name = "datafusion" },
-    { name = "pandas" },
-    { name = "polars" },
-    { name = "pyarrow" },
-]
-
-[package.optional-dependencies]
-dev = [
-    { name = "ipykernel" },
-    { name = "ipython" },
-    { name = "pre-commit" },
-    { name = "pytest" },
-    { name = "pytest-cov" },
-    { name = "typing-extensions" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "datafusion", specifier = ">=42.0.0" },
-    { name = "ipykernel", marker = "extra == 'dev'", specifier = "==6.29.5" },
-    { name = "ipython", marker = "extra == 'dev'", specifier = "==8.31.0" },
-    { name = "pandas", specifier = ">=2.2.3" },
-    { name = "polars", specifier = ">=1.19.0" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = "==4.0.1" },
-    { name = "pyarrow", specifier = "==18.1.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = "==8.3.4" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = "==6.0.0" },
-    { name = "typing-extensions", marker = "extra == 'dev'", specifier = ">=4.0.0" },
-]
-provides-extras = ["dev"]
 
 [[package]]
 name = "pycparser"
