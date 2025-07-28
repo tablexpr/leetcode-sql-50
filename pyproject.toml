@@ -24,7 +24,7 @@ dev = [
   "ipykernel==6.29.5",
   "ipython==8.31.0",
   "pre-commit==4.0.1",
-  "pytest==8.3.4",
+  "pytest==8.4.1",
   "pytest-cov==6.0.0",
   "typing_extensions>=4.0.0"
 ]
